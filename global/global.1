@@ -1,7 +1,7 @@
 .\" This file is generated automatically by convert.pl from global/manual.in.
-.TH GLOBAL 1 "May 2012" "GNU Project"
+.TH GLOBAL 1 "Jun 2013" "GNU Project"
 .SH NAME
-global \- print locations of the specified object.
+global \- print locations of given symbols
 .SH SYNOPSIS
 \fBglobal\fP [-adGilnqrstTvx][-e] \fIpattern\fP
 .br
@@ -20,44 +20,45 @@ global \- print locations of the specified object.
 \fBglobal\fP -u[qv]
 .br
 .SH DESCRIPTION
-\fBGlobal\fP finds locations of the specified object
+\fBGlobal\fP finds locations of given symbols
 in C, C++, Yacc, Java, PHP and Assembly source files,
-and print the path name, line number and line image of the locations.
-\fBGlobal\fP can locate not only object definitions but also object
-references and other symbols.
+and print path name, line number and line image for each of them.
+\fBGlobal\fP can locate not only definitions but also references
+and other symbols.
 .PP
-\fBGlobal\fP can treat a source tree, that is, a directory that
-has sub-directories and source files, as a project.
+\fBGlobal\fP can treat a source tree, that is, a directory that has
+sub-directories and source files, as a project.
 In advance of using this command, you must execute \fBgtags\fP(1)
-at the root directory of a project to make tag files.
-Then you can execute this command anywhere in the project.
+at the root directory of the project which you want to investigate
+to make tag files.
+Then you can use \fBglobal\fP command anywhere in the project.
 You need not specify where the tag file is.
 Instead, \fBglobal\fP locates it by itself.
 .PP
-You can specify a regular expression for the \fIpattern\fP.
+You can use regular expression for \fIpattern\fP.
 \fBGlobal\fP understands two different versions of regular expression
 syntax: \fIbasic\fP and \fIextended\fP. The default is \fIextended\fP.
 .SH COMMANDS
 The following commands are available:
 .TP
 <no command> \fIpattern\fP
-Print objects which match to the \fIpattern\fP.
-By default, print object definitions.
+Print tags of symbols which match to the \fIpattern\fP.
+By default, print definition tags.
 .TP
 \fB-c\fP, \fB--completion\fP [\fIprefix\fP]
-Print object names which start with the specified \fIprefix\fP.
-If \fIprefix\fP is not specified, print all object names.
+Print symbols which start with the \fIprefix\fP.
+If \fIprefix\fP is not given, print all symbols.
 .TP
 \fB-f\fP, \fB--file\fP \fIfiles\fP
-Print all objects in the \fIfiles\fP.
+Print all tags in the \fIfiles\fP.
 This option implies the \fB-x\fP option.
 .TP
 \fB-g\fP, \fB--grep\fP \fIpattern\fP [\fIfiles\fP]
 Print all lines which match to the \fIpattern\fP.
-If \fIfiles\fP is specified, this command searches in the files.
+If \fIfiles\fP are given, this command searches in the files.
 .TP
 \fB--help\fP
-Show help.
+Print a usage message.
 .TP
 \fB-I\fP, \fB--idutils\fP \fIpattern\fP
 Print all lines which match to the \fIpattern\fP.
@@ -67,10 +68,10 @@ in your system and execute \fBgtags\fP(1) with the \fB-I\fP option.
 .TP
 \fB-P\fP, \fB--path\fP [\fIpattern\fP]
 Print path names which match to the \fIpattern\fP.
-If no pattern specified, print all path names in the project.
+If no pattern is given, print all paths in the project.
 .TP
 \fB-p\fP, \fB--print-dbpath\fP
-Print the location of \'GTAGS\'.
+Print location of \'GTAGS\'.
 .TP
 \fB-u\fP, \fB--update\fP
 Update tag files incrementally.
@@ -87,7 +88,7 @@ The following options are available:
 Print absolute path name. By default, print relative path name.
 .TP
 \fB-d\fP, \fB--definition\fP
-Print locations of object definitions.
+Print locations of definitions.
 .TP
 \fB--from-here\fP \fIcontext\fP
 Decide tag type by the \fIcontext\fP. The \fIcontext\fP must be 'lineno:path'.
@@ -114,7 +115,7 @@ The default is extended regular expression.
 Ignore case distinctions in the pattern.
 .TP
 \fB-l\fP, \fB--local\fP
-Print only objects which exist under the current directory.
+Print only tags which exist under the current directory.
 .TP
 \fB-L\fP, \fB--file-list\fP \fIfile-list\fP
 Obtain files from \fIfile-list\fP in addition to the arguments.
@@ -125,20 +126,19 @@ This option is only valid when the \fB-g\fP command is specified.
 .TP
 \fB--match-part \fIpart\fP\fP
 Specify the matched part of path name.
+Possible values are as follows: \fIfirst\fP, \fIlast\fP, \fIall\fP. The default is \fIall\fP.
 This option is valid only with the \fB-c\fP command with the \fB-P\fP option.
-The default is \fIall\fP.
 .TP
 \fB-n\fP, \fB--nofilter\fP
 Suppress sort filter and path conversion filter.
 .TP
 \fB-O\fP, \fB--only-other\fP
-Treat only text files other than source code like \'README\'.
+Treat only text files: \'README\', \'ChangeLog\', or etc.
 This option is valid only with the \fB-g\fP or \fB-P\fP command.
 This option overrides the \fB-o\fP option.
 .TP
 \fB-o\fP, \fB--other\fP
-Treat not only source files but also text files other than source code
-like \'README\'.
+Treat not only source files but also text files: \'README\', \'ChangeLog\', or etc.
 This option is valid only with the \fB-g\fP or \fB-P\fP command.
 .TP
 \fB--path-style\fP \fIformat\fP
@@ -153,7 +153,8 @@ Print each record followed by a null character instead of a newline.
 Quiet mode.
 .TP
 \fB-r\fP, \fB--reference\fP, \fB--rootdir\fP
-Print locations of object references.
+Print reference tags.
+Reference means the reference to a symbol which has definitions.
 With the \fB-p\fP option, print the root directory of the project.
 .TP
 \fB--result\fP \fIformat\fP
@@ -171,7 +172,8 @@ and there is no change in other files.
 This option implies the \fB-u\fP option.
 .TP
 \fB-s\fP, \fB--symbol\fP
-Print locations of the specified symbol other than definitions.
+Print other symbol tags.
+Other symbol means the reference to a symbol which has no definition.
 .TP
 \fB-T\fP, \fB--through\fP
 Go through all the tag files listed in \fBGTAGSLIBPATH\fP.
@@ -196,8 +198,12 @@ Use standard ctags cxref (with the \fI-x\fP) format.
 $ ls -F
 Makefile      src/    lib/
 $ gtags
+$ ls G*
+GPATH   GRTAGS  GTAGS
 $ global main
 src/main.c
+$ (cd src; global main)
+main.c
 $ global -x main
 main              10 src/main.c  main (argc, argv) {
 $ global -f src/main.c
@@ -208,8 +214,7 @@ func3		 120 src/main.c  func3() {
 $ global -x '^[sg]et'
 set_num           20 lib/util.c  set_num(values) {
 get_num           30 lib/util.c  get_num() {
-$ global -rx '^[sg]et'
-get_num          205 src/op.c            while (get_num() > 0) {
+$ global -rx set_num
 set_num          113 src/op.c            set_num(32);
 set_num          225 src/opop.c               if (set_num(0) > 0) {
 $ global strlen
@@ -225,13 +230,13 @@ $ global strlen
 .SH FILES
 .TP
 \'GTAGS\'
-Tag file for object definitions.
+Tag file for definitions.
 .TP
 \'GRTAGS\'
-Tag file for object references.
+Tag file for references.
 .TP
 \'GPATH\'
-Tag file for path of source files.
+Tag file for source files.
 .TP
 \'GTAGSROOT\'
 If environment variable \fBGTAGSROOT\fP is not set
@@ -252,7 +257,7 @@ This value is ignored when \fBGTAGSROOT\fP is not defined.
 .TP
 \fBGTAGSLIBPATH\fP
 If this variable is set, it is used as the path to search
-for library functions. If the specified object is not
+for library functions. If the given symbol is not
 found in the project, \fBglobal\fP also search in these paths.
 Since only \'GTAGS\' is targeted in the retrieval, this variable is
 ignored when the \fB-r\fP or \fB-s\fP is specified.

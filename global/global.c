@@ -645,13 +645,12 @@ main(int argc, char **argv)
 					die("rel2abs failed.");
 				single_update = regular_path_name;
 			}
-			strbuf_puts(sb, " --single-update=");
-			strbuf_putc(sb, '"');
-			strbuf_puts(sb, single_update);
-			strbuf_putc(sb, '"');
+			strbuf_puts(sb, " --single-update");
+			strbuf_putc(sb, ' ');
+			strbuf_puts(sb, quote_shell(single_update));
 		}
 		strbuf_putc(sb, ' ');
-		strbuf_puts(sb, dbpath);
+		strbuf_puts(sb, quote_shell(dbpath));
 		if (system(strbuf_value(sb)))
 			exit(1);
 		strbuf_close(sb);
@@ -929,7 +928,7 @@ completion_idutils(const char *dbpath, const char *root, const char *prefix)
 	if (!lid)
 		die("lid(idutils) not found.");
 	strbuf_puts(sb, lid);
-	strbuf_sprintf(sb, " --file='%s/ID'", dbpath);
+	strbuf_sprintf(sb, " --file=%s/ID", quote_shell(dbpath));
 	strbuf_puts(sb, " --key=token");
 	if (iflag)
 		strbuf_puts(sb, " --ignore-case");
@@ -1090,7 +1089,7 @@ idutils(const char *pattern, const char *dbpath)
 	 * Invoke lid with the --result=grep option to generate grep format.
 	 */
 	strbuf_puts(ib, lid);
-	strbuf_sprintf(ib, " --file='%s/ID'", dbpath);
+	strbuf_sprintf(ib, " --file=%s/ID", quote_shell(dbpath));
 	strbuf_puts(ib, " --separator=newline");
 	if (format == FORMAT_PATH)
 		strbuf_puts(ib, " --result=filenames --key=none");

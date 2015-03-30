@@ -21,7 +21,7 @@ dnl
 dnl You should have received a copy of the GNU General Public License
 dnl along with this program.  If not, see <http://www.gnu.org/licenses/>.
 dnl
-AC_INIT([GNU GLOBAL],[6.2.8])
+AC_INIT([GNU GLOBAL],[6.2.9])
 AC_CONFIG_SRCDIR(global/global.c)
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_PREREQ(2.59)
@@ -312,6 +312,17 @@ AC_ARG_WITH(posix-sort,
 ])
 AC_DEFINE_UNQUOTED(POSIX_SORT, "$POSIX_SORT", [POSIX sort program.])
 AC_SUBST(POSIX_SORT)
+
+dnl
+dnl default mode of sitekeys directory.
+dnl
+AC_MSG_CHECKING(default mode of sitekeys directory)
+AC_ARG_WITH(sitekeys-mode,
+[  --with-sitekeys-mode=MODE default mode of the sitekeys directory ],
+[ SITEKEYS_MODE="$withval" ],
+[ SITEKEYS_MODE="755" ])
+AC_MSG_RESULT($SITEKEYS_MODE)
+AC_SUBST(SITEKEYS_MODE)
 
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(LDADD)

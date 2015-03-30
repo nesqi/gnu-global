@@ -10,19 +10,19 @@ const char *usage_const = "Usage: global [-adGilnqrstTvx][-e] pattern\n\
        global -u[qv]\n";
 const char *help_const = "Commands:\n\
 <no command> pattern\n\
-       Print objects which match to the pattern.\n\
-       By default, print object definitions.\n\
+       Print tags of symbols which match to the pattern.\n\
+       By default, print definition tags.\n\
 -c, --completion [prefix]\n\
-       Print object names which start with the specified prefix.\n\
-       If prefix is not specified, print all object names.\n\
+       Print symbols which start with the prefix.\n\
+       If prefix is not given, print all symbols.\n\
 -f, --file files\n\
-       Print all objects in the files.\n\
+       Print all tags in the files.\n\
        This option implies the -x option.\n\
 -g, --grep pattern [files]\n\
        Print all lines which match to the pattern.\n\
-       If files is specified, this command searches in the files.\n\
+       If files are given, this command searches in the files.\n\
 --help\n\
-       Show help.\n\
+       Print a usage message.\n\
 -I, --idutils pattern\n\
        Print all lines which match to the pattern.\n\
        This function use idutils(1) as a search engine.\n\
@@ -30,9 +30,9 @@ const char *help_const = "Commands:\n\
        in your system and execute gtags(1) with the -I option.\n\
 -P, --path [pattern]\n\
        Print path names which match to the pattern.\n\
-       If no pattern specified, print all path names in the project.\n\
+       If no pattern is given, print all paths in the project.\n\
 -p, --print-dbpath\n\
-       Print the location of GTAGS.\n\
+       Print location of GTAGS.\n\
 -u, --update\n\
        Update tag files incrementally.\n\
        This command internally invokes gtags(1).\n\
@@ -44,7 +44,7 @@ Options:\n\
 -a, --absolute\n\
        Print absolute path name. By default, print relative path name.\n\
 -d, --definition\n\
-       Print locations of object definitions.\n\
+       Print locations of definitions.\n\
 --from-here context\n\
        Decide tag type by the context. The context must be 'lineno:path'.\n\
        If this option is specified then the -s and -r\n\
@@ -65,7 +65,7 @@ Options:\n\
 -i, --ignore-case\n\
        Ignore case distinctions in the pattern.\n\
 -l, --local\n\
-       Print only objects which exist under the current directory.\n\
+       Print only tags which exist under the current directory.\n\
 -L, --file-list file-list\n\
        Obtain files from file-list in addition to the arguments.\n\
 --literal\n\
@@ -73,17 +73,16 @@ Options:\n\
        This option is only valid when the -g command is specified.\n\
 --match-part part\n\
        Specify the matched part of path name.\n\
+       Possible values are as follows: first, last, all. The default is all.\n\
        This option is valid only with the -c command with the -P option.\n\
-       The default is all.\n\
 -n, --nofilter\n\
        Suppress sort filter and path conversion filter.\n\
 -O, --only-other\n\
-       Treat only text files other than source code like README.\n\
+       Treat only text files: README, ChangeLog, or etc.\n\
        This option is valid only with the -g or -P command.\n\
        This option overrides the -o option.\n\
 -o, --other\n\
-       Treat not only source files but also text files other than source code\n\
-       like README.\n\
+       Treat not only source files but also text files: README, ChangeLog, or etc.\n\
        This option is valid only with the -g or -P command.\n\
 --path-style format\n\
        Print path names using the specified format.\n\
@@ -94,7 +93,8 @@ Options:\n\
 -q, --quiet\n\
        Quiet mode.\n\
 -r, --reference, --rootdir\n\
-       Print locations of object references.\n\
+       Print reference tags.\n\
+       Reference means the reference to a symbol which has definitions.\n\
        With the -p option, print the root directory of the project.\n\
 --result format\n\
        Print out using the specified format.\n\
@@ -109,7 +109,8 @@ Options:\n\
        and there is no change in other files.\n\
        This option implies the -u option.\n\
 -s, --symbol\n\
-       Print locations of the specified symbol other than definitions.\n\
+       Print other symbol tags.\n\
+       Other symbol means the reference to a symbol which has no definition.\n\
 -T, --through\n\
        Go through all the tag files listed in GTAGSLIBPATH.\n\
        By default, stop searching when tag is found.\n\

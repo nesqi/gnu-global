@@ -1151,7 +1151,13 @@ makecommonpart(const char *title, const char *defines, const char *files)
 				strbuf_puts_nl(sb, header_end);
 				if (tree_view) {
 					strbuf_puts_nl(sb, tree_control);
-					strbuf_puts_nl(sb, tree_begin);
+					strbuf_puts_nl(sb, tree_loading);
+					if (tree_view_type) {
+						strbuf_sprintf(sb, tree_begin_using, tree_view_type);
+						strbuf_putc(sb, '\n');
+					} else {
+						strbuf_puts_nl(sb, tree_begin);
+					}
 				} else if (table_flist)
 					strbuf_puts_nl(sb, flist_begin);
 				else if (!no_order_list)
@@ -1303,114 +1309,6 @@ configuration(int argc, char *const *argv)
 		if (*q == '/')
 			*q = '\0';
 		script_alias = p;
-	}
-	strbuf_reset(sb);
-	if (getconfs("body_begin", sb)) {
-		p = check_strdup(strbuf_value(sb));
-		strbuf_reset(sb);
-		if (getconfs("body_end", sb)) {
-			q = check_strdup(strbuf_value(sb));
-			body_begin = p;
-			body_end = q;
-		} else {
-			free(p);
-		}
-	}
-	strbuf_reset(sb);
-	if (getconfs("table_begin", sb)) {
-		p = check_strdup(strbuf_value(sb));
-		strbuf_reset(sb);
-		if (getconfs("table_end", sb)) {
-			q = check_strdup(strbuf_value(sb));
-			table_begin = p;
-			table_end = q;
-		} else {
-			free(p);
-		}
-	}
-	strbuf_reset(sb);
-	if (getconfs("title_begin", sb)) {
-		p = check_strdup(strbuf_value(sb));
-		strbuf_reset(sb);
-		if (getconfs("title_end", sb)) {
-			q = check_strdup(strbuf_value(sb));
-			title_begin = p;
-			title_end = q;
-		} else {
-			free(p);
-		}
-	}
-	strbuf_reset(sb);
-	if (getconfs("comment_begin", sb)) {
-		p = check_strdup(strbuf_value(sb));
-		strbuf_reset(sb);
-		if (getconfs("comment_end", sb)) {
-			q = check_strdup(strbuf_value(sb));
-			comment_begin = p;
-			comment_end = q;
-		} else {
-			free(p);
-		}
-	}
-	strbuf_reset(sb);
-	if (getconfs("sharp_begin", sb)) {
-		p = check_strdup(strbuf_value(sb));
-		strbuf_reset(sb);
-		if (getconfs("sharp_end", sb)) {
-			q = check_strdup(strbuf_value(sb));
-			sharp_begin = p;
-			sharp_end = q;
-		} else {
-			free(p);
-		}
-	}
-	strbuf_reset(sb);
-	if (getconfs("brace_begin", sb)) {
-		p = check_strdup(strbuf_value(sb));
-		strbuf_reset(sb);
-		if (getconfs("brace_end", sb)) {
-			q = check_strdup(strbuf_value(sb));
-			brace_begin = p;
-			brace_end = q;
-		} else {
-			free(p);
-		}
-	}
-	strbuf_reset(sb);
-	if (getconfs("reserved_begin", sb)) {
-		p = check_strdup(strbuf_value(sb));
-		strbuf_reset(sb);
-		if (getconfs("reserved_end", sb)) {
-			q = check_strdup(strbuf_value(sb));
-			reserved_begin = p;
-			reserved_end = q;
-		} else {
-			free(p);
-		}
-	}
-	strbuf_reset(sb);
-	if (getconfs("position_begin", sb)) {
-		p = check_strdup(strbuf_value(sb));
-		strbuf_reset(sb);
-		if (getconfs("position_end", sb)) {
-			q = check_strdup(strbuf_value(sb));
-			position_begin = p;
-			position_end = q;
-		} else {
-			free(p);
-		}
-	}
-	strbuf_reset(sb);
-	if (getconfs("warned_line_begin", sb)) {
-		p = check_strdup(strbuf_value(sb));
-		strbuf_reset(sb);
-		if (getconfs("warned_line_end", sb)) {
-			q = check_strdup(strbuf_value(sb));
-			warned_line_begin = p;
-			warned_line_end = q;
-		} else {
-			free(p);
-		}
 	}
 	strbuf_reset(sb);
 	if (getconfs("include_file_suffixes", sb))
@@ -2048,10 +1946,6 @@ main(int argc, char **argv)
 	make_directory_in_distpath(SRCS);
 	make_directory_in_distpath(INCS);
 	make_directory_in_distpath(INCREFS);
-	/*
-	 * 'sitekey' file will be removed in near future, because it is not used.
-	 */
-	make_file_in_distpath("sitekey", sitekey);
 	if (!dynamic) {
 		make_directory_in_distpath(DEFS);
 		make_directory_in_distpath(REFS);
@@ -2247,15 +2141,15 @@ main(int argc, char **argv)
 		snprintf(com, sizeof(com), "%s/gtags/style.css.tmpl", datadir, distpath);
 		if (test("f", com))
 		       template = ".tmpl";
-		snprintf(com, sizeof(com), "cp %s/gtags/style.css%s %s/style.css", datadir, template, distpath);
+		snprintf(com, sizeof(com), "cp \"%s\"/gtags/style.css%s \"%s\"/style.css", datadir, template, distpath);
 #else
-		snprintf(com, sizeof(com), "cp %s/gtags/style.css.tmpl %s/style.css", datadir, distpath);
+		snprintf(com, sizeof(com), "cp \"%s\"/gtags/style.css.tmpl \"%s\"/style.css", datadir, distpath);
 #endif
 		system(com);
 	}
 	if (auto_completion || tree_view) {
 		char com[MAXPATHLEN*2+32];
-		snprintf(com, sizeof(com), "cp -r %s/gtags/jquery/* %s/js", datadir, distpath);
+		snprintf(com, sizeof(com), "cp -r \"%s\"/gtags/jquery/* \"%s\"/js", datadir, distpath);
 		system(com);
 	}
 	message("[%s] Done.", now());
@@ -2284,7 +2178,7 @@ main(int argc, char **argv)
 	if (Iflag) {
 		char com[MAXPATHLEN*2+32];
 
-		snprintf(com, sizeof(com), "cp -r %s/gtags/icons %s", datadir, distpath);
+		snprintf(com, sizeof(com), "cp -r \"%s\"/gtags/icons \"%s\"", datadir, distpath);
 		system(com);
 	}
 	gpath_close();

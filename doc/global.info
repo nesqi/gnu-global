@@ -23,7 +23,7 @@ File: global.info,  Node: Top,  Next: Introduction,  Up: (dir)
 GNU GLOBAL source code tag system
 *********************************
 
-This manual documents version 6.2.8 of the GNU GLOBAL source code tag
+This manual documents version 6.2.9 of the GNU GLOBAL source code tag
 system.
 
 * Menu:
@@ -1685,7 +1685,7 @@ File: global.info,  Node: Reference,  Next: Copying This Manual,  Prev: Other to
 
 * Menu:
 
-* global::         global - print locations of the specified object.
+* global::         global - print locations of given symbols
 * gtags::          gtags - create tag files for global.
 * htags::          htags - generate a hypertext from a set of source files.
 * gozilla::        gozilla - force mozilla to display specified part of a source file.
@@ -1695,13 +1695,13 @@ File: global.info,  Node: Reference,  Next: Copying This Manual,  Prev: Other to
 
 File: global.info,  Node: global,  Next: gtags,  Up: Reference
 
-5.1 global - print locations of the specified object.
-=====================================================
+5.1 global - print locations of given symbols
+=============================================
 
 NAME
 ----
 
-global - print locations of the specified object.
+global - print locations of given symbols
 
 SYNOPSIS
 --------
@@ -1718,44 +1718,43 @@ SYNOPSIS
 DESCRIPTION
 -----------
 
-Global finds locations of the specified object in C, C++, Yacc, Java,
-PHP and Assembly source files, and print the path name, line number and
-line image of the locations.  Global can locate not only object
-definitions but also object references and other symbols.
+Global finds locations of given symbols in C, C++, Yacc, Java, PHP and
+Assembly source files, and print path name, line number and line image
+for each of them.  Global can locate not only definitions but also
+references and other symbols.
 
    Global can treat a source tree, that is, a directory that has
 sub-directories and source files, as a project.  In advance of using
-this command, you must execute gtags(1) at the root directory of a
-project to make tag files.  Then you can execute this command anywhere
-in the project.  You need not specify where the tag file is.  Instead,
-global locates it by itself.
+this command, you must execute gtags(1) at the root directory of the
+project which you want to investigate to make tag files.  Then you can
+use global command anywhere in the project.  You need not specify where
+the tag file is.  Instead, global locates it by itself.
 
-   You can specify a regular expression for the pattern.  Global
-understands two different versions of regular expression syntax: basic
-and extended. The default is extended.
+   You can use regular expression for pattern.  Global understands two
+different versions of regular expression syntax: basic and extended.
+The default is extended.
 
 COMMANDS
 --------
 
 The following commands are available:
 <no command> pattern
-     Print objects which match to the pattern.  By default, print
-     object definitions.
+     Print tags of symbols which match to the pattern.  By default,
+     print definition tags.
 
 `-c', `--completion' [prefix]
-     Print object names which start with the specified prefix.  If
-     prefix is not specified, print all object names.
+     Print symbols which start with the prefix.  If prefix is not
+     given, print all symbols.
 
 `-f', `--file' files
-     Print all objects in the files.  This option implies the `-x'
-     option.
+     Print all tags in the files.  This option implies the `-x' option.
 
 `-g', `--grep' pattern [files]
-     Print all lines which match to the pattern.  If files is
-     specified, this command searches in the files.
+     Print all lines which match to the pattern.  If files are given,
+     this command searches in the files.
 
 `--help'
-     Show help.
+     Print a usage message.
 
 `-I', `--idutils' pattern
      Print all lines which match to the pattern.  This function use
@@ -1764,11 +1763,11 @@ The following commands are available:
      `-I' option.
 
 `-P', `--path' [pattern]
-     Print path names which match to the pattern.  If no pattern
-     specified, print all path names in the project.
+     Print path names which match to the pattern.  If no pattern is
+     given, print all paths in the project.
 
 `-p', `--print-dbpath'
-     Print the location of `GTAGS'.
+     Print location of `GTAGS'.
 
 `-u', `--update'
      Update tag files incrementally.  This command internally invokes
@@ -1786,7 +1785,7 @@ The following options are available:
      Print absolute path name. By default, print relative path name.
 
 `-d', `--definition'
-     Print locations of object definitions.
+     Print locations of definitions.
 
 `--from-here' context
      Decide tag type by the context. The context must be 'lineno:path'.
@@ -1812,7 +1811,7 @@ The following options are available:
      Ignore case distinctions in the pattern.
 
 `-l', `--local'
-     Print only objects which exist under the current directory.
+     Print only tags which exist under the current directory.
 
 `-L', `--file-list' file-list
      Obtain files from file-list in addition to the arguments.
@@ -1822,20 +1821,21 @@ The following options are available:
      option is only valid when the `-g' command is specified.
 
 `--match-part part'
-     Specify the matched part of path name.  This option is valid only
-     with the `-c' command with the `-P' option.  The default is all.
+     Specify the matched part of path name.  Possible values are as
+     follows: first, last, all. The default is all.  This option is
+     valid only with the `-c' command with the `-P' option.
 
 `-n', `--nofilter'
      Suppress sort filter and path conversion filter.
 
 `-O', `--only-other'
-     Treat only text files other than source code like `README'.  This
-     option is valid only with the `-g' or `-P' command.  This option
+     Treat only text files: `README', `ChangeLog', or etc.  This option
+     is valid only with the `-g' or `-P' command.  This option
      overrides the `-o' option.
 
 `-o', `--other'
-     Treat not only source files but also text files other than source
-     code like `README'.  This option is valid only with the `-g' or
+     Treat not only source files but also text files: `README',
+     `ChangeLog', or etc.  This option is valid only with the `-g' or
      `-P' command.
 
 `--path-style' format
@@ -1851,8 +1851,9 @@ The following options are available:
      Quiet mode.
 
 `-r', `--reference', `--rootdir'
-     Print locations of object references.  With the `-p' option, print
-     the root directory of the project.
+     Print reference tags.  Reference means the reference to a symbol
+     which has definitions.  With the `-p' option, print the root
+     directory of the project.
 
 `--result' format
      Print out using the specified format.  format may be path, ctags,
@@ -1868,7 +1869,8 @@ The following options are available:
      implies the `-u' option.
 
 `-s', `--symbol'
-     Print locations of the specified symbol other than definitions.
+     Print other symbol tags.  Other symbol means the reference to a
+     symbol which has no definition.
 
 `-T', `--through'
      Go through all the tag files listed in GTAGSLIBPATH.  By default,
@@ -1894,8 +1896,12 @@ EXAMPLES
      	$ ls -F
      	Makefile      src/    lib/
      	$ gtags
+     	$ ls G*
+     	GPATH   GRTAGS  GTAGS
      	$ global main
      	src/main.c
+     	$ (cd src; global main)
+     	main.c
      	$ global -x main
      	main              10 src/main.c  main (argc, argv) {
      	$ global -f src/main.c
@@ -1906,8 +1912,7 @@ EXAMPLES
      	$ global -x '^[sg]et'
      	set_num           20 lib/util.c  set_num(values) {
      	get_num           30 lib/util.c  get_num() {
-     	$ global -rx '^[sg]et'
-     	get_num          205 src/op.c            while (get_num() > 0) {
+     	$ global -rx set_num
      	set_num          113 src/op.c            set_num(32);
      	set_num          225 src/opop.c               if (set_num(0) > 0) {
      	$ global strlen
@@ -1924,13 +1929,13 @@ FILES
 -----
 
 `GTAGS'
-     Tag file for object definitions.
+     Tag file for definitions.
 
 `GRTAGS'
-     Tag file for object references.
+     Tag file for references.
 
 `GPATH'
-     Tag file for path of source files.
+     Tag file for source files.
 
 `GTAGSROOT'
      If environment variable GTAGSROOT is not set and file `GTAGSROOT'
@@ -1953,7 +1958,7 @@ GTAGSDBPATH
 
 GTAGSLIBPATH
      If this variable is set, it is used as the path to search for
-     library functions. If the specified object is not found in the
+     library functions. If the given symbol is not found in the
      project, global also search in these paths.  Since only `GTAGS' is
      targeted in the retrieval, this variable is ignored when the `-r'
      or `-s' is specified.
@@ -2026,8 +2031,8 @@ DESCRIPTION
 Gtags is used to create tag files for global(1).
 
    Gtags recursively collects source files under the current directory,
-pickup symbols and write the cross-reference data into the tag files
-(`GTAGS', `GRTAGS' and `GPATH').
+pickup symbols and write cross-reference data into tag files (`GTAGS',
+`GRTAGS' and `GPATH').
 
    If `gtags.files' exists or the `-f' option is specified, target
 files are limited by it. Lines starting with ". " are comments.
@@ -2040,27 +2045,28 @@ files.  Files whose names end in `.java' are assumed to be Java source
 files.  Files whose names end in `.c++', `.cc', `.hh', `.cpp', `.cxx',
 `.hxx', `.hpp', `.C', `.H' are assumed to be C++ source files.  Files
 whose names end in `.php', `.php3', `.phtml' are assumed to be PHP
-source files.  Other files are assumed to be text files.
+source files.  Other files are assumed to be text files. Gtags does not
+treat binary files.
 
 OPTIONS
 -------
 
 The following options are available:
 `--accept-dotfiles'
-     Accept dot files and dot directories. By default, gtags ignore
+     Accept dot files and dot directories. By default, gtags ignores
      them.
 
 `-c', `--compact'
      Make GTAGS in compact format.  This option does not influence
-     GRTAGS, because they are always made in compact format.
+     GRTAGS, because it is always made in compact format.
 
 `--config'[=name]
      Print the value of config variable name.  If name is not specified
      then print all names and values.
 
 `-d', `--dump' tag-file
-     Dump a tag file. The output format is 'key<tab>data'.  This is for
-     debugging.
+     Dump a tag file as text to the standard output. Output format is
+     'key<tab>data'.  This is for debugging.
 
 `-f', `--file' file
      Browse through all source files whose names are listed in file.
@@ -2068,13 +2074,13 @@ The following options are available:
      from the standard input.  File names must be separated by newline.
 
 `--gtagsconf' file
-     Set the GTAGSCONF environment variable to file.
+     Set environment variable GTAGSCONF to file.
 
 `--gtagslabel' label
-     Set the GTAGSLABEL environment variable to label.
+     Set environment variable GTAGSLABEL to label.
 
 `-I', `--idutils'
-     Also make the ID database file for idutils(1).
+     In addition to tag files, make ID database for idutils(1).
 
 `-i', `--incremental'
      Update tag files incrementally. You had better use global(1) with
@@ -2087,9 +2093,9 @@ The following options are available:
      files in it.  If dbpath is specified, this option is ignored.
 
 `--single-update' file
-     Update tag files for single file.  It is considered that file was
-     added or updated, and there is no change in other files.  This
-     option implies the -i option.
+     Update tag files for single file by optimized method.  It is
+     considered that file was added or updated, and there is no change
+     in other files.  This option implies the -i option.
 
 `--statistics'
      Print statistics information.
@@ -2120,16 +2126,16 @@ FILES
 -----
 
 `GTAGS'
-     Tag file for object definitions.
+     Tag file for definitions.
 
 `GRTAGS'
-     Tag file for object references.
+     Tag file for references.
 
 `GPATH'
-     Tag file for path names.
+     Tag file for source files.
 
 `$HOME/.globalrc', `/etc/gtags.conf', `[sysconfdir]/gtags.conf'
-     Configuration files.
+     Configuration file.
 
 `gtags.files'
      The list of candidates of target files.
@@ -2176,7 +2182,7 @@ option.
      'c:.c.h,yacc:.y,asm:.s.S,java:.java,cpp:.c++.cc.hh.cpp.cxx.hxx.hpp.C.H,php:.php.php3.phtml'.
 
 `gtags_parser'(comma separated list)
-     Specify the mapping of language names and plugin parsers.  Each
+     Specify the mapping of language names and plug-in parsers.  Each
      part delimited by the comma consists of the language name, a colon,
      the shared object path, an optional colon followed by a function
      name.  If the function name is not specified, 'parser' is assumed.
@@ -2257,22 +2263,21 @@ option is not specified, you can move it anywhere and browse it by any
 browser without any HTTP server.
 
    This command has so many options.  If you are new on htags, it is
-recommended to use the `--suggest' option.  With that option, htags
-chooses popular options on behalf of you.
+recommended to use `--suggest' option.  With the option, htags chooses
+popular options on behalf of you.
 
 OPTIONS
 -------
 
 The following options are available:
 `-a', `--alphabet'
-     Make an alphabetical object index which is suitable for large
-     projects.
+     Make an alphabetical index suitable for a large project.
 
 `--auto-completion'[=limit]
      Enable auto completion facility for the input form.  If limit is
-     specified, the number of candidates is limited to the value.
-     Please note that this function requires javascript language in
-     your browser.
+     specified, number of candidates is limited to the value.  Please
+     note that this function requires javascript language in your
+     browser.
 
 `--caution'
      Display a caution message on the top page.
@@ -2280,18 +2285,18 @@ The following options are available:
 `--cflow' cflowfile
      Add a call tree by cflow(1). cflowfile must be posix format.  If
      you use GNU cflow, invoke the command at the project root directory
-     with the `--format=posix' option.  This option is deprecated.
-     Please use the `--call-tree' or `--callee-tree' instead.
+     with `--format=posix' option.  This option is deprecated. Please
+     use the `--call-tree' or `--callee-tree' instead.
 
 `--call-tree' callfile
      Add a call tree by cflow(1). callfile must be posix format.  If
      you use GNU cflow, invoke the command at the project root directory
-     with the `--format=posix' option.
+     with `--format=posix' option.
 
 `--callee-tree' calleefile
      Add a callee tree by cflow(1). calleefile must be posix format.
      If you use GNU cflow, invoke the command at the project root
-     directory with the `--format=posix' and `--reverse' option.
+     directory with `--format=posix' and `--reverse' option.
 
 `-c', `--compact'
      Compress html files by gzip(1).  You need to configure HTTP server
@@ -2300,20 +2305,20 @@ The following options are available:
 
 `--cvsweb' url
      Add a link to cvsweb. url is used as the base of URL.  When
-     directory `CVS' exists in the root directory of the source project,
-     the content of `CVS/Repository' is used as the relative path from
-     the base.
+     directory `CVS' exists in the root directory of the project, the
+     content of `CVS/Repository' is used as the relative path from the
+     base.
 
 `--cvsweb-cvsroot' cvsroot
      Specify cvsroot in cvsweb URL.
 
 `-D', `--dynamic'
-     Generate object lists dynamically using CGI program.  Though this
-     option decrease both the size and generation time of hypertext,
-     you need to start up HTTP server.
+     Generate a tag list dynamically using CGI program.  This option
+     decrease both the size and generation time of the hypertext.  You
+     need to start a HTTP server for it.
 
 `-d', `--dbpath' dbpath
-     Specify a directory in which `GTAGS' exist.  The default is the
+     Specify a directory in which `GTAGS' exists.  The default is the
      current directory.
 
 `--disable-grep'
@@ -2326,11 +2331,11 @@ The following options are available:
      Use frames for the top page.
 
 `-f', `--form'
-     Add a search form using CGI program.  You need to start up HTTP
+     Add a search form using CGI program.  You need to start a HTTP
      server for it.
 
 `--fixed-guide'
-     Put a fixed guide at the bottom of the source code.
+     Put a fixed guide at the bottom of the screen of the browser.
 
 `--full-path'
      Use full path name in the file index.  By default, use just the
@@ -2341,28 +2346,31 @@ The following options are available:
      options are passed to gtags.
 
 `--gtagsconf' file
-     Set the GTAGSCONF environment variable to file.
+     Set environment variable GTAGSCONF to file.
 
 `--gtagslabel' label
-     Set the GTAGSLABEL environment variable to label.
+     Set environment variable GTAGSLABEL to label.
 
 `-h', `--func-header'[=position]
-     Insert function header for each function.  By default, htags
-     doesn't generate it.  You can specify the position using position
-     argument, which allows one of before, right and after.  The
-     default position is after.
+     Insert a function header for each function.  By default, htags
+     doesn't generate them.  You can specify the position using
+     position argument, which allows one of before, right and after.
+     The default position is after.
 
 `--html-header' file
-     Insert header records derived from file into the HTML header.
+     Insert a header record derived from file into the HTML header of
+     each file.
 
 `-I', `--icon'
      Use icons instead of text for some links.
 
 `--insert-footer' file
-     Insert custom footer derived from file before </body> tag.
+     Insert a custom footer derived from file before </body> tag of
+     each file.
 
 `--insert-header' file
-     Insert custom header derived from file after <body> tag.
+     Insert a custom header derived from file after <body> tag of each
+     file.
 
 `--item-order' spec
      Specify the order of the items in the top page.  The spec is a
@@ -2371,46 +2379,48 @@ The following options are available:
      files; t: call tree.  The default is csmdf.
 
 `-m', `--main-func' name
-     Specify startup function name. The default is main.
+     Specify start-up function name. The default is main.
 
 `-n', `--line-number'[=columns]
      Print line numbers. By default, doesn't print line numbers.  The
      default value of columns is 4.
 
 `--map-file'
-     Generate files `MAP'.
+     Generate `MAP' file.
 
 `-o', `--other'
-     Pick up not only source files but also other files in the file
+     Pick up not only source files but also other files for the file
      index.
 
 `--overwrite-key'
-     Allow the same key as the parameter of the `--system-cgi' option.
+     Allow overwrite of an existing key with the `--system-cgi' option.
 
 `--system-cgi' key
-     Use the system CGI script. The key must be a unique key in your
-     site.  At the first time, you should (1) copy the CGI script
-     written by this command into the system CGI directory, and (2)
-     execute bless.sh script at the HTML directory as a root user.
+     Use system CGI script. The key must be unique in the site.  At the
+     first time, you should (1) copy the CGI script written by this
+     command into a system CGI directory, and (2) execute bless.sh
+     script in the HTML directory.  Please see `bless.sh' for details.
 
 `-s', `--symbol'
-     Make anchors not only for object definitions and references but
-     also other symbols.
+     Make anchors not only for definitions and references but also
+     other symbols.
 
 `--show-position'
-     Show position per function definition. The default is false.
+     Print the position string per function definition. The string can
+     be interpreted by general editors in UNIX. The default is false.
 
 `--statistics'
      Print statistics information.
 
 `--suggest'
      Htags chooses popular options on behalf of beginners.  It is
-     equivalent to '-aghInosTxv -show-position -fixed-guide' now.
+     equivalent to '-aghInosTv -show-position -fixed-guide' now.
 
 `--suggest2'
      Htags chooses popular options on behalf of beginners.  This option
      enables frame, AJAX and CGI facility in addition to the facilities
-     by the `--suggest' option.
+     by the `--suggest' option.  It is equivalent to '-suggest -DfF
+     -auto-completion -tree-view=filetree' now.
 
 `-T', `--table-flist'[=rows]
      Use <table> tag to display the file index.  You can optionally
@@ -2425,7 +2435,10 @@ The following options are available:
 
 `--tree-view'[=type]
      Use treeview for the file index.  Please note that this function
-     requires javascript language in your browser.
+     requires javascript language in your browser.  Possible values of
+     type are as follows: treeview, filetree, treeview-red,
+     treeview-black, treeview-gray, treeview-famfamfam. The default is
+     treeview.
 
 `-v', `--verbose'
      Verbose mode.
@@ -2457,19 +2470,19 @@ FILES
 -----
 
 `GTAGS'
-     Tag file for object definitions.
+     Tag file for definitions.
 
 `GRTAGS'
-     Tag file for object references.
+     Tag file for references.
 
 `GPATH'
-     Tag file for files.
+     Tag file for source files.
 
 `$HOME/.globalrc', `/etc/gtags.conf', `[sysconfdir]/gtags.conf'
      Configuration files.
 
 `HTML/index.html'
-     Startup file.
+     Start-up file.
 
 `HTML/MAP'
      Mapping file for converting tag name into the path of tag list.
@@ -2489,6 +2502,11 @@ FILES
      If this file exists, CGI program `global.cgi' sets environment
      variable GTAGSROOT to the contents of it.  If you move directory
      `HTML' from the original place, please make this file.
+
+`/usr/local/var/gtags/sitekeys'
+     Site key database directory used for the `--system-cgi'.  Though
+     its mode is set as 755 by default, it is left to the system
+     administrator.
 
 ENVIRONMENT
 -----------
@@ -2519,8 +2537,8 @@ ignored.  Instead, you can customize the appearance using style sheet
 file (`style.css').
 `datadir'(string)
      Shared data directory. The default is '/usr/local/share' but you
-     can change the value using configure script.  Htags look up
-     template files in the 'gtags' directory in this data directory.
+     can change the value using configure script.  Htags looks up
+     template files there.
 
 `gzipped_suffix'(string)
      Suffix for compressed html file. The default is 'ghtml'.
@@ -2641,7 +2659,7 @@ The following options are available:
      Show help.
 
 `-p'
-     Print just a generated URL instead of displaying it.
+     Print just a generated URL instead of the contents.
 
 file
      File name or alias name.
@@ -2662,10 +2680,10 @@ FILES
      Hypertext of source code.
 
 `GTAGS/'
-     Tag file for object definitions.
+     Tag file for definitions.
 
 `$HOME/.gozillarc'
-     Alias file. Please read source code for the detail.
+     Alias file. Not yet documented.
 
 ENVIRONMENT
 -----------
@@ -3088,13 +3106,13 @@ FILES
 -----
 
 `GTAGS'
-     Tag file for object definitions.
+     Tag file for definitions.
 
 `GRTAGS'
-     Tag file for object references.
+     Tag file for references.
 
 `GPATH'
-     Tag file for path of source files.
+     Tag file for source files.
 
 `GTAGSROOT'
      If environment variable GTAGSROOT is not set and file `GTAGSROOT'
@@ -3154,25 +3172,25 @@ DESCRIPTION
 -----------
 
 Globash is a special shell for GLOBAL using GNU bash.  You can use a
-lot of function to ease reading source code like tag stack, tag mark
+lot of functions to ease reading source code like tag stack, tag mark
 and cookie.  At first, you should make tag files using gtags and invoke
 this command in the project.  Please refer to the help (type
-'ghelp'<ENTER>) about a detailed usage.
+'ghelp'<ENTER>) for details.
 
 FILES
 -----
 
 `GTAGS'
-     Tag file for object definitions.
+     Tag file for definitions.
 
 `GRTAGS'
-     Tag file for object references.
+     Tag file for references.
 
 `GPATH'
-     Tag file for path of source files.
+     Tag file for source files.
 
 `~/.globashrc'
-     The personal initialization file, executed for globash.
+     Start-up file.
 
 ENVIRONMENT
 -----------
@@ -3946,17 +3964,17 @@ Node: Configuration49696
 Node: Plug-in50396
 Node: Incremental updating50745
 Node: Reference51930
-Node: global52509
-Node: gtags61867
-Node: htags68207
-Node: gozilla78918
-Node: gtags-cscope81628
-Node: globash92816
-Node: Copying This Manual94045
-Node: GNU Free Documentation License94291
-Node: Business Model116701
-Node: The BOKIN Model Definition116996
-Node: Frequently Asked Questions121194
-Node: Index124607
+Node: global52501
+Node: gtags61913
+Node: htags68317
+Node: gozilla79515
+Node: gtags-cscope82197
+Node: globash93363
+Node: Copying This Manual94519
+Node: GNU Free Documentation License94765
+Node: Business Model117175
+Node: The BOKIN Model Definition117470
+Node: Frequently Asked Questions121668
+Node: Index125081
 
 End Tag Table

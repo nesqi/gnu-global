@@ -12,7 +12,7 @@ const char *help_const = "Options:\n\
 --help\n\
        Show help.\n\
 -p\n\
-       Print just a generated URL instead of displaying it.\n\
+       Print just a generated URL instead of the contents.\n\
 file\n\
        File name or alias name.\n\
 -q, --quiet\n\
