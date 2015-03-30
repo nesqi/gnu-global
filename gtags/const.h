@@ -40,6 +40,10 @@ const char *help_const = "Options:\n\
        It is considered that file was added or updated,\n\
        and there is no change in other files.\n\
        This option implies the -i option.\n\
+--sqlite3\n\
+       Use Sqlite 3 API to make tag files. By default, BSD/DB 1.85 API is used.\n\
+       To use this option, you need to invoke configure script with\n\
+       --with-sqlite3 in the build phase.\n\
 --statistics\n\
        Print statistics information.\n\
 -q, --quiet\n\

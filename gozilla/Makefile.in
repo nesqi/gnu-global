@@ -353,7 +353,7 @@ man_MANS = gozilla.1
 EXTRA_DIST = $(man_MANS) const.h manual.in
 
 # for osx-default
-gtagsdir = ${localstatedir}/gtags
+gtagsdir = $(DESTDIR)${localstatedir}/gtags
 all: all-am
 
 .SUFFIXES:
