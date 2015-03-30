@@ -15,6 +15,8 @@ const char *help_const = "Options:\n\
 -d, --dump tag-file\n\
        Dump a tag file as text to the standard output. Output format is 'key<tab>data'.\n\
        This is for debugging.\n\
+--explain\n\
+       Explain handling files.\n\
 -f, --file file\n\
        Browse through all files whose names are listed in file.\n\
        The argument file can be set to - to accept a list of\n\
@@ -37,7 +39,7 @@ const char *help_const = "Options:\n\
        If dbpath is specified, this option is ignored.\n\
 --single-update file\n\
        Update tag files for a single file.\n\
-       It is considered that file was added or updated,\n\
+       It is considered that file was added, updated or deleted,\n\
        and there is no change in other files.\n\
        This option implies the -i option.\n\
 --sqlite3\n\

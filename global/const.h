@@ -124,7 +124,7 @@ Options:\n\
        The --result option is given more priority than the -t and -x options.\n\
 --single-update file\n\
        Update tag files using gtags(1) with the --single-update option.\n\
-       It is considered that file was added or updated,\n\
+       It is considered that file was added, updated or deleted,\n\
        and there is no change in other files.\n\
        This option implies the -u option.\n\
 -s, --symbol\n\

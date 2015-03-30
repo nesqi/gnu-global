@@ -284,7 +284,6 @@ RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
-SITEKEYS_MODE = @SITEKEYS_MODE@
 STRIP = @STRIP@
 VERSION = @VERSION@
 abs_builddir = @abs_builddir@
@@ -734,8 +733,10 @@ uninstall-man: uninstall-man1
 	uninstall-man1
 
 install-data-hook:
-	mkdir -p ${gtagsdir}
-	chmod 777 ${gtagsdir}
+	if [ ! -d $(gtagsdir) ]; then \
+		$(MKDIR_P) $(gtagsdir); \
+		chmod 777 $(gtagsdir); \
+	fi
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

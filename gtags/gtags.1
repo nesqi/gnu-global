@@ -1,5 +1,5 @@
 .\" This file is generated automatically by convert.pl from gtags/manual.in.
-.TH GTAGS 1 "June 2013" "GNU Project"
+.TH GTAGS 1 "February 2015" "GNU Project"
 .SH NAME
 gtags \- create tag files for global.
 .SH SYNOPSIS
@@ -44,6 +44,9 @@ If \fIname\fP is not specified then print all names and values.
 Dump a tag file as text to the standard output. Output format is 'key<tab>data'.
 This is for debugging.
 .TP
+\fB--explain\fP
+Explain handling files.
+.TP
 \fB-f\fP, \fB--file\fP \fIfile\fP
 Browse through all files whose names are listed in \fIfile\fP.
 The argument \fIfile\fP can be set to \'-\' to accept a list of
@@ -72,7 +75,7 @@ If \fIdbpath\fP is specified, this option is ignored.
 .TP
 \fB--single-update\fP \fIfile\fP
 Update tag files for a single file.
-It is considered that \fIfile\fP was added or updated,
+It is considered that \fIfile\fP was added, updated or deleted,
 and there is no change in other files.
 This option implies the \fB-i\fP option.
 .TP
