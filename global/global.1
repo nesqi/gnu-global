@@ -3,17 +3,17 @@
 .SH NAME
 global \- print locations of given symbols
 .SH SYNOPSIS
-\fBglobal\fP [-adGilnqrstTvx][-e] \fIpattern\fP
+\fBglobal\fP [-adGilnqrsStTvx][-e] \fIpattern\fP
 .br
 \fBglobal\fP -c[diIoOPrsT] \fIprefix\fP
 .br
-\fBglobal\fP -f[adlnqrstvx][-L file-list] \fIfiles\fP
+\fBglobal\fP -f[adlnqrsStvx][-L file-list] \fIfiles\fP
 .br
-\fBglobal\fP -g[aGilnoOqtvVx][-L file-list][-e] \fIpattern\fP [\fIfiles\fP]
+\fBglobal\fP -g[aGilnoOqStvVx][-L file-list][-e] \fIpattern\fP [\fIfiles\fP]
 .br
-\fBglobal\fP -I[ailnqtvx][-e] \fIpattern\fP
+\fBglobal\fP -I[ailnqStvx][-e] \fIpattern\fP
 .br
-\fBglobal\fP -P[aGilnoOqtvVx][-e] \fIpattern\fP
+\fBglobal\fP -P[aGilnoOqStvVx][-e] \fIpattern\fP
 .br
 \fBglobal\fP -p[qrv]
 .br
@@ -163,7 +163,7 @@ With the \fB-p\fP option, print the root directory of the project.
 .TP
 \fB--result\fP \fIformat\fP
 Print out using \fIformat\fP, which may be one of:
-\'path\' (deault), \'ctags\', \'ctags-x\', \'grep\' or \'cscope\'.
+\'path\' (default), \'ctags\', \'ctags-x\', \'grep\' or \'cscope\'.
 The \fB--result=ctags\fP and \fB--result=ctags-x\fP options are
 equivalent to the \fB-t\fP and \fB-x\fP options respectively.
 The \fB--result\fP option is given more priority than the \fB-t\fP and \fB-x\fP options.
@@ -177,6 +177,10 @@ This option implies the \fB-u\fP option.
 \fB-s\fP, \fB--symbol\fP
 Print other symbol tags.
 Other symbol means the reference to a symbol which has no definition.
+.TP
+\fB-S\fP, \fB--scope\fP \fIdir\fP
+Print only tags which exist under \fIdir\fP directory.
+It is similar to the \fB-l\fP option, but you need not change directory.
 .TP
 \fB-T\fP, \fB--through\fP
 Go through all the tag files listed in \fBGTAGSLIBPATH\fP.

@@ -45,7 +45,7 @@ Dump a tag file as text to the standard output. Output format is 'key<tab>data'.
 This is for debugging.
 .TP
 \fB-f\fP, \fB--file\fP \fIfile\fP
-Browse through all source files whose names are listed in \fIfile\fP.
+Browse through all files whose names are listed in \fIfile\fP.
 The argument \fIfile\fP can be set to \'-\' to accept a list of
 files from the standard input.
 File names must be separated by newline.
@@ -180,6 +180,7 @@ If the value ends with \'/\', it is assumed as a directory and
 \fBgtags\fP skips all files under it.
 If the value starts with \'/\', it is assumed a relative path
 from the root of source directory.
+The value may include glob patterns (*, ?, [...], [!...], [^...]).
 .SH DIAGNOSTICS
 \fBGtags\fP exits with a non-0 value if an error occurred, 0 otherwise.
 .SH "SEE ALSO"

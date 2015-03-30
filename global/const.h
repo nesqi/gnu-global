@@ -1,11 +1,11 @@
 /* This file is generated automatically by convert.pl from global/manual.in. */
 const char *progname = "global";
-const char *usage_const = "Usage: global [-adGilnqrstTvx][-e] pattern\n\
+const char *usage_const = "Usage: global [-adGilnqrsStTvx][-e] pattern\n\
        global -c[diIoOPrsT] prefix\n\
-       global -f[adlnqrstvx][-L file-list] files\n\
-       global -g[aGilnoOqtvVx][-L file-list][-e] pattern [files]\n\
-       global -I[ailnqtvx][-e] pattern\n\
-       global -P[aGilnoOqtvVx][-e] pattern\n\
+       global -f[adlnqrsStvx][-L file-list] files\n\
+       global -g[aGilnoOqStvVx][-L file-list][-e] pattern [files]\n\
+       global -I[ailnqStvx][-e] pattern\n\
+       global -P[aGilnoOqStvVx][-e] pattern\n\
        global -p[qrv]\n\
        global -u[qv]\n";
 const char *help_const = "Commands:\n\
@@ -46,13 +46,13 @@ Options:\n\
 -d, --definition\n\
        Print locations of definitions.\n\
 -e, --regexp pattern\n\
-       Use pattern as the pattern; useful to protect patterns starting with @samp{-}.\n\
+       Use pattern as the pattern; useful to protect patterns starting with -.\n\
 --encode-path chars\n\
-       Convert path characters in chars into a @samp{%} symbol, followed by the\n\
+       Convert path characters in chars into a % symbol, followed by the\n\
        two-digit hexadecimal representation of the character.\n\
-       A blank will be converted to @samp{%20}.\n\
+       A blank will be converted to %20.\n\
 --from-here context\n\
-       Decide tag type by context, which must be @samp{lineno:path}.\n\
+       Decide tag type by context, which must be lineno:path.\n\
        If this option is specified then -s and -r are ignored.\n\
        Regular expression is not allowed for pattern.\n\
        This option assumes use in conversational environments such as\n\
@@ -73,7 +73,7 @@ Options:\n\
        This option is only valid when the -g command is specified.\n\
 --match-part part\n\
        Specify how path name completion should match, where part is one of:\n\
-       @val{first}, @val{last} or @val{all} (default).\n\
+       first, last or all (default).\n\
        This option is valid only with the -c command in conjunction with -P.\n\
        \n\
 -n, --nofilter\n\
@@ -88,7 +88,7 @@ Options:\n\
        This option is valid only with the -g or -P command.\n\
 --path-style format\n\
        Print path names using format, which may be one of:\n\
-       @val{relative}, @val{absolute}, @val{shorter}, @val{abslib} or @val{through}.\n\
+       relative, absolute, shorter, abslib or through.\n\
        The --path-style option is given more priority than the -a option.\n\
 --print0\n\
        Print each record followed by a null character instead of a newline.\n\
@@ -100,7 +100,7 @@ Options:\n\
        With the -p option, print the root directory of the project.\n\
 --result format\n\
        Print out using format, which may be one of:\n\
-       @val{path} (deault), @val{ctags}, @val{ctags-x}, @val{grep} or @val{cscope}.\n\
+       path (default), ctags, ctags-x, grep or cscope.\n\
        The --result=ctags and --result=ctags-x options are\n\
        equivalent to the -t and -x options respectively.\n\
        The --result option is given more priority than the -t and -x options.\n\
@@ -112,6 +112,9 @@ Options:\n\
 -s, --symbol\n\
        Print other symbol tags.\n\
        Other symbol means the reference to a symbol which has no definition.\n\
+-S, --scope dir\n\
+       Print only tags which exist under dir directory.\n\
+       It is similar to the -l option, but you need not change directory.\n\
 -T, --through\n\
        Go through all the tag files listed in GTAGSLIBPATH.\n\
        By default, stop searching when tag is found.\n\

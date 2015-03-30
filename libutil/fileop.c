@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2013
+ * Copyright (c) 2006, 2013, 2014
  *	Tama Communications Corporation
  *
  * This file is part of GNU GLOBAL.
@@ -45,8 +45,13 @@
 #include "die.h"
 #include "fileop.h"
 #include "makepath.h"
+#include "strbuf.h"
 #include "strlimcpy.h"
 #include "test.h"
+
+#if defined(_WIN32) && !defined(__CYGWIN__)
+#define mkdir(path,mode) mkdir(path)
+#endif
 
 /**
  @file
@@ -115,7 +120,7 @@ open_output_file(const char *path, int compress)
 		snprintf(command, sizeof(command), "gzip -c >\"%s\"", path);
 		fp = popen(command, "w");
 		if (fp == NULL)
-			die("cannot create pipe.");
+			die("cannot execute '%s'.", command);
 	} else {
 		fp = fopen(path, "w");
 		if (fp == NULL)
@@ -245,4 +250,23 @@ copydirectory(const char *srcdir, const char *distdir)
 		}
 	}
 	(void)closedir(dirp);
+}
+/**
+ * read the first line of command's output
+ *
+ *	@param[in]	com	command line
+ *	@param[in]	sb	string buffer
+ *	@return			0: normal, -1: error
+ */
+int
+read_first_line(const char *com, STRBUF *sb)
+{
+	FILE *ip = popen(com, "r");
+	char *p;
+
+	if (ip == NULL)
+		return -1;
+	p = strbuf_fgets(sb, ip, STRBUF_NOCRLF);
+	pclose(ip);
+	return (p == NULL) ? -1 : 0;
 }

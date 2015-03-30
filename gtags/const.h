@@ -16,8 +16,8 @@ const char *help_const = "Options:\n\
        Dump a tag file as text to the standard output. Output format is 'key<tab>data'.\n\
        This is for debugging.\n\
 -f, --file file\n\
-       Browse through all source files whose names are listed in file.\n\
-       The argument file can be set to @val{-} to accept a list of\n\
+       Browse through all files whose names are listed in file.\n\
+       The argument file can be set to - to accept a list of\n\
        files from the standard input.\n\
        File names must be separated by newline.\n\
 --gtagsconf file\n\

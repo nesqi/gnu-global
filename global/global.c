@@ -24,10 +24,9 @@
 #endif
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <errno.h>
-
 #include <ctype.h>
 #include <stdio.h>
+#include <errno.h>
 #ifdef STDC_HEADERS
 #include <stdlib.h>
 #endif
@@ -80,7 +79,6 @@ int gflag;				/* command		*/
 int Gflag;				/* [option]		*/
 int iflag;				/* [option]		*/
 int Iflag;				/* command		*/
-int lflag;				/* [option]		*/
 int Lflag;				/* [option]		*/
 int nflag;				/* [option]		*/
 int oflag;				/* [option]		*/
@@ -90,6 +88,7 @@ int Pflag;				/* command		*/
 int qflag;				/* [option]		*/
 int rflag;				/* [option]		*/
 int sflag;				/* [option]		*/
+int Sflag;				/* [option]		*/
 int tflag;				/* [option]		*/
 int Tflag;				/* [option]		*/
 int uflag;				/* command		*/
@@ -113,6 +112,7 @@ const char *dbpath;			/**< dbpath directory	*/
 char *context_file;
 char *context_lineno;
 char *file_list;
+char *scope;
 char *encode_chars;
 char *single_update;
 char *path_style;
@@ -166,6 +166,7 @@ static struct option const long_options[] = {
 	{"reference", no_argument, NULL, 'r'},
 	{"rootdir", no_argument, NULL, 'r'},
 	{"symbol", no_argument, NULL, 's'},
+	{"scope", required_argument, NULL, 'S'},
 	{"tags", no_argument, NULL, 't'},
 	{"through", no_argument, NULL, 'T'},
 	{"update", no_argument, NULL, 'u'},
@@ -340,7 +341,7 @@ main(int argc, char **argv)
 	int option_index = 0;
 
 	logging_arguments(argc, argv);
-	while ((optchar = getopt_long(argc, argv, "acde:ifgGIlL:noOpPqrstTuvVx", long_options, &option_index)) != EOF) {
+	while ((optchar = getopt_long(argc, argv, "acde:ifgGIlL:noOpPqrsS:tTuvVx", long_options, &option_index)) != EOF) {
 		switch (optchar) {
 		case 0:
 			break;
@@ -377,7 +378,8 @@ main(int argc, char **argv)
 			setcom(optchar);
 			break;
 		case 'l':
-			lflag++;
+			Sflag++;
+			scope = ".";
 			break;
 		case 'L':
 			file_list = optarg;
@@ -416,6 +418,10 @@ main(int argc, char **argv)
 			break;
 		case 's':
 			sflag++;
+			break;
+		case 'S':
+			Sflag++;
+			scope = optarg;
 			break;
 		case 't':
 			tflag++;
@@ -642,6 +648,13 @@ main(int argc, char **argv)
 			die("gtags command not found.");
 		if (chdir(root) < 0)
 			die("cannot change directory to '%s'.", root);
+#if defined(_WIN32) && !defined(__CYGWIN__)
+		/*
+		 * Get around CMD.EXE's weird quoting rules by sticking another
+		 * perceived whitespace in front (also works with Take Command).
+		 */
+		strbuf_putc(sb, ';');
+#endif
 		strbuf_puts(sb, quote_shell(gtags_path));
 		strbuf_puts(sb, " -i");
 		if (vflag)
@@ -654,8 +667,7 @@ main(int argc, char **argv)
 					die("rel2abs failed.");
 				single_update = regular_path_name;
 			}
-			strbuf_puts(sb, " --single-update");
-			strbuf_putc(sb, ' ');
+			strbuf_puts(sb, " --single-update ");
 			strbuf_puts(sb, quote_shell(single_update));
 		}
 		strbuf_putc(sb, ' ');
@@ -696,12 +708,29 @@ main(int argc, char **argv)
 	 * make local prefix.
 	 * local prefix must starts with './' and ends with '/'.
 	 */
-	if (lflag) {
+	if (Sflag) {
 		STRBUF *sb = strbuf_open(0);
-
+		static char buf[MAXPATHLEN];
+		const char *path = scope;
+	
+		/*
+		 * normalize the path of scope directory.
+		 */
+		if (!test("d", path))
+			die("'%s' not found or not a directory.", scope);
+		if (!isabspath(path))
+			path = makepath(cwd, path, NULL);
+		if (realpath(path, buf) == NULL)
+			die("cannot get real path of '%s'.", scope);
+		if (!in_the_project(buf))
+			die("'%s' is out of the source project.", scope);
+		scope = buf;
+		/*
+		 * make local prefix.
+		 */
 		strbuf_putc(sb, '.');
-		if (strcmp(root, cwd) != 0) {
-			const char *p = cwd + strlen(root);
+		if (strcmp(root, scope) != 0) {
+			const char *p = scope + strlen(root);
 			if (*p != '/')
 				strbuf_putc(sb, '/');
 			strbuf_puts(sb, p);
@@ -722,7 +751,7 @@ main(int argc, char **argv)
 		static char buf[MAXPATHLEN];
 
 		if (realpath(file_list, buf) == NULL)
-			die("cannot get real path name.");
+			die("'%s' not found.", file_list);
 		file_list = buf;
 	}
 	/*
@@ -834,7 +863,7 @@ completion(const char *dbpath, const char *root, const char *prefix, int db)
 	/*
 	 * search in library path.
 	 */
-	if (db == GTAGS && getenv("GTAGSLIBPATH") && (count == 0 || Tflag) && !lflag) {
+	if (db == GTAGS && getenv("GTAGSLIBPATH") && (count == 0 || Tflag) && !Sflag) {
 		STRBUF *sb = strbuf_open(0);
 		char *libdir, *nextp = NULL;
 
@@ -891,11 +920,13 @@ completion_idutils(const char *dbpath, const char *root, const char *prefix)
 	strbuf_puts(sb, " --key=token");
 	if (iflag)
 		strbuf_puts(sb, " --ignore-case");
-	strbuf_putc(sb, ' ');
-	strbuf_putc(sb, '"');
-	strbuf_putc(sb, '^');
-	strbuf_puts(sb, prefix);
-	strbuf_putc(sb, '"');
+	if (prefix) {
+		strbuf_putc(sb, ' ');
+		strbuf_putc(sb, '"');
+		strbuf_putc(sb, '^');
+		strbuf_puts(sb, prefix);
+		strbuf_putc(sb, '"');
+	}
 	if (debug)
 		fprintf(stderr, "completion_idutils: %s\n", strbuf_value(sb));
 	if (chdir(root) < 0)
@@ -912,7 +943,8 @@ completion_idutils(const char *dbpath, const char *root, const char *prefix)
 		*p = '\0';
 		puts(line);
 	}
-	fclose(ip);
+	if (pclose(ip) != 0)
+		die("terminated abnormally (errno = %d).", errno);
 	strbuf_close(sb);
 }
 /**
@@ -1058,8 +1090,10 @@ idutils(const char *pattern, const char *dbpath)
 		strbuf_puts(ib, " --result=grep");
 	if (iflag)
 		strbuf_puts(ib, " --ignore-case");
+	if (isregex(pattern))
+		strbuf_puts(ib, " --regexp");
 	strbuf_putc(ib, ' ');
-	strbuf_puts(ib, quote_string(pattern));
+	strbuf_puts(ib, quote_shell(pattern));
 	if (debug)
 		fprintf(stderr, "idutils: %s\n", strbuf_value(ib));
 	if (!(ip = popen(strbuf_value(ib), "r")))
@@ -1079,7 +1113,7 @@ idutils(const char *pattern, const char *dbpath)
 		if ((xflag || tflag) && !*p)
 			die("invalid lid(idutils) output format(1). '%s'", grep);
 		p++;
-		if (lflag) {
+		if (Sflag) {
 			if (!locatestring(path, localprefix, MATCH_AT_FIRST))
 				continue;
 		}
@@ -1108,7 +1142,7 @@ idutils(const char *pattern, const char *dbpath)
 		}
 	}
 	if (pclose(ip) != 0)
-		die("terminated abnormally.");
+		die("terminated abnormally (errno = %d).", errno);
 	convert_close(cv);
 	strbuf_close(ib);
 	if (vflag) {
@@ -1204,7 +1238,7 @@ grep(const char *pattern, char *const *argv, const char *dbpath)
 			}
 			path = buf;
 		}
-		if (lflag && !locatestring(path, localprefix, MATCH_AT_FIRST))
+		if (Sflag && !locatestring(path, localprefix, MATCH_AT_FIRST))
 			continue;
 		if (literal) {
 			int n = literal_search(cv, path);
@@ -1488,7 +1522,7 @@ parsefile(char *const *argv, const char *cwd, const char *root, const char *dbpa
 			strlimcpy(s_fid, p, sizeof(s_fid));
 			data.fid = s_fid;
 		}
-		if (lflag && !locatestring(path, localprefix, MATCH_AT_FIRST))
+		if (Sflag && !locatestring(path, localprefix, MATCH_AT_FIRST))
 			continue;
 		data.count = 0;
 		parse_file(path, flags, put_syms, &data);
@@ -1547,7 +1581,7 @@ search(const char *pattern, const char *root, const char *cwd, const char *dbpat
 	if (iflag)
 		flags |= GTOP_IGNORECASE;
 	for (gtp = gtags_first(gtop, pattern, flags); gtp; gtp = gtags_next(gtop)) {
-		if (lflag && !locatestring(gtp->path, localprefix, MATCH_AT_FIRST))
+		if (Sflag && !locatestring(gtp->path, localprefix, MATCH_AT_FIRST))
 			continue;
 		count += output_with_formatting(cv, gtp, gtop->format);
 	}
@@ -1597,7 +1631,7 @@ tagsearch(const char *pattern, const char *cwd, const char *root, const char *db
 	 */
 	if (abslib)
 		type = PATH_ABSOLUTE;
-	if (db == GTAGS && getenv("GTAGSLIBPATH") && (count == 0 || Tflag) && !lflag) {
+	if (db == GTAGS && getenv("GTAGSLIBPATH") && (count == 0 || Tflag) && !Sflag) {
 		STRBUF *sb = strbuf_open(0);
 		char *libdir, *nextp = NULL;
 

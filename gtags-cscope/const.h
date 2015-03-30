@@ -19,7 +19,7 @@ const char *help_const = "Options:\n\
 -d\n\
        Do not update the cross-reference.\n\
 -e\n\
-       Suppress the @kbd{^e} command prompt between files.\n\
+       Suppress the ^e command prompt between files.\n\
 -F file\n\
        Read symbol reference lines from file. \n\
        (A symbol reference file is created by > and >>,\n\
@@ -37,7 +37,7 @@ const char *help_const = "Options:\n\
        Go to input field num (counting from 0) and find pattern.\n\
 -p n\n\
        Display the last n file path components instead of\n\
-       the default (1). Use @val{0} to not display the file name at all.\n\
+       the default (1). Use 0 to not display the file name at all.\n\
 -v\n\
        Be more verbose in line-oriented mode.\n\
 See also:\n\

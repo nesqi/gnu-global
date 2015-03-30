@@ -23,7 +23,7 @@ File: global.info,  Node: Top,  Next: Introduction,  Up: (dir)
 GNU GLOBAL source code tag system
 *********************************
 
-This manual documents version 6.2.10 of the GNU GLOBAL source code tag
+This manual documents version 6.2.11 of the GNU GLOBAL source code tag
 system.
 
 * Menu:
@@ -1651,12 +1651,12 @@ global - print locations of given symbols
 SYNOPSIS
 --------
 
-     global [-adGilnqrstTvx][-e] pattern
+     global [-adGilnqrsStTvx][-e] pattern
      global -c[diIoOPrsT] prefix
-     global -f[adlnqrstvx][-L file-list] files
-     global -g[aGilnoOqtvVx][-L file-list][-e] pattern [files]
-     global -I[ailnqtvx][-e] pattern
-     global -P[aGilnoOqtvVx][-e] pattern
+     global -f[adlnqrsStvx][-L file-list] files
+     global -g[aGilnoOqStvVx][-L file-list][-e] pattern [files]
+     global -I[ailnqStvx][-e] pattern
+     global -P[aGilnoOqStvVx][-e] pattern
      global -p[qrv]
      global -u[qv]
 
@@ -1778,7 +1778,7 @@ The following options are available:
      which has definitions.  With the '-p' option, print the root
      directory of the project.
 '--result' format
-     Print out using format, which may be one of: 'path' (deault),
+     Print out using format, which may be one of: 'path' (default),
      'ctags', 'ctags-x', 'grep' or 'cscope'.  The '--result=ctags' and
      '--result=ctags-x' options are equivalent to the '-t' and '-x'
      options respectively.  The '--result' option is given more priority
@@ -1790,6 +1790,9 @@ The following options are available:
 '-s', '--symbol'
      Print other symbol tags.  Other symbol means the reference to a
      symbol which has no definition.
+'-S', '--scope' dir
+     Print only tags which exist under dir directory.  It is similar to
+     the '-l' option, but you need not change directory.
 '-T', '--through'
      Go through all the tag files listed in GTAGSLIBPATH.  By default,
      stop searching when tag is found.  This option is ignored when
@@ -1983,9 +1986,9 @@ The following options are available:
      Dump a tag file as text to the standard output.  Output format is
      'key<tab>data'.  This is for debugging.
 '-f', '--file' file
-     Browse through all source files whose names are listed in file.
-     The argument file can be set to '-' to accept a list of files from
-     the standard input.  File names must be separated by newline.
+     Browse through all files whose names are listed in file.  The
+     argument file can be set to '-' to accept a list of files from the
+     standard input.  File names must be separated by newline.
 '--gtagsconf' file
      Set environment variable GTAGSCONF to file.
 '--gtagslabel' label
@@ -2094,7 +2097,8 @@ option.
      exception, gtags collects values from multiple 'skip' variables.
      If the value ends with '/', it is assumed as a directory and gtags
      skips all files under it.  If the value starts with '/', it is
-     assumed a relative path from the root of source directory.
+     assumed a relative path from the root of source directory.  The
+     value may include glob patterns (*, ?, [...], [!...], [^...]).
 
 DIAGNOSTICS
 -----------
@@ -3514,13 +3518,13 @@ Node: Plug-in50387
 Node: Incremental updating51356
 Node: Reference52540
 Node: global53112
-Node: gtags63033
-Node: htags69724
-Node: gozilla80941
-Node: gtags-cscope83771
-Node: globash95229
-Node: Copying This Manual96390
-Node: GNU Free Documentation License96627
-Node: Index119018
+Node: gtags63188
+Node: htags69946
+Node: gozilla81163
+Node: gtags-cscope83993
+Node: globash95451
+Node: Copying This Manual96612
+Node: GNU Free Documentation License96849
+Node: Index119240
 
 End Tag Table

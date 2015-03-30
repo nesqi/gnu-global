@@ -68,7 +68,7 @@ const char *help_const = "Options:\n\
        Insert a function header for each function.\n\
        By default, htags doesn't generate them.\n\
        You can choose the position using position,\n\
-       which allows one of @val{before}, @val{right} or @val{after} (default).\n\
+       which allows one of before, right or after (default).\n\
 --html-header file\n\
        Insert a header record derived from file into the HTML header of each file.\n\
 -I, --icon\n\
@@ -81,11 +81,11 @@ const char *help_const = "Options:\n\
        Specify the order of the items in the top page.\n\
        The spec is a string consisting of item signs in order.\n\
        Each sign means as follows:\n\
-       @val{c}: caution; @val{s}: search form;\n\
-       @val{m}: mains; @val{d}: definitions; @val{f}: files; @val{t}: call tree.\n\
-       The default is @val{csmdf}.\n\
+       c: caution; s: search form;\n\
+       m: mains; d: definitions; f: files; t: call tree.\n\
+       The default is csmdf.\n\
 -m, --main-func name\n\
-       Specify startup function name; the default is @val{main}.\n\
+       Specify startup function name; the default is main.\n\
 -n, --line-number[=columns]\n\
        Print line numbers. By default, don't print line numbers.\n\
        The default value of columns is 4.\n\
@@ -145,8 +145,8 @@ const char *help_const = "Options:\n\
        Generate XHTML hypertext. This is the default.\n\
        If the --frame option is specified then generate XHTML-1.0\n\
        Frameset for index.html and XHTML-1.0 Transitional\n\
-       for other files; else if version is @val{1.1} or config\n\
-       variable xhtml_version is set to @val{1.1} then generate\n\
+       for other files; else if version is 1.1 or config\n\
+       variable xhtml_version is set to 1.1 then generate\n\
        XHTML-1.1; else generate XHTML-1.0 Transitional.\n\
 dir\n\
        The directory in which the result of this command is stored.\n\
