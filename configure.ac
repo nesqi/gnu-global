@@ -3,7 +3,7 @@ dnl Configuration script for GLOBAL.
 dnl Process this file with autoconf to produce a configure script.
 dnl
 dnl Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2008, 2010,
-dnl	2011
+dnl	2011, 2012
 dnl	Tama Communications Corporation
 dnl
 dnl This file is part of GNU GLOBAL.
@@ -21,7 +21,7 @@ dnl
 dnl You should have received a copy of the GNU General Public License
 dnl along with this program.  If not, see <http://www.gnu.org/licenses/>.
 dnl
-AC_INIT([GNU GLOBAL],[6.2.1])
+AC_INIT([GNU GLOBAL],[6.2.2])
 AC_CONFIG_SRCDIR(global/global.c)
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_PREREQ(2.59)
@@ -114,10 +114,15 @@ AC_CHECK_FUNCS(putc_unlocked getc_unlocked)
 AC_CHECK_FUNCS(gettimeofday getrusage)
 AC_DJGPP
 
+AC_ARG_ENABLE(gtagscscope,
+[  --disable-gtagscscope   omit gtags-cscope],,
+enable_gtagscscope=yes)
+AM_CONDITIONAL([USE_GTAGSCSCOPE], [test "$enable_gtagscscope" != no])
+
 dnl #### begin of gtags-cscope ###
 AC_CHECK_CURSES
 AM_CONDITIONAL(HAS_CURSES, test "$has_curses" = true)
-if test "$has_curses" = false; then
+if test "$has_curses" = false && test "$enable_gtagscscope" = yes; then
 	AC_MSG_ERROR([curses library is required but not found.])
 fi
 
@@ -262,11 +267,6 @@ AC_ARG_WITH(exuberant-ctags,
 		AC_MSG_RESULT([using $EXUBERANT_CTAGS])
 	fi
 ])
-AC_ARG_ENABLE(gtagscscope,
-[  --disable-gtagscscope   omit gtags-cscope],,
-enable_gtagscscope=yes)
-AM_CONDITIONAL([USE_GTAGSCSCOPE], [test "$enable_gtagscscope" != no])
-
 AC_DEFINE_UNQUOTED(EXUBERANT_CTAGS, "$EXUBERANT_CTAGS", [Exuberant Ctags program.])
 AC_SUBST(EXUBERANT_CTAGS)
 
