@@ -23,7 +23,7 @@ File: global.info,  Node: Top,  Next: Introduction,  Up: (dir)
 GNU GLOBAL source code tag system
 *********************************
 
-This manual documents version 6.2.12 of the GNU GLOBAL source code tag
+This manual documents version 6.3 of the GNU GLOBAL source code tag
 system.
 
 * Menu:
@@ -1633,6 +1633,7 @@ File: global.info,  Node: Reference,  Next: Copying This Manual,  Prev: Other to
 * global::         global - print locations of given symbols
 * gtags::          gtags - create tag files for global.
 * htags::          htags - generate a hypertext from a set of source files.
+* htags-server::   htags-server - start a private Web/CGI server for hyper-text
 * gozilla::        gozilla - force mozilla to display specified part of a source file.
 * gtags-cscope::   gtags-cscope - interactively examine a C program.
 * globash::        globash - a special shell for GLOBAL using GNU bash.
@@ -1651,12 +1652,12 @@ global - print locations of given symbols
 SYNOPSIS
 --------
 
-     global [-adGilnqrstTvx][-S dir][-e] pattern
-     global -c[diIoOPrsT] prefix
+     global [-adEFGilMnqrstTvx][-S dir][-e] pattern
+     global -c[dFiIMoOPrsT] prefix
      global -f[adlnqrstvx][-L file-list][-S dir] files
-     global -g[aGilnoOqtvVx][-L file-list][-S dir][-e] pattern [files]
-     global -I[ailnqtvx][-S dir][-e] pattern
-     global -P[aGilnoOqtvVx][-S dir][-e] pattern
+     global -g[aEGilMnoOqtvVx][-L file-list][-S dir][-e] pattern [files]
+     global -I[ailMnqtvx][-S dir][-e] pattern
+     global -P[aEGilMnoOqtvVx][-S dir][-e] pattern
      global -p[qrv]
      global -u[qv]
 
@@ -1724,18 +1725,25 @@ The following options are available:
 '--color' when
      Use color to highlight the pattern within the line; when may be one
      of: never, always or auto (default).  The default color is bold red
-     text on current background; the environment variable GREP_COLOR
-     defines it.  This option is effective to the following commands:
-     <no command>, -f, -g, -I, -P.
+     text on current background; the environment variable GREP_COLORS or
+     GREP_COLOR defines it.  This option is effective to the following
+     commands: <no command>, -f, -g, -I, -P.
 '-d', '--definition'
      Print locations of definitions.
 '-e', '--regexp' pattern
      Use pattern as the pattern; useful to protect patterns starting
      with '-'.
+'-E', '--extended-regexp'
+     Interpret pattern as a extended regular expression.  This is the
+     default.
 '--encode-path' chars
      Convert path characters in chars into a '%' symbol, followed by the
      two-digit hexadecimal representation of the character.  A blank
      will be converted to '%20'.
+'-F', '--first-match'
+     End the search without go through all the tag files listed in
+     GTAGSLIBPATH when tags are found in a tag file.  This is the
+     default.
 '--from-here' context
      Decide tag type by context, which must be 'lineno:path'.  If this
      option is specified then '-s' and '-r' are ignored.  Regular
@@ -1744,6 +1752,10 @@ The following options are available:
 '-G', '--basic-regexp'
      Interpret pattern as a basic regular expression.  The default is an
      extended regular expression.
+'--gtagsconf' file
+     Set environment variable GTAGSCONF to file.
+'--gtagslabel' label
+     Set environment variable GTAGSLABEL to label.
 '-i', '--ignore-case'
      Ignore case distinctions in the pattern.
 '-L', '--file-list' file
@@ -1755,11 +1767,12 @@ The following options are available:
 '--literal'
      Execute literal search instead of regular expression search.  This
      option is only valid when the '-g' command is specified.
+'-M', '--match-case'
+     Search is case-sensitive.  This is the default.
 '--match-part part'
      Specify how path name completion should match, where part is one
      of: 'first', 'last' or 'all' (default).  This option is valid only
      with the '-c' command in conjunction with '-P'.
-
 '-n', '--nofilter'
      Suppress sort filter and path conversion filter.
 '-O', '--only-other'
@@ -1861,8 +1874,14 @@ FILES
      If environment variable GTAGSROOT is not set and file 'GTAGSROOT'
      exists in the same directory as 'GTAGS' then global sets GTAGSROOT
      to the contents of the file.
-'$HOME/.globalrc', '/etc/gtags.conf', '[sysconfdir]/gtags.conf'
-     Configuration files.
+'$HOME/.globalrc', 'gtags.conf'
+     Global load a configuration file according to the following
+     priority (Lower number means higher priority).
+          		(1) $GTAGSCONF
+          		(2) [project root]/gtags.conf
+          		(3) $HOME/.globalrc
+          		(4) /etc/gtags.conf
+          		(5) [sysconfdir]/gtags.conf
 
 ENVIRONMENT
 -----------
@@ -1870,7 +1889,11 @@ ENVIRONMENT
 The following environment variables affect the execution of global:
 
 GREP_COLOR
-     The color to use for '--color'.
+     The color to use for '--color'; GREP_COLORS has precedence.
+GREP_COLORS
+     The color (mt or ms) to use for '--color'; see grep(1).
+GLOBAL_OPTIONS
+     The value of this variable is inserted in the head of arguments.
 GTAGSBLANKENCODE
      If this variable is set, the '--encode-path=" <TAB>"' option is
      specified.
@@ -1913,6 +1936,11 @@ The following configuration variables affect the execution of global:
 
 'icase_path' (boolean)
      Ignore case distinctions in pattern.
+
+   Addition to these, the variables listed in the ENVIRONMENT section
+except for GTAGSCONF and GTAGSLABEL are also available as configuration
+variables.  Each environment variable is given more priority than
+configuration variable of the same name.
 
 DIAGNOSTICS
 -----------
@@ -2045,8 +2073,14 @@ FILES
      Tag file for references.
 'GPATH'
      Tag file for source files.
-'$HOME/.globalrc', '/etc/gtags.conf', '[sysconfdir]/gtags.conf'
-     Configuration file.
+'$HOME/.globalrc', 'gtags.conf'
+     Gtags load a configuration file according to the following priority
+     (Lower number means higher priority).
+          		(1) $GTAGSCONF
+          		(2) [project root]/gtags.conf
+          		(3) $HOME/.globalrc
+          		(4) /etc/gtags.conf
+          		(5) [sysconfdir]/gtags.conf
 'gtags.files'
      The list of candidates of target files.
 
@@ -2067,6 +2101,8 @@ GTAGSLABEL
 GTAGSLOGGING
      If this variable is set, '$GTAGSLOGGING' is used as the path name
      of a log file.  There is no default value.
+GTAGS_OPTIONS
+     The value of this variable is inserted in the head of arguments.
 MAKEOBJDIR
      If this variable is set, '$MAKEOBJDIR' is used as the name of
      BSD-style objdir.  The default is 'obj'.
@@ -2101,12 +2137,19 @@ option.
      variables.  Default mapping is:
      'c:.c.h,yacc:.y,asm:.s.S,java:.java,cpp:.c++.cc.hh.cpp.cxx.hxx.hpp.C.H,php:.php.php3.phtml'.
 'skip' (comma separated list)
-     Gtags skips files which are given in this list.  As a special
-     exception, gtags collects values from multiple 'skip' variables.
-     If the value ends with '/', it is assumed as a directory and gtags
-     skips all files under it.  If the value starts with '/', it is
-     assumed a relative path from the root of source directory.  The
-     value may include glob patterns (*, ?, [...], [!...], [^...]).
+     Gtags skips files and directories which are given in this list.  As
+     a special exception, gtags collects values from multiple 'skip'
+     variables.  If the value ends with '/', it is assumed as a
+     directory and gtags skips all files under it.  The value may
+     include glob patterns (*, ?, [...], [!...], [^...]).  If the value
+     starts with '/', it is assumed a relative path name from the root
+     directory of the project.  You cannot use glob patterns for a path
+     name.
+
+   Addition to these, the variables listed in the ENVIRONMENT section
+except for GTAGSCONF and GTAGSLABEL are also available as configuration
+variables.  Each environment variable is given more priority than
+configuration variable of the same name.
 
 DIAGNOSTICS
 -----------
@@ -2144,7 +2187,7 @@ HISTORY
 The gtags command appeared in FreeBSD 2.2.2.
 
 
-File: global.info,  Node: htags,  Next: gozilla,  Prev: gtags,  Up: Reference
+File: global.info,  Node: htags,  Next: htags-server,  Prev: gtags,  Up: Reference
 
 5.3 htags - generate a hypertext from a set of source files.
 ============================================================
@@ -2207,7 +2250,10 @@ The following options are available:
 '-c', '--compact'
      Compress html files by gzip(1).  You need to configure HTTP server
      so that gzip(1) is invoked for each compressed file.  See
-     'HTML/.htaccess' that is generated by htags.
+     'HTML/.htaccess' that is generated by htags.  This option is
+     deprecated.
+'--colorize-warned-line'
+     Use color to highlight warned lines.
 '--cvsweb' url
      Add a link to cvsweb; url is used as the base of URL. When
      directory 'CVS' exists in the root directory of the project, the
@@ -2263,21 +2309,25 @@ The following options are available:
      definitions; 'f': files; 't': call tree.  The default is 'csmdf'.
 '-m', '--main-func' name
      Specify startup function name; the default is 'main'.
+'--map-file'
+     Generate file 'MAP'.
 '-n', '--line-number'[=columns]
      Print line numbers.  By default, don't print line numbers.  The
      default value of columns is 4.
-'--map-file'
-     Generate file 'MAP'.
+'--no-order-list'
+     Numbers are not given in list form.
 '-o', '--other'
      Pick up not only source files but also other files for the file
      index.
 '--overwrite-key'
      Allow overwrite of an existing key with the '--system-cgi' option.
+     This option is deprecated.
 '--system-cgi' key
      Use the system CGI script.  key must be a unique key in your site.
      At the first time, you should (1) copy the CGI script written by
      this command into the system CGI directory, and (2) execute
-     'bless.sh' script at the 'HTML' directory as a root user.
+     'bless.sh' script at the 'HTML' directory as a root user.  This
+     option is deprecated.
 '-s', '--symbol'
      Make anchors not only for definitions and references but also other
      symbols.
@@ -2320,6 +2370,7 @@ The following options are available:
      'index.html' and XHTML-1.0 Transitional for other files; else if
      version is '1.1' or config variable 'xhtml_version' is set to '1.1'
      then generate XHTML-1.1; else generate XHTML-1.0 Transitional.
+     This option is deprecated.
 dir
      The directory in which the result of this command is stored.  The
      default is the current directory.
@@ -2342,8 +2393,14 @@ FILES
      Tag file for references.
 'GPATH'
      Tag file for source files.
-'$HOME/.globalrc', '/etc/gtags.conf', '[sysconfdir]/gtags.conf'
-     Configuration files.
+'$HOME/.globalrc', 'gtags.conf'
+     Htags load a configuration file according to the following priority
+     (Lower number means higher priority).
+          		(1) $GTAGSCONF
+          		(2) [project root]/gtags.conf
+          		(3) $HOME/.globalrc
+          		(4) /etc/gtags.conf
+          		(5) [sysconfdir]/gtags.conf
 'HTML/FILEMAP'
      Mapping file for converting file name into the path of the file.
 'HTML/GTAGSROOT'
@@ -2378,6 +2435,8 @@ GTAGSCONF
      Configuration file.  The default is '$HOME/.globalrc'.
 GTAGSLABEL
      Configuration label.  The default is 'default'.
+HTAGS_OPTIONS
+     The value of this variable is inserted in the head of arguments.
 TMPDIR
      The location used to stored temporary files.  The default is
      '/tmp'.
@@ -2395,7 +2454,8 @@ The following configuration variables affect the execution of htags:
      can change the value using configure script.  Htags looks up
      template files in the 'gtags' directory in this data directory.
 'gzipped_suffix'(string)
-     Suffix for compressed html file.  The default is 'ghtml'.
+     Suffix for compressed html file.  The default is 'ghtml'.  This
+     variable is deprecated.
 'htags_options'(string)
      Default options for htags.  This value is inserted into the head of
      arguments.  The default is null.
@@ -2408,16 +2468,25 @@ The following configuration variables affect the execution of htags:
      mapping is:
      'c:.c.h,yacc:.y,asm:.s.S,java:.java,cpp:.c++.cc.hh.cpp.cxx.hxx.hpp.C.H,php:.php.php3.phtml'.
 'ncol'(number)
-     Columns of line number.  The default is 4.
+     Columns of line number.  The default is 4.  This variable is
+     deprecated.  Use the -n (-line-number) option instead.
 'normal_suffix'(string)
-     Suffix for normal html file.  The default is 'html'.
+     Suffix for normal html file.  The default is 'html'.  This variable
+     is deprecated.
 'script_alias'(string)
-     Script alias for system cgi script ('--system-cgi').
+     Script alias for system cgi script ('--system-cgi').  This variable
+     is deprecated.
 'tabs'(number)
-     Tab stops.  The default is 8.
+     Tab stops.  The default is 8.  This variable is deprecated.  Use
+     the -tabs option instead.
 'xhtml_version'(1.0|1.1)
      XHTML version.  '1.0' and '1.1' are acceptable.  The default is
-     '1.0'.
+     '1.0'.  This variable is deprecated.
+
+   Addition to these, the variables listed in the ENVIRONMENT section
+except for GTAGSCONF and GTAGSLABEL are also available as configuration
+variables.  Each environment variable is given more priority than
+configuration variable of the same name.
 
 DIAGNOSTICS
 -----------
@@ -2454,9 +2523,90 @@ HISTORY
 The htags command appeared in FreeBSD 2.2.2.
 
 
-File: global.info,  Node: gozilla,  Next: gtags-cscope,  Prev: htags,  Up: Reference
+File: global.info,  Node: htags-server,  Next: gozilla,  Prev: htags,  Up: Reference
 
-5.4 gozilla - force mozilla to display specified part of a source file.
+5.4 htags-server - start a private Web/CGI server for hyper-text
+================================================================
+
+NAME
+----
+
+htags-server - start a private Web/CGI server for hyper-text
+
+SYNOPSIS
+--------
+
+     htags-server [-b ip-address][-u language][port]
+
+DESCRIPTION
+-----------
+
+Htags-server is a private Web/CGI server for the hyper-text generated by
+htags(1).
+
+   In advance of using this command, you should execute htags(1).  Then
+you can execute htags-server at the same place.  You can start browsing
+at 'http://localhost:8000/' by default.  To stop the server, just press
+on 'CTRL-C'.
+
+   Python 2/3 or Ruby equipped with WEBrick is required.  By default,
+htags-server looks for python first, if not found then looks for ruby.
+
+OPTIONS
+-------
+
+The following options are available:
+'-b', '--bind' ip-address
+     Specifies the IP address on which htags-server listen.  The default
+     value is 127.0.0.1.
+'-u', '--use' language
+     Specifies language to use, which may be one of: 'python' and
+     'ruby'.
+port
+     Specifies the port on which htags-server listen.  If you want to
+     use multiple sessions, you must use unique number for each
+     htags-server.  The default value is 8000.
+
+EXAMPLES
+--------
+
+     	$ gtags
+     	$ htags --suggest2
+     	$ htags-server
+     	Python2 http/cgi server
+     	Serving HTTP on 127.0.0.1 port 8000 ...
+
+     	(another terminal)
+     	$ firefox http://localhost:8000/
+
+DIAGNOSTICS
+-----------
+
+Htags-server exits with a non-0 value if an error occurred, 0 otherwise.
+
+SEE ALSO
+--------
+
+global(1), gtags(1), htags(1), python(1), ruby(1).
+
+   GNU GLOBAL source code tag system
+(http://www.gnu.org/software/global/).
+
+BUG
+---
+
+Since Python and Ruby are not Web servers, you must not expect high
+security.
+
+AUTHOR
+------
+
+Shigio YAMAGUCHI.
+
+
+File: global.info,  Node: gozilla,  Next: gtags-cscope,  Prev: htags-server,  Up: Reference
+
+5.5 gozilla - force mozilla to display specified part of a source file.
 =======================================================================
 
 NAME
@@ -2584,7 +2734,7 @@ default.
 
 File: global.info,  Node: gtags-cscope,  Next: globash,  Prev: gozilla,  Up: Reference
 
-5.5 gtags-cscope - interactively examine a C program.
+5.6 gtags-cscope - interactively examine a C program.
 =====================================================
 
 NAME
@@ -2938,7 +3088,7 @@ re-implemented in 2011 using cscope itself.
 
 File: global.info,  Node: globash,  Prev: gtags-cscope,  Up: Reference
 
-5.6 globash - a special shell for GLOBAL using GNU bash.
+5.7 globash - a special shell for GLOBAL using GNU bash.
 ========================================================
 
 NAME
@@ -3484,55 +3634,56 @@ Option Index
 
 Tag Table:
 Node: Top774
-Node: Introduction1414
-Node: Global3991
-Node: Preparation4417
-Node: Basic usage5684
-Node: Applied usage10748
-Node: Applications15619
-Node: GloBash16318
-Node: Features(globash)16653
-Node: Preparation(globash)16991
-Node: Usage(globash)18065
-Node: Less viewer24009
-Node: Features(Less)24393
-Node: Preparation(Less)24618
-Node: Usage(Less)24968
-Node: Nvi-1.81.5 editor27439
-Node: Features(Nvi-1.81.5)27833
-Node: Preparation(Nvi-1.81.5)28090
-Node: Usage(Nvi-1.81.5)28838
-Node: Elvis editor30679
-Node: Features(Elvis)31132
-Node: Preparation(Elvis)31337
-Node: Usage(Elvis)31741
-Node: Vim editor34710
-Node: Features(Vim)35072
-Node: Preparation(Vim)35519
-Node: Usage(Vim)35871
-Node: Emacs editor39725
-Node: Features(Emacs)40123
-Node: Preparation(Emacs)40455
-Node: Usage(Emacs)41693
-Node: Gtags-cscope44988
-Node: Web browser45773
-Node: Features(browser)46152
-Node: Preparation(browser)46640
-Node: Usage(browser)47823
-Node: Doxygen documentation system48648
-Node: Other topics49368
-Node: Configuration49683
-Node: Plug-in50387
-Node: Incremental updating51356
-Node: Reference52540
-Node: global53112
-Node: gtags63606
-Node: htags70364
-Node: gozilla81581
-Node: gtags-cscope84411
-Node: globash95869
-Node: Copying This Manual97030
-Node: GNU Free Documentation License97267
-Node: Index119658
+Node: Introduction1411
+Node: Global3988
+Node: Preparation4414
+Node: Basic usage5681
+Node: Applied usage10745
+Node: Applications15616
+Node: GloBash16315
+Node: Features(globash)16650
+Node: Preparation(globash)16988
+Node: Usage(globash)18062
+Node: Less viewer24006
+Node: Features(Less)24390
+Node: Preparation(Less)24615
+Node: Usage(Less)24965
+Node: Nvi-1.81.5 editor27436
+Node: Features(Nvi-1.81.5)27830
+Node: Preparation(Nvi-1.81.5)28087
+Node: Usage(Nvi-1.81.5)28835
+Node: Elvis editor30676
+Node: Features(Elvis)31129
+Node: Preparation(Elvis)31334
+Node: Usage(Elvis)31738
+Node: Vim editor34707
+Node: Features(Vim)35069
+Node: Preparation(Vim)35516
+Node: Usage(Vim)35868
+Node: Emacs editor39722
+Node: Features(Emacs)40120
+Node: Preparation(Emacs)40452
+Node: Usage(Emacs)41690
+Node: Gtags-cscope44985
+Node: Web browser45770
+Node: Features(browser)46149
+Node: Preparation(browser)46637
+Node: Usage(browser)47820
+Node: Doxygen documentation system48645
+Node: Other topics49365
+Node: Configuration49680
+Node: Plug-in50384
+Node: Incremental updating51353
+Node: Reference52537
+Node: global53189
+Node: gtags64868
+Node: htags72276
+Node: htags-server84598
+Node: gozilla86501
+Node: gtags-cscope89338
+Node: globash100796
+Node: Copying This Manual101957
+Node: GNU Free Documentation License102194
+Node: Index124585
 
 End Tag Table

@@ -185,8 +185,8 @@ ETAGS = etags
 CTAGS = ctags
 CSCOPE = cscope
 DIST_SUBDIRS = libglibc libutil libparser libltdl plugin-factory libdb \
-	global gozilla gtags htags htags-refkit globash doc icons \
-	jquery jquery/images script gtags-cscope
+	global gozilla gtags htags htags-refkit htags-server globash \
+	doc icons jquery jquery/images script gtags-cscope
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -389,7 +389,8 @@ top_srcdir = @top_srcdir@
 #
 SUBDIRS = libglibc libutil libparser libltdl plugin-factory \
 	$(am__append_1) global gozilla gtags htags htags-refkit \
-	globash doc icons jquery jquery/images script $(am__append_2)
+	htags-server globash doc icons jquery jquery/images script \
+	$(am__append_2)
 gtagsdir = ${datadir}/gtags
 gtags_DATA = AUTHORS COPYING COPYING.LIB ChangeLog FAQ INSTALL LICENSE NEWS README THANKS \
 	BOKIN_MODEL BOKIN_MODEL_FAQ DONORS BUILD_TOOLS \
