@@ -994,33 +994,6 @@ loadfile(const char *file, STRBUF *result)
 	load_with_replace(file, result, 0);
 }
 /**
- * copy file.
- */
-static void
-copyfile(const char *from, const char *to)
-{
-	int ip, op, size;
-	char buf[8192];
-
-#ifndef O_BINARY
-#define O_BINARY 0
-#endif
-	ip = open(from, O_RDONLY|O_BINARY);
-	if (ip < 0)
-		die("cannot open input file '%s'.", from);
-	op = open(to, O_WRONLY|O_CREAT|O_TRUNC|O_BINARY, 0775);
-	if (op < 0)
-		die("cannot create output file '%s'.", to);
-	while ((size = read(ip, buf, sizeof(buf))) != 0) {
-		if (size < 0)
-			die("file read error.");
-		if (write(op, buf, size) != size)
-			die("file write error.");
-	}
-	close(op);
-	close(ip);
-}
-/**
  * makecommonpart: make a common part for @FILE{mains.html} and @FILE{index.html}
  *
  *	@param[in]	title
@@ -1728,14 +1701,11 @@ main(int argc, char **argv)
 		die("cannot get current directory.");
 	if (arg_dbpath[0]) {
 		strlimcpy(dbpath, arg_dbpath, sizeof(dbpath));
-		set_env("GTAGSROOT", cwdpath);
-		set_env("GTAGSDBPATH", dbpath);
-	} else
-		strlimcpy(dbpath, cwdpath, sizeof(dbpath));
-	{
-		int status = setupdbpath(0);			/* for parsers */
+	} else {
+		int status = setupdbpath(0);
 		if (status < 0)
 			die_with_code(-status, gtags_dbpath_error);
+		strlimcpy(dbpath, get_dbpath(), sizeof(dbpath));
 	}
 	if (cflag && !usable("gzip")) {
 		warning("'gzip' command not found. -c option ignored.");
@@ -1919,7 +1889,7 @@ main(int argc, char **argv)
 		message(" Using %s/GTAGS.", get_dbpath());
 	if (grtags_is_empty)
 		message(" GRTAGS is empty.");
-	if (gpath_open(get_dbpath(), 0) < 0)
+	if (gpath_open(dbpath, 0) < 0)
 		die("GPATH not found.");
 	if (!w32) {
 		/* UNDER CONSTRUCTION */
@@ -2135,22 +2105,31 @@ main(int argc, char **argv)
 	 * (11) style sheet file (style.css)
 	 */
 	if (enable_xhtml) {
-		char com[MAXPATHLEN*2+32];
+		char src[MAXPATHLEN];
+		char dist[MAXPATHLEN];
 #ifdef __DJGPP__
 		const char *template = "";
-		snprintf(com, sizeof(com), "%s/gtags/style.css.tmpl", datadir, distpath);
-		if (test("f", com))
+		snprintf(src, sizeof(com), "%s/gtags/style.css.tmpl", datadir);
+		if (test("f", src))
 		       template = ".tmpl";
-		snprintf(com, sizeof(com), "cp \"%s\"/gtags/style.css%s \"%s\"/style.css", datadir, template, distpath);
+		snprintf(src, sizeof(src), "%s/gtags/style.css%s", datadir, template);
+		snprintf(dist, sizeof(dist), "%s/style.css", distpath);
 #else
-		snprintf(com, sizeof(com), "cp \"%s\"/gtags/style.css.tmpl \"%s\"/style.css", datadir, distpath);
+		snprintf(src, sizeof(src), "%s/gtags/style.css.tmpl", datadir);
+		snprintf(dist, sizeof(dist), "%s/style.css", distpath);
 #endif
-		system(com);
+		copyfile(src, dist);
 	}
 	if (auto_completion || tree_view) {
-		char com[MAXPATHLEN*2+32];
-		snprintf(com, sizeof(com), "cp -r \"%s\"/gtags/jquery/* \"%s\"/js", datadir, distpath);
-		system(com);
+		char src[MAXPATHLEN];
+		char dist[MAXPATHLEN];
+
+		snprintf(src, sizeof(src), "%s/gtags/jquery", datadir);
+		snprintf(dist, sizeof(dist), "%s/js", distpath);
+		copydirectory(src, dist);
+		snprintf(src, sizeof(src), "%s/gtags/jquery/images", datadir);
+		snprintf(dist, sizeof(dist), "%s/js/images", distpath);
+		copydirectory(src, dist);
 	}
 	message("[%s] Done.", now());
 	if (vflag && (cflag || fflag || dynamic || auto_completion)) {
@@ -2176,10 +2155,12 @@ main(int argc, char **argv)
 		message(" Good luck!\n");
 	}
 	if (Iflag) {
-		char com[MAXPATHLEN*2+32];
+		char src[MAXPATHLEN];
+		char dist[MAXPATHLEN];
 
-		snprintf(com, sizeof(com), "cp -r \"%s\"/gtags/icons \"%s\"", datadir, distpath);
-		system(com);
+		snprintf(src, sizeof(src), "%s/gtags/icons", datadir);
+		snprintf(dist, sizeof(dist), "%s/icons", distpath);
+		copydirectory(src, dist);
 	}
 	gpath_close();
 	/*

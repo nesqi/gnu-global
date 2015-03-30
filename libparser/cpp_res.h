@@ -1,4 +1,4 @@
-/* ANSI-C code produced by gperf version 3.0.4 */
+/* ANSI-C code produced by gperf version 3.0.3 */
 /* Command-line: gperf --language=ANSI-C --struct-type --slot-name=name --hash-fn-name=cpp_hash --lookup-fn-name=cpp_lookup  */
 /* Computed positions: -k'2-4' */
 
@@ -176,7 +176,7 @@ cpp_hash (register const char *str, register unsigned int len)
       243, 243, 243, 243, 243, 243, 243, 243, 243, 243,
       243, 243, 243, 243, 243, 243, 243
     };
-  register int hval = len;
+  register int hval = (int)len;
 
   switch (hval)
     {
@@ -193,12 +193,6 @@ cpp_hash (register const char *str, register unsigned int len)
   return hval;
 }
 
-#ifdef __GNUC__
-__inline
-#if defined __GNUC_STDC_INLINE__ || defined __GNUC_GNU_INLINE__
-__attribute__ ((__gnu_inline__))
-#endif
-#endif
 struct keyword *
 cpp_lookup (register const char *str, register unsigned int len)
 {

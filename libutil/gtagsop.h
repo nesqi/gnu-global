@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 1997, 1998, 1999, 2000, 2001, 2005, 2006, 2007, 2010
+ * 2013, 2014
  *	Tama Communications Corporation
  *
  * This file is part of GNU GLOBAL.
@@ -133,12 +134,20 @@ typedef struct {
 	 * Stuff for compact format
 	 */
 	/** @{ */
-	char cur_path[MAXPATHLEN];	/**< current path */
 	STRBUF *sb;			/**< string buffer */
 	/** @} */
 
 	/** used for compact format and path name only read */
 	STRHASH *path_hash;
+
+	/**
+	 * Stuff for calling dbop
+	 */
+	const char *key;
+	char *prefix;
+	regex_t *preg;
+	int dbflags;
+	int readcount;
 } GTOP;
 
 const char *dbname(int);
@@ -148,6 +157,7 @@ void gtags_flush(GTOP *, const char *);
 void gtags_delete(GTOP *, IDSET *);
 GTP *gtags_first(GTOP *, const char *, int);
 GTP *gtags_next(GTOP *);
+void gtags_show_statistics(GTOP *);
 void gtags_close(GTOP *);
 
 #endif /* ! _GTOP_H_ */

@@ -9,11 +9,11 @@ gtags \- create tag files for global.
 \fBGtags\fP is used to create tag files for \fBglobal\fP(1).
 .PP
 \fBGtags\fP recursively collects source files under the current directory,
-pickup symbols and write cross-reference data into tag files
+picks up symbols and writes the cross-reference data into the tag files
 (\'GTAGS\', \'GRTAGS\' and \'GPATH\').
 .PP
 If \'gtags.files\' exists or the \fB-f\fP option is specified,
-target files are limited by it. Lines starting with ". " are comments.
+target files are limited by it. Lines starting with \'. \' are comments.
 .PP
 C, yacc, Assembly, Java, C++ and PHP source files are supported.
 Files whose names end in \'.c\', \'.h\' are assumed to be C source files.
@@ -25,14 +25,16 @@ Files whose names end in \'.php\', \'.php3\', \'.phtml\' are assumed to be PHP s
 Other files are assumed to be text files. Gtags does not treat binary files.
 .SH OPTIONS
 The following options are available:
+.PP
 .TP
 \fB--accept-dotfiles\fP
-Accept dot files and dot directories. By default, \fBgtags\fP ignores them.
+Accept files and directories whose names begin with a dot.
+By default, \fBgtags\fP ignores them.
 .TP
 \fB-c\fP, \fB--compact\fP
-Make GTAGS in compact format.
-This option does not influence GRTAGS,
-because it is always made in compact format.
+Make \'GTAGS\' in compact format.
+This option does not influence \'GRTAGS\',
+because that is always made in compact format.
 .TP
 \fB--config\fP[=\fIname\fP]
 Print the value of config variable \fIname\fP.
@@ -44,7 +46,7 @@ This is for debugging.
 .TP
 \fB-f\fP, \fB--file\fP \fIfile\fP
 Browse through all source files whose names are listed in \fIfile\fP.
-The argument \fIfile\fP can  be set to \'-\' to accept a list of
+The argument \fIfile\fP can be set to \'-\' to accept a list of
 files from the standard input.
 File names must be separated by newline.
 .TP
@@ -58,8 +60,8 @@ Set environment variable \fBGTAGSLABEL\fP to \fIlabel\fP.
 In addition to tag files, make ID database for \fBidutils\fP(1).
 .TP
 \fB-i\fP, \fB--incremental\fP
-Update tag files incrementally. You had better use
-\fBglobal\fP(1) with the -u option.
+Update tag files incrementally.
+It's better to use \fBglobal\fP(1) with the \fB-u\fP command.
 .TP
 \fB-O\fP, \fB--objdir\fP
 Use BSD-style objdir as the location of tag files.
@@ -69,10 +71,10 @@ tag files in it.
 If \fIdbpath\fP is specified, this option is ignored.
 .TP
 \fB--single-update\fP \fIfile\fP
-Update tag files for single file by optimized method.
+Update tag files for a single file.
 It is considered that \fIfile\fP was added or updated,
 and there is no change in other files.
-This option implies the -i option.
+This option implies the \fB-i\fP option.
 .TP
 \fB--statistics\fP
 Print statistics information.
@@ -115,54 +117,71 @@ Configuration file.
 The list of candidates of target files.
 .SH ENVIRONMENT
 The following environment variables affect the execution of \fBgtags\fP:
+.PP
 .TP
-\fBTMPDIR\fP
-The location used to stored temporary files. The default is \'/tmp\'.
+\fBGTAGSCACHE\fP
+The size of the B-tree cache. The default is 50000000 (bytes).
 .TP
 \fBGTAGSCONF\fP
 Configuration file. The default is \'$HOME/.globalrc\'.
 .TP
-\fBGTAGSLABEL\fP
-Configuration label. The default is \fIdefault\fP.
-.TP
-\fBGTAGSCACHE\fP
-The size of B-tree cache. The default is 50000000 (bytes).
-.TP
 \fBGTAGSFORCECPP\fP
-If this variable is set, each file whose suffix is 'h' is treated
+If this variable is set, each file whose suffix is \'.h\' is treated
 as a C++ source file.
+.TP
+\fBGTAGSLABEL\fP
+Configuration label. The default is \'default\'.
+.TP
+\fBGTAGSLOGGING\fP
+If this variable is set, \'$GTAGSLOGGING\' is used as the path name
+of a log file. There is no default value.
+.TP
+\fBMAKEOBJDIR\fP
+If this variable is set, \'$MAKEOBJDIR\' is used as the name
+of BSD-style objdir. The default is \'obj\'.
 .TP
 \fBMAKEOBJDIRPREFIX\fP
 If this variable is set, \'$MAKEOBJDIRPREFIX\' is used as the prefix
 of BSD-style objdir. The default is \'/usr/obj\'.
+.TP
+\fBTMPDIR\fP
+The location used to stored temporary files. The default is \'/tmp\'.
 .SH CONFIGURATION
 The following configuration variables affect the execution of \fBgtags\fP.
 You can see the default value for each variable with the \fB--config\fP option.
+.PP
 .TP
-icase_path(boolean)
-Ignore case distinctions in the path.
-Suffixes check is affected by this capability.
-.TP
-langmap(comma separated list)
-Language mapping. Each comma-separated map consists of
-the language name, a colon, and a list of file extensions.
-As a special exception, \fBgtags\fP collects values from multiple langmap variables.
-Default mapping is 'c:.c.h,yacc:.y,asm:.s.S,java:.java,cpp:.c++.cc.hh.cpp.cxx.hxx.hpp.C.H,php:.php.php3.phtml'.
-.TP
-gtags_parser(comma separated list)
+gtags_parser (comma separated list)
 Specify the mapping of language names and plug-in parsers.
 Each part delimited by the comma consists of the language name, a colon,
 the shared object path, an optional colon followed by a function name.
 If the function name is not specified, 'parser' is assumed.
-As a special exception, \fBgtags\fP collects values from multiple gtags_parser variables.
+As a special exception, \fBgtags\fP collects values
+from multiple gtags_parser variables.
 .TP
-skip(comma separated list)
-\fBGtags\fP skips files which are listed in this list.
-As a special exception, \fBgtags\fP collects values from multiple skip variables.
-If the value ends with '/', it is assumed as a directory and \fBgtags\fP skips all files under it.
-If the value starts with '/', it is assumed a relative path from the root of source directory.
+icase_path (boolean)
+Ignore case distinctions in the path.
+Suffixes check is affected by this capability.
+.TP
+langmap (comma separated list)
+Language mapping. Each comma-separated map consists of
+the language name, a colon, and a list of file extensions.
+As a special exception, \fBgtags\fP collects values
+from multiple langmap variables.
+Default mapping is:
+.br
+\'c:.c.h,yacc:.y,asm:.s.S,java:.java,cpp:.c++.cc.hh.cpp.cxx.hxx.hpp.C.H,php:.php.php3.phtml\'.
+.TP
+skip (comma separated list)
+\fBGtags\fP skips files which are given in this list.
+As a special exception, \fBgtags\fP collects values from multiple
+skip variables.
+If the value ends with \'/\', it is assumed as a directory and
+\fBgtags\fP skips all files under it.
+If the value starts with \'/\', it is assumed a relative path
+from the root of source directory.
 .SH DIAGNOSTICS
-\fBGtags\fP exits with a non 0 value if an error occurred, 0 otherwise.
+\fBGtags\fP exits with a non-0 value if an error occurred, 0 otherwise.
 .SH "SEE ALSO"
 \fBglobal\fP(1),
 \fBhtags\fP(1).

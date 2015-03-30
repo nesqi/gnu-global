@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2005, 2006,
- *	2007, 2008, 2010, 2011, 2012 Tama Communications Corporation
+ *	2007, 2008, 2010, 2011, 2012, 2013, 2014
+ *	Tama Communications Corporation
  *
  * This file is part of GNU GLOBAL.
  *
@@ -64,6 +65,9 @@ void grep(const char *, char *const *, const char *);
 void pathlist(const char *, const char *);
 void parsefile(char *const *, const char *, const char *, const char *, int);
 int search(const char *, const char *, const char *, const char *, int);
+void start_output();
+void end_output();
+int output_with_formatting(CONVERT *, GTP *, int);
 void tagsearch(const char *, const char *, const char *, const char *, int);
 void encode(char *, int, const char *);
 
@@ -616,6 +620,11 @@ main(int argc, char **argv)
 		dbpath = get_dbpath();
 	}
 	/*
+	 * Logical current directory.
+	 * We force idutils to follow the same rule as GLOBAL.
+	 */
+	set_env("PWD", cwd);
+	/*
 	 * print dbpath or rootdir.
 	 */
 	if (pflag) {
@@ -660,11 +669,6 @@ main(int argc, char **argv)
 	 * decide tag type.
 	 */
 	if (context_file) {
-		static char buf[MAXPATHLEN];
-
-		if (realpath(context_file, buf) == NULL)
-			die("cannot get real path name.");
-		context_file = buf;
 		if (isregex(av))
 			die_with_code(2, "regular expression is not allowed with the --from-here option.");
 		db = decide_tag_by_context(av, context_file, atoi(context_lineno));
@@ -793,65 +797,20 @@ main(int argc, char **argv)
 int
 completion_tags(const char *dbpath, const char *root, const char *prefix, int db)
 {
-	int flags = GTOP_KEY;
+	int flags = GTOP_KEY | GTOP_NOREGEX | GTOP_PREFIX;
 	GTOP *gtop = gtags_open(dbpath, root, db, GTAGS_READ, 0);
 	GTP *gtp;
 	int count = 0;
 
-	if (prefix && isalpha(*prefix) && iflag) {
-		/*
-		 * If the -i option is specified, we use both of regular
-		 * expression and prefix read for performance. It is done
-		 * by connecting two prefix reading.
-		 */
-		STRBUF *sb = strbuf_open(0);
-		regex_t	preg;
-		int i, firstchar[2];
-
-		flags |= GTOP_NOREGEX;
-		flags |= GTOP_PREFIX;
-		/*
-		 * make regular expression.
-		 */
-		strbuf_putc(sb, '^');
-		strbuf_puts(sb, prefix);
-		if (regcomp(&preg, strbuf_value(sb), REG_ICASE) != 0)
-			die("invalid regular expression.");
-		/*
-		 * Two prefix reading:
-		 *
-		 * prefix = 'main'
-		 * v
-		 * firstchar[0] = 'M';		/^M/	the first time
-		 * firstchar[1] = 'm';		/^m/	the second time
-		 */
-		firstchar[0] = firstchar[1] = *prefix;
-		if (isupper(firstchar[0]))
-			firstchar[1] = tolower(firstchar[0]);
-		else
-			firstchar[0] = toupper(firstchar[0]);
-		for (i = 0; i < 2; i++) {
-			strbuf_reset(sb);
-			strbuf_putc(sb, firstchar[i]);
-			for (gtp = gtags_first(gtop, strbuf_value(sb), flags); gtp; gtp = gtags_next(gtop)) {
-				if (regexec(&preg, gtp->tag, 0, 0, 0) == 0) {
-					fputs(gtp->tag, stdout);
-					fputc('\n', stdout);
-					count++;
-				}
-			}
-		}
-		strbuf_close(sb);
-	} else {
-		flags |= GTOP_NOREGEX;
-		if (prefix)
-			flags |= GTOP_PREFIX;
-		for (gtp = gtags_first(gtop, prefix, flags); gtp; gtp = gtags_next(gtop)) {
-			fputs(gtp->tag, stdout);
-			fputc('\n', stdout);
-			count++;
-		}
+	if (iflag)
+		flags |= GTOP_IGNORECASE;
+	for (gtp = gtags_first(gtop, prefix, flags); gtp; gtp = gtags_next(gtop)) {
+		fputs(gtp->tag, stdout);
+		fputc('\n', stdout);
+		count++;
 	}
+	if (debug)
+		gtags_show_statistics(gtop);
 	gtags_close(gtop);
 	return count;
 }
@@ -1080,6 +1039,8 @@ idutils(const char *pattern, const char *dbpath)
 	lid = usable("lid");
 	if (!lid)
 		die("lid(idutils) not found.");
+	if (!test("f", makepath(dbpath, "ID", NULL)))
+		die("ID file not found.");
 	/*
 	 * convert spaces into %FF format.
 	 */
@@ -1110,7 +1071,7 @@ idutils(const char *pattern, const char *dbpath)
 		q = path + 2;
 		/* extract path name */
 		if (*grep == '/')
-			die("The path in the output of lid is assumed absolute. '%s'", grep);
+			die("The path in the output of lid is assumed relative.\n'%s'", grep);
 		p = grep;
 		while (*p && *p != ':')
 			*q++ = *p++;
@@ -1146,7 +1107,7 @@ idutils(const char *pattern, const char *dbpath)
 			break;
 		}
 	}
-	if (pclose(ip) < 0)
+	if (pclose(ip) != 0)
 		die("terminated abnormally.");
 	convert_close(cv);
 	strbuf_close(ib);
@@ -1246,7 +1207,9 @@ grep(const char *pattern, char *const *argv, const char *dbpath)
 		if (lflag && !locatestring(path, localprefix, MATCH_AT_FIRST))
 			continue;
 		if (literal) {
-			literal_search(cv, path);
+			int n = literal_search(cv, path);
+			if (n > 0)
+				count += n;
 		} else {
 			if (!(fp = fopen(path, "r")))
 				die("cannot open file '%s'.", path);
@@ -1558,13 +1521,6 @@ parsefile(char *const *argv, const char *cwd, const char *root, const char *dbpa
  *	@param[in]	db		#GTAGS,#GRTAGS,#GSYMS
  *	@return			count of output lines
  */
-/** get next number and seek to the next character */
-#define GET_NEXT_NUMBER(p) do {                                                 \
-                if (!isdigit(*p))                                              \
-                        p++;                                                    \
-                for (n = 0; isdigit(*p); p++)                                  \
-                        n = n * 10 + (*p - '0');                                \
-        } while (0)
 int
 search(const char *pattern, const char *root, const char *cwd, const char *dbpath, int db)
 {
@@ -1573,211 +1529,31 @@ search(const char *pattern, const char *root, const char *cwd, const char *dbpat
 	GTOP *gtop;
 	GTP *gtp;
 	int flags = 0;
-	STRBUF *sb = NULL, *ib = NULL;
-	char curpath[MAXPATHLEN], curtag[IDENTLEN];
-	FILE *fp = NULL;
-	const char *src = "";
-	int lineno, last_lineno;
 
-	lineno = last_lineno = 0;
-	curpath[0] = curtag[0] = '\0';
 	/*
 	 * open tag file.
 	 */
-	gtop = gtags_open(dbpath, root, db, GTAGS_READ, 0);
+	gtop = gtags_open(dbpath, root, db, GTAGS_READ, debug ? GTAGS_DEBUG : 0);
 	cv = convert_open(type, format, root, cwd, dbpath, stdout, db);
 	/*
 	 * search through tag file.
 	 */
 	if (nofilter & SORT_FILTER)
 		flags |= GTOP_NOSORT;
-	if (iflag) {
-		if (!isregex(pattern)) {
-			sb = strbuf_open(0);
-			strbuf_putc(sb, '^');
-			strbuf_puts(sb, pattern);
-			strbuf_putc(sb, '$');
-			pattern = strbuf_value(sb);
-		}
-		flags |= GTOP_IGNORECASE;
-	}
 	if (Gflag)
 		flags |= GTOP_BASICREGEX;
 	if (format == FORMAT_PATH)
 		flags |= GTOP_PATH;
-	if (gtop->format & GTAGS_COMPACT)
-		ib = strbuf_open(0);
+	if (iflag)
+		flags |= GTOP_IGNORECASE;
 	for (gtp = gtags_first(gtop, pattern, flags); gtp; gtp = gtags_next(gtop)) {
 		if (lflag && !locatestring(gtp->path, localprefix, MATCH_AT_FIRST))
 			continue;
-		if (format == FORMAT_PATH) {
-			convert_put_path(cv, gtp->path);
-			count++;
-		} else if (gtop->format & GTAGS_COMPACT) {
-			/*
-			 * Compact format:
-			 *                    a          b
-			 * tagline = <file id> <tag name> <line no>,...
-			 */
-			char *p = (char *)gtp->tagline;
-			const char *fid, *tagname;
-			int n = 0;
-
-			fid = p;
-			while (*p != ' ')
-				p++;
-			*p++ = '\0';			/* a */
-			tagname = p;
-			while (*p != ' ')
-				p++;
-			*p++ = '\0';			/* b */
-			/*
-			 * Reopen or rewind source file.
-			 */
-			if (!nosource) {
-				if (strcmp(gtp->path, curpath) != 0) {
-					if (curpath[0] != '\0' && fp != NULL)
-						fclose(fp);
-					strlimcpy(curtag, tagname, sizeof(curtag));
-					strlimcpy(curpath, gtp->path, sizeof(curpath));
-					/*
-					 * Use absolute path name to support GTAGSROOT
-					 * environment variable.
-					 */
-					fp = fopen(makepath(root, curpath, NULL), "r");
-					if (fp == NULL)
-						warning("source file '%s' is not available.", curpath);
-					last_lineno = lineno = 0;
-				} else if (strcmp(gtp->tag, curtag) != 0) {
-					strlimcpy(curtag, gtp->tag, sizeof(curtag));
-					if (atoi(p) < last_lineno && fp != NULL) {
-						rewind(fp);
-						lineno = 0;
-					}
-					last_lineno = 0;
-				}
-			}
-			/*
-			 * Unfold compact format.
-			 */
-			if (!isdigit(*p))
-				die("illegal compact format.");
-			if (gtop->format & GTAGS_COMPLINE) {
-				/*
-				 *
-				 * If GTAGS_COMPLINE flag is set, each line number is expressed as
-				 * the difference from the previous line number except for the head.
-				 * Please see flush_pool() in libutil/gtagsop.c for the details.
-				 */
-				int last = 0, cont = 0;
-
-				while (*p || cont > 0) {
-					if (cont > 0) {
-						n = last + 1;
-						if (n > cont) {
-							cont = 0;
-							continue;
-						}
-					} else if (isdigit(*p)) {
-						GET_NEXT_NUMBER(p);
-					}  else if (*p == '-') {
-						GET_NEXT_NUMBER(p);
-						cont = n + last;
-						n = last + 1;
-					} else if (*p == ',') {
-						GET_NEXT_NUMBER(p);
-						n += last;
-					}
-					if (last_lineno != n && fp) {
-						while (lineno < n) {
-							if (!(src = strbuf_fgets(ib, fp, STRBUF_NOCRLF))) {
-								src = "";
-								fclose(fp);
-								fp = NULL;
-								break;
-							}
-							lineno++;
-						}
-					}
-					if (gtop->format & GTAGS_COMPNAME)
-						tagname = (char *)uncompress(tagname, gtp->tag);
-					convert_put_using(cv, tagname, gtp->path, n, src, fid);
-					count++;
-					last_lineno = last = n;
-				}
-			} else {
-				/*
-				 * In fact, when GTAGS_COMPACT is set, GTAGS_COMPLINE is allways set.
-				 * Therefore, the following code are not actually used.
-				 * However, it is left for some test.
-				 */
-				while (*p) {
-					for (n = 0; isdigit(*p); p++)
-						n = n * 10 + *p - '0';
-					if (*p == ',')
-						p++;
-					if (last_lineno == n)
-						continue;
-					if (last_lineno != n && fp) {
-						while (lineno < n) {
-							if (!(src = strbuf_fgets(ib, fp, STRBUF_NOCRLF))) {
-								src = "";
-								fclose(fp);
-								fp = NULL;
-								break;
-							}
-							lineno++;
-						}
-					}
-					if (gtop->format & GTAGS_COMPNAME)
-						tagname = (char *)uncompress(tagname, gtp->tag);
-					convert_put_using(cv, tagname, gtp->path, n, src, fid);
-					count++;
-					last_lineno = n;
-				}
-			}
-		} else {
-			/*
-			 * Standard format:
-			 *                    a          b         c
-			 * tagline = <file id> <tag name> <line no> <line image>
-			 */
-			char *p = (char *)gtp->tagline;
-			char namebuf[IDENTLEN];
-			const char *fid, *tagname, *image;
-
-			fid = p;
-			while (*p != ' ')
-				p++;
-			*p++ = '\0';			/* a */
-			tagname = p;
-			while (*p != ' ')
-				p++;
-			*p++ = '\0';			/* b */
-			if (gtop->format & GTAGS_COMPNAME) {
-				strlimcpy(namebuf, (char *)uncompress(tagname, gtp->tag), sizeof(namebuf));
-				tagname = namebuf;
-			}
-			if (nosource) {
-				image = " ";
-			} else {
-				while (*p != ' ')
-					p++;
-				image = p + 1;		/* c + 1 */
-				if (gtop->format & GTAGS_COMPRESS)
-					image = (char *)uncompress(image, gtp->tag);
-			}
-			convert_put_using(cv, tagname, gtp->path, gtp->lineno, image, fid);
-			count++;
-		}
+		count += output_with_formatting(cv, gtp, gtop->format);
 	}
 	convert_close(cv);
-	if (sb)
-		strbuf_close(sb);
-	if (ib)
-		strbuf_close(ib);
-	if (fp)
-		fclose(fp);
+	if (debug)
+		gtags_show_statistics(gtop);
 	gtags_close(gtop);
 	return count;
 }
@@ -1794,8 +1570,23 @@ void
 tagsearch(const char *pattern, const char *cwd, const char *root, const char *dbpath, int db)
 {
 	int count, total = 0;
+	char buffer[IDENTLEN], *p = buffer;
 	char libdbpath[MAXPATHLEN];
 
+	/*
+	 * trim pattern (^<no regex>$ => <no regex>)
+	 */
+	if (pattern) {
+		strlimcpy(p, pattern, sizeof(buffer));
+		if (*p++ == '^') {
+			char *q = p + strlen(p);
+			if (*--q == '$') {
+				*q = 0;
+				if (*p == 0 || !isregex(p))
+					pattern = p;
+			}
+		}
+	}
 	/*
 	 * search in current source tree.
 	 */

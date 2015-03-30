@@ -5,13 +5,13 @@ const char *help_const = "Options:\n\
 -h\n\
        View the long usage help display.\n\
 -V\n\
-       Print on the first line of screen the version number of gtags-cscope.\n\
+       Print the version number of gtags-cscope.\n\
 --help\n\
        Same as -h\n\
 --version\n\
        Same as -V\n\
 -a\n\
-       Print absolute path name.\n\
+       Print absolute path names.\n\
 -b\n\
        Build the cross-reference only.\n\
 -C\n\
@@ -19,7 +19,7 @@ const char *help_const = "Options:\n\
 -d\n\
        Do not update the cross-reference.\n\
 -e\n\
-       Suppress the <Ctrl>-e command prompt between files.\n\
+       Suppress the @kbd{^e} command prompt between files.\n\
 -F file\n\
        Read symbol reference lines from file. \n\
        (A symbol reference file is created by > and >>,\n\
@@ -31,14 +31,13 @@ const char *help_const = "Options:\n\
        Do a single search with line-oriented output when used with the\n\
        -num pattern option.\n\
 -l\n\
-       Line-oriented interface (see ``Line-Oriented Interface'' below).\n\
+       Line-oriented interface.\n\
        This option implies the -d option.\n\
 -[0-9] pattern\n\
-       Go to input field num (counting from 0) and find \n\
-       pattern.\n\
+       Go to input field num (counting from 0) and find pattern.\n\
 -p n\n\
        Display the last n file path components instead of\n\
-       the default (1). Use 0 not to display the file name at all.\n\
+       the default (1). Use @val{0} to not display the file name at all.\n\
 -v\n\
        Be more verbose in line-oriented mode.\n\
 See also:\n\

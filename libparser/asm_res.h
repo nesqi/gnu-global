@@ -1,4 +1,4 @@
-/* ANSI-C code produced by gperf version 3.0.4 */
+/* ANSI-C code produced by gperf version 3.0.3 */
 /* Command-line: gperf --language=ANSI-C --struct-type --slot-name=name --hash-fn-name=asm_hash --lookup-fn-name=asm_lookup  */
 /* Computed positions: -k'3,5' */
 
@@ -108,7 +108,7 @@ asm_hash (register const char *str, register unsigned int len)
       33, 33, 33, 33, 33, 33, 33, 33, 33, 33,
       33, 33, 33, 33, 33, 33
     };
-  register int hval = len;
+  register int hval = (int)len;
 
   switch (hval)
     {
@@ -125,12 +125,6 @@ asm_hash (register const char *str, register unsigned int len)
   return hval;
 }
 
-#ifdef __GNUC__
-__inline
-#if defined __GNUC_STDC_INLINE__ || defined __GNUC_GNU_INLINE__
-__attribute__ ((__gnu_inline__))
-#endif
-#endif
 struct keyword *
 asm_lookup (register const char *str, register unsigned int len)
 {

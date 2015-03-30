@@ -12,7 +12,7 @@ gozilla \- force mozilla to display specified part of a source file.
 \fBGozilla\fP can be used with other browsers like firefox and epiphany.
 .PP
 In advance of using this command, you must execute \fBgtags\fP(1)
-and \fBhtags\fP(1) at the root directory of a project to make tag files.
+and \fBhtags\fP(1) at the root directory of the project to make tag files.
 Then you can execute this command anywhere in the project.
 .PP
 First form:
@@ -23,7 +23,8 @@ This syntax is similar to \fBvi\fP(1) and \fBemacs\fP(1).
 Second form:
 .br
 You can specify a definition name directly. The definition name should
-exist in \'GTAGS\'.
+exist in \'GTAGS\'. This option requires \'HTML/MAP\' generated
+by \fBhtags\fP(1).
 .PP
 Some browsers require you to load it before executing \fBgozilla\fP.
 .SH OPTIONS
@@ -36,13 +37,13 @@ Line number.
 Browser to use. By default, it is assumed \fBmozilla\fP.
 .TP
 \fB-d\fP \fIname\fP
-Print object definitions.
+Print definitions.
 .TP
 \fB--help\fP
 Show help.
 .TP
 \fB-p\fP
-Print just a generated URL instead of the contents.
+Just print a generated URL instead of displaying it.
 .TP
 \fIfile\fP
 File name or alias name.
@@ -57,25 +58,28 @@ Verbose mode.
 Show version number.
 .SH FILES
 .TP
+\'GTAGS\'
+Tag file for definitions.
+.TP
 \'HTML/\'
 Hypertext of source code.
 .TP
-\'GTAGS/\'
-Tag file for definitions.
+\'HTML/MAP\'
+Mapping file for converting tag name into the path of tag list.
 .TP
 \'$HOME/.gozillarc\'
-Alias file. Not yet documented.
+Alias file. Please read the source code for details.
 .SH ENVIRONMENT
-.TP
-\fBGTAGSROOT\fP
-The root directory of the project.
-.TP
-\fBGTAGSDBPATH\fP
-The directory on which tag files exist.
-This value is ignored when GTAGSROOT is not defined.
 .TP
 \fBBROWSER\fP
 Browser to use. By default, it is assumed \fBmozilla\fP.
+.TP
+\fBGTAGSDBPATH\fP
+The directory in which the tag files exist.
+This value is ignored when \fBGTAGSROOT\fP is not defined.
+.TP
+\fBGTAGSROOT\fP
+The root directory of the project.
 .SH EXAMPLES
 .nf
 $ gtags
@@ -90,7 +94,7 @@ $ firefox &
 $ gozilla -b firefox +82 ctags.c
 .fi
 .SH DIAGNOSTICS
-\fBGozilla\fP exits with a non 0 value if an error occurred, 0 otherwise.
+\fBGozilla\fP exits with a non-0 value if an error occurred, 0 otherwise.
 .SH "SEE ALSO"
 \fBglobal\fP(1),
 \fBgtags\fP(1),

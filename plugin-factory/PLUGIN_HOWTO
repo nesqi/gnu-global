@@ -4,7 +4,7 @@ ___________________________________
 |  |   |  |  |  |  |     |     |  |
 |  ~~  |   ~~|     |  ~  |  |  |   ~~|          for all hackers.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- Copyright (c) 2011 Tama Communications Corporation
+ Copyright (c) 2011, 2013 Tama Communications Corporation
 
  This file is free software; as a special exception the author gives
  unlimited permission to copy and/or distribute it, with or without
@@ -16,21 +16,39 @@ ___________________________________
 
                 ----------------------------------
 
-This directory is a factory of plug-in parsers.
+Plugin-factory directory ('plugin-factory/' in the GLOBAL package) is a factory
+of plug-in parsers. It has two plug-in parsers which are installed into the
+system by default.
+
+Nop parser('user-custom.c')
+	A skeleton parser. Nothing has been implemented yet.
+Exuberant Ctags('exuberant-ctags.c')
+	A parser to use Exuberant Ctags.
 
 How to write a plug-in parser?
 ==============================
 
-You should write a parser function like follows:
+You should write a parser function in the nop parser like follows (pseudo code):
 
 #include "parser.h"
 void
 parser(const struct parser_param *param)
 {
-        ...
+	open param->file
+	while (read from file) {
+		if (definition)
+			param->put(PARSER_DEF, ...);
+		else if (reference)
+			param->put(PARSER_REF_SYM, ...);
+		else
+			...
+	}
+	close file
 }
 
 A param argument is given to each parser function.
+param->file is the path name of a source file which should be parsed.
+
 You can write a tag using the param argument like follows:
 
 o write a tag to GTAGS
@@ -43,13 +61,12 @@ o write a tag to GRTAGS
 
 Note: 
 Gtags always makes GRTAGS even if you don't use PARSER_REF_SYM.
-This is an example of plug-in parser for gtags(1).
 
 How to use Exuberant Ctags as a parser?
 =======================================
 
-The parser 'exuberant-ctags.la' is built as a shared library, and is installed to
-/usr/local/lib/gtags by default.
+'exuberant-ctags.la' is a shared library to use Exuberant Ctags,
+and is installed to /usr/local/lib/gtags by default.
 
 To use this parser, please do like follows:
 

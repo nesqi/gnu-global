@@ -8,11 +8,11 @@ const char *help_const = "Options:\n\
 -b browser\n\
        Browser to use. By default, it is assumed mozilla.\n\
 -d name\n\
-       Print object definitions.\n\
+       Print definitions.\n\
 --help\n\
        Show help.\n\
 -p\n\
-       Print just a generated URL instead of the contents.\n\
+       Just print a generated URL instead of displaying it.\n\
 file\n\
        File name or alias name.\n\
 -q, --quiet\n\
