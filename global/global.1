@@ -310,6 +310,7 @@ Configuration file. The default is \'$HOME/.globalrc\'.
 \fBGTAGSDBPATH\fP
 The directory in which the tag files exist.
 This value is ignored when \fBGTAGSROOT\fP is not defined.
+Use of this variable is not recommended.
 .TP
 \fBGTAGSFORCECPP\fP
 If this variable is set, each file whose suffix is \'.h\' is treated
@@ -331,6 +332,8 @@ of a log file. There is no default value.
 .TP
 \fBGTAGSROOT\fP
 The root directory of the project.
+Usually, it is recognized by existence of \'GTAGS\'.
+Use of this variable is not recommended.
 .TP
 \fBGTAGSTHROUGH\fP
 If this variable is set, the \fB-T\fP option is specified.
@@ -350,7 +353,8 @@ icase_path (boolean)
 Ignore case distinctions in \fIpattern\fP.
 .PP
 Addition to these, the variables listed in the ENVIRONMENT section except for
-GTAGSCONF and GTAGSLABEL are also available as configuration variables.
+GTAGSCONF, GTAGSLABEL, GTAGSROOT and GTAGSDBPATH  are also available
+as configuration variables.
 Each environment variable is given more priority than configuration variable
 of the same name.
 .SH DIAGNOSTICS

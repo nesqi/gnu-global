@@ -21,7 +21,7 @@ dnl
 dnl You should have received a copy of the GNU General Public License
 dnl along with this program.  If not, see <http://www.gnu.org/licenses/>.
 dnl
-AC_INIT([GNU GLOBAL],[6.3])
+AC_INIT([GNU GLOBAL],[6.3.1])
 AC_CONFIG_SRCDIR(global/global.c)
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_PREREQ(2.59)
@@ -342,10 +342,15 @@ AC_SUBST(DEFAULTLANGMAP)
 AC_SUBST(DEFAULTINCLUDEFILESUFFIXES)
 
 dnl
-dnl Quoted langmap. It is only for gtags.conf.
+dnl Quoted langmap & prefix. It is only for gtags.conf.
 dnl
 DEFAULTLANGMAP_QUOTED=`echo $DEFAULTLANGMAP | sed 's/:/\\\\:/g'`
+case "$prefix" in
+NONE)   prefix_QUOTED=`echo $ac_default_prefix | sed 's/:/\\\\:/g'`;;
+*)      prefix_QUOTED=`echo $prefix | sed 's/:/\\\\:/g'`;;
+esac
 AC_SUBST(DEFAULTLANGMAP_QUOTED)
+AC_SUBST(prefix_QUOTED)
 
 AC_CONFIG_FILES([Makefile
 	gtags.conf
