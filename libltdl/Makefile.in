@@ -191,6 +191,11 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
 AMTAR = @AMTAR@
+
+# -I$(srcdir) is needed for user that built libltdl with a sub-Automake
+# (not as a sub-package!) using 'nostdinc':
+AM_CPPFLAGS = -DLT_CONFIG_H='<$(LT_CONFIG_H)>' -DLTDL -I. -I$(srcdir) \
+	-Ilibltdl -I$(srcdir)/libltdl -I$(srcdir)/libltdl
 AR = @AR@
 ARGZ_H = @ARGZ_H@
 AUTOCONF = @AUTOCONF@
@@ -225,7 +230,6 @@ EXUBERANT_CTAGS = @EXUBERANT_CTAGS@
 FGREP = @FGREP@
 GREP = @GREP@
 INCLTDL = @INCLTDL@
-INCLUDES = @INCLUDES@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -334,11 +338,6 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 ACLOCAL_AMFLAGS = -I m4
 AUTOMAKE_OPTIONS = foreign
-
-# -I$(srcdir) is needed for user that built libltdl with a sub-Automake
-# (not as a sub-package!) using 'nostdinc':
-AM_CPPFLAGS = -DLT_CONFIG_H='<$(LT_CONFIG_H)>' -DLTDL -I. -I$(srcdir) \
-	-Ilibltdl -I$(srcdir)/libltdl -I$(srcdir)/libltdl
 AM_LDFLAGS = -no-undefined
 BUILT_SOURCES = $(ARGZ_H)
 include_HEADERS = $(am__append_1)

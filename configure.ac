@@ -21,7 +21,7 @@ dnl
 dnl You should have received a copy of the GNU General Public License
 dnl along with this program.  If not, see <http://www.gnu.org/licenses/>.
 dnl
-AC_INIT([GNU GLOBAL],[6.2.5])
+AC_INIT([GNU GLOBAL],[6.2.6])
 AC_CONFIG_SRCDIR(global/global.c)
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_PREREQ(2.59)
@@ -31,7 +31,6 @@ dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
-AC_PROG_RANLIB
 AM_PATH_LISPDIR
 dnl
 dnl Currently, the absolute path name of perl is required only for CGI script.
@@ -105,6 +104,7 @@ fi
 
 dnl Checks for library functions.
 AC_FUNC_ALLOCA
+AC_FUNC_MMAP
 AC_FUNC_MEMCMP
 AC_TYPE_SIGNAL
 AC_FUNC_STRFTIME
@@ -158,7 +158,7 @@ dnl 	;;
 dnl esac
 dnl #### end of gtags-cscope ###
 
-INCLUDES='-I$(top_srcdir)/libparser $(LTDLINCL) -I$(top_srcdir)/libutil -I$(top_srcdir)/libdb -I$(top_srcdir)/libglibc -I../libutil'
+AM_CPPFLAGS='-I$(top_srcdir)/libparser $(LTDLINCL) -I$(top_srcdir)/libutil -I$(top_srcdir)/libdb -I$(top_srcdir)/libglibc -I../libutil'
 DBLIBRARY='../libdb/libglodb.a'
 
 dnl
@@ -178,7 +178,7 @@ AC_ARG_WITH(db185-compat,
 			if ! test -r $withval/include/db_185.h; then
 				AC_MSG_ERROR([header $withval/include/db_185.h not found.])
 			fi
-			INCLUDES="$INCLUDES -I$withval/include"
+			AM_CPPFLAGS="$AM_CPPFLAGS -I$withval/include"
 			#LDFLAGS="$LDFLAGS -L$withval/lib"
 			;;
 		esac
@@ -211,7 +211,7 @@ AC_ARG_WITH(home-etc,
 		if ! test -f $HOMEETC/include/home_etc.h; then
                         AC_MSG_ERROR([header '$HOMEETC/include/home_etc.h' not found.])
                 fi
-                INCLUDES="$INCLUDES -I$HOMEETC/include"
+                AM_CPPFLAGS="$AM_CPPFLAGS -I$HOMEETC/include"
                 LDFLAGS="$LDFLAGS -L$HOMEETC/lib -lhome_etc"
                 AC_DEFINE(HAVE_HOME_ETC_H,1,[Define if you use home-etc facility.])
                 AC_MSG_RESULT([yes, using $HOMEETC])
@@ -267,6 +267,16 @@ AC_ARG_WITH(exuberant-ctags,
 		AC_MSG_RESULT([using $EXUBERANT_CTAGS])
 	fi
 ])
+if test ${EXUBERANT_CTAGS} != no && test -x ${EXUBERANT_CTAGS}; then
+	AC_MSG_CHECKING(whether exuberant ctags --gtags works)
+	if (sh -c "${EXUBERANT_CTAGS} --gtags -x /dev/null") > /dev/null 2>&1; then
+		AC_DEFINE(USE_TYPE_STRING,1,[Define if ctags --gtags option is available.])
+		AC_MSG_RESULT(yes)
+	else
+		AC_MSG_RESULT(no)
+	fi
+fi
+
 AC_DEFINE_UNQUOTED(EXUBERANT_CTAGS, "$EXUBERANT_CTAGS", [Exuberant Ctags program.])
 AC_SUBST(EXUBERANT_CTAGS)
 
@@ -302,7 +312,7 @@ AC_ARG_WITH(posix-sort,
 AC_DEFINE_UNQUOTED(POSIX_SORT, "$POSIX_SORT", [POSIX sort program.])
 AC_SUBST(POSIX_SORT)
 
-AC_SUBST(INCLUDES)
+AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(LDADD)
 AC_SUBST(LDFLAGS)
 

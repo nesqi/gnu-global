@@ -101,6 +101,9 @@
 /* Define to 1 if you have the `getc_unlocked' function. */
 #undef HAVE_GETC_UNLOCKED
 
+/* Define to 1 if you have the `getpagesize' function. */
+#undef HAVE_GETPAGESIZE
+
 /* Define to 1 if you have the `getrusage' function. */
 #undef HAVE_GETRUSAGE
 
@@ -145,6 +148,9 @@
 
 /* Define to 1 if you have the `memset' function. */
 #undef HAVE_MEMSET
+
+/* Define to 1 if you have a working `mmap' system call. */
+#undef HAVE_MMAP
 
 /* Define to 1 if you have the <ndir.h> header file, and it defines `DIR'. */
 #undef HAVE_NDIR_H
@@ -228,6 +234,9 @@
 /* Define to 1 if you have the <sys/ndir.h> header file, and it defines `DIR'.
    */
 #undef HAVE_SYS_NDIR_H
+
+/* Define to 1 if you have the <sys/param.h> header file. */
+#undef HAVE_SYS_PARAM_H
 
 /* Define to 1 if you have the <sys/resource.h> header file. */
 #undef HAVE_SYS_RESOURCE_H
@@ -372,6 +381,9 @@
 
 /* Use SystemV curses? */
 #undef USE_SYSV_CURSES
+
+/* Define if ctags --gtags option is available. */
+#undef USE_TYPE_STRING
 
 /* Version number of package */
 #undef VERSION

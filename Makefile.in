@@ -57,7 +57,7 @@ DIST_COMMON = README $(am__configure_deps) $(srcdir)/Doxyfile.in \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/config-h.in $(srcdir)/gtags.conf.in \
 	$(top_srcdir)/configure AUTHORS COPYING COPYING.LIB ChangeLog \
-	INSTALL NEWS THANKS config.guess config.sub depcomp install-sh \
+	INSTALL NEWS THANKS config.guess config.sub install-sh \
 	ltmain.sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
@@ -170,6 +170,7 @@ distcleancheck_listfiles = find . -type f -print
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
 AMTAR = @AMTAR@
+AM_CPPFLAGS = @AM_CPPFLAGS@
 AR = @AR@
 ARGZ_H = @ARGZ_H@
 AUTOCONF = @AUTOCONF@
@@ -204,7 +205,6 @@ EXUBERANT_CTAGS = @EXUBERANT_CTAGS@
 FGREP = @FGREP@
 GREP = @GREP@
 INCLTDL = @INCLTDL@
-INCLUDES = @INCLUDES@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@

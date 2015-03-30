@@ -12,9 +12,11 @@
 #
 bin_PROGRAMS= global
 
-global_SOURCES = global.c
+global_SOURCES = global.c literal.c
 
-INCLUDES = @INCLUDES@
+noinst_HEADERS = literal.h
+
+AM_CPPFLAGS = @AM_CPPFLAGS@
 
 LDADD = @LDADD@
 

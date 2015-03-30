@@ -23,7 +23,7 @@ File: global.info,  Node: Top,  Next: Introduction,  Up: (dir)
 GNU GLOBAL source code tag system
 *********************************
 
-This manual documents version 6.2.5 of the GNU GLOBAL source code tag
+This manual documents version 6.2.6 of the GNU GLOBAL source code tag
 system.
 
 * Menu:
@@ -88,15 +88,15 @@ GNU GLOBAL has following features:
 
         - Doxygen documentation system
 
-   * find the locations of specified object quickly.
+   * find locations of specified symbol quickly.
 
-   * locate not only object definitions but also object references.
+   * locate not only definitions but also references.
 
    * allows duplicate objects.
 
-   * locate path names which include specified pattern.
+   * locate paths which matches to the specified pattern.
 
-   * hierarchical search is available.
+   * hierarchical search by default.
 
    * search not only in a source project but also in library projects.
 
@@ -119,6 +119,18 @@ GNU GLOBAL has following features:
    * support customizing with `gtags.conf'.
 
    * generate a hypertext of source code.
+
+   * compact format to save disk space.
+
+   * customizing using a configuration file (gtags.conf).
+
+   * support client/server environment (TRAMP ready).
+
+   * ignore binary files, dot files and specified files.
+
+   * include cscope compatible program (gtags-cscope).
+
+   * include grep like command (-g command).
 
 
 File: global.info,  Node: Global,  Next: Applications,  Prev: Introduction,  Up: Top
@@ -3892,57 +3904,57 @@ Option Index
 Tag Table:
 Node: Top765
 Node: Introduction1457
-Node: Global3783
-Node: Preparation4210
-Node: Basic usage5491
-Node: Applied usage10579
-Node: Applications15506
-Node: GloBash16212
-Node: Features(globash)16498
-Node: Preparation(globash)16840
-Node: Usage(globash)17915
-Node: Less viewer23864
-Node: Features(Less)24248
-Node: Preparation(Less)24473
-Node: Usage(Less)24823
-Node: Nvi-1.81.5 editor27272
-Node: Features(Nvi-1.81.5)27652
-Node: Preparation(Nvi-1.81.5)27910
-Node: Usage(Nvi-1.81.5)28648
-Node: Elvis editor30510
-Node: Features(Elvis)30965
-Node: Preparation(Elvis)31171
-Node: Usage(Elvis)31576
-Node: Vim editor34554
-Node: Features(Vim)34912
-Node: Preparation(Vim)35368
-Node: Usage(Vim)35720
-Node: Emacs editor39637
-Node: Features(Emacs)40031
-Node: Preparation(Emacs)40366
-Node: Usage(Emacs)41541
-Node: Gtags-cscope (fake cscope)44908
-Node: Web browser45517
-Node: Features(browser)45910
-Node: Preparation(browser)46401
-Node: Usage(browser)47581
-Node: Doxygen documentation system48370
-Node: Other topics49087
-Node: Configuration49399
-Node: Plug-in50099
-Node: Incremental updating50448
-Node: Reference51633
-Node: global52212
-Node: gtags61353
-Node: htags67693
-Node: gozilla78461
-Node: gtags-cscope81171
-Node: globash92359
-Node: Copying This Manual93588
-Node: GNU Free Documentation License93834
-Node: Business Model116244
-Node: The BOKIN Model Definition116539
-Node: Frequently Asked Questions120737
-Node: Index124150
+Node: Global4080
+Node: Preparation4507
+Node: Basic usage5788
+Node: Applied usage10876
+Node: Applications15803
+Node: GloBash16509
+Node: Features(globash)16795
+Node: Preparation(globash)17137
+Node: Usage(globash)18212
+Node: Less viewer24161
+Node: Features(Less)24545
+Node: Preparation(Less)24770
+Node: Usage(Less)25120
+Node: Nvi-1.81.5 editor27569
+Node: Features(Nvi-1.81.5)27949
+Node: Preparation(Nvi-1.81.5)28207
+Node: Usage(Nvi-1.81.5)28945
+Node: Elvis editor30807
+Node: Features(Elvis)31262
+Node: Preparation(Elvis)31468
+Node: Usage(Elvis)31873
+Node: Vim editor34851
+Node: Features(Vim)35209
+Node: Preparation(Vim)35665
+Node: Usage(Vim)36017
+Node: Emacs editor39934
+Node: Features(Emacs)40328
+Node: Preparation(Emacs)40663
+Node: Usage(Emacs)41838
+Node: Gtags-cscope (fake cscope)45205
+Node: Web browser45814
+Node: Features(browser)46207
+Node: Preparation(browser)46698
+Node: Usage(browser)47878
+Node: Doxygen documentation system48667
+Node: Other topics49384
+Node: Configuration49696
+Node: Plug-in50396
+Node: Incremental updating50745
+Node: Reference51930
+Node: global52509
+Node: gtags61650
+Node: htags67990
+Node: gozilla78758
+Node: gtags-cscope81468
+Node: globash92656
+Node: Copying This Manual93885
+Node: GNU Free Documentation License94131
+Node: Business Model116541
+Node: The BOKIN Model Definition116836
+Node: Frequently Asked Questions121034
+Node: Index124447
 
 End Tag Table
