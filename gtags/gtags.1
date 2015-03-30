@@ -67,15 +67,13 @@ If \fIdbpath\fP is specified, this option is ignored.
 .TP
 \fB--single-update\fP \fIfile\fP
 Update tag files for single file.
-It is considered that \fIfile\fP was updated, and other files were not
-updated.  The \fIfile\fP must be relative path name from the current directory.
+It is considered that \fIfile\fP was updated, and other files were not updated.
 This option implies the -i option.
 If the \fIfile\fP is new then \fB--single-update\fP is ignored,
 and the processing is automatically switched to normal incremental updating.
 .TP
 \fB--statistics\fP
 Print statistics information.
-This option is valid only for normal creation of tag files.
 .TP
 \fB-q\fP, \fB--quiet\fP
 Quiet mode.
@@ -106,7 +104,7 @@ Tag file for object definitions.
 Tag file for object references.
 .TP
 \'GPATH\'
-Tag file for path of source files.
+Tag file for path names.
 .TP
 \'$HOME/.globalrc\', \'/etc/gtags.conf\', \'[sysconfdir]/gtags.conf\'
 Configuration files.
@@ -150,7 +148,7 @@ As a special exception, \fBgtags\fP collects values from multiple langmap variab
 Default mapping is 'c:.c.h,yacc:.y,asm:.s.S,java:.java,cpp:.c++.cc.hh.cpp.cxx.hxx.hpp.C.H,php:.php.php3.phtml'.
 .TP
 gtags_parser(comma separated list)
-Specify the mapping of funtion layer plugin parser.
+Specify the mapping of language names and plugin parsers.
 Each part delimited by the comma consists of the language name, a colon,
 the shared object path, an optional colon followed by a function name.
 If the function name is not specified, 'parser' is assumed.

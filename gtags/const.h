@@ -34,14 +34,12 @@ const char *help_const = "Options:\n\
        If dbpath is specified, this option is ignored.\n\
 --single-update file\n\
        Update tag files for single file.\n\
-       It is considered that file was updated, and other files were not\n\
-       updated.  The file must be relative path name from the current directory.\n\
+       It is considered that file was updated, and other files were not updated.\n\
        This option implies the -i option.\n\
        If the file is new then --single-update is ignored,\n\
        and the processing is automatically switched to normal incremental updating.\n\
 --statistics\n\
        Print statistics information.\n\
-       This option is valid only for normal creation of tag files.\n\
 -q, --quiet\n\
        Quiet mode.\n\
 -v, --verbose\n\

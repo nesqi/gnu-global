@@ -13,8 +13,7 @@ browse through C source files for specified elements of code.
 the source files for the program being browsed. On a subsequent invocation, 
 \fBgtags-cscope\fP rebuilds the cross-reference only if a source file
 has changed or the list of source files is different. When the
-cross-reference is rebuilt, the data for the unchanged files are
-copied from the old cross-reference, which makes rebuilding faster
+cross-reference is rebuilt, it is updated incrementally, which makes rebuilding faster
 than the initial build.
 .SH OPTIONS
 Some command line arguments can only occur as the only argument in
@@ -62,6 +61,7 @@ Do a single search with line-oriented output when used with the
 .TP
 \fB-l\fP
 Line-oriented interface (see ``Line-Oriented Interface'' below).
+This option implies the -d option.
 .TP
 \fB-[0-9]\fP \fIpattern\fP
 Go to input field \fInum\fP (counting from 0) and find 
@@ -72,8 +72,7 @@ Display the last \fIn\fP file path components instead of
 the default (1). Use \fI0\fP not to display the file name at all.
 .TP
 \fB-v\fP
-Be more verbose in line-oriented mode.  Output progress updates during
-database building and searches.
+Be more verbose in line-oriented mode.
 .SH "Requesting the initial search"
 After the cross-reference is ready, \fBgtags-cscope\fP will display this menu:
 .PP
@@ -208,7 +207,7 @@ Display next set of lines.
 -
 Display previous set of lines.
 .TP
-a
+^a
 Mark or unmark all lines to be changed.
 .TP
 ^d

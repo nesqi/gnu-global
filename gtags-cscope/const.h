@@ -30,6 +30,7 @@ const char *help_const = "Options:\n\
        -num pattern option.\n\
 -l\n\
        Line-oriented interface (see ``Line-Oriented Interface'' below).\n\
+       This option implies the -d option.\n\
 -[0-9] pattern\n\
        Go to input field num (counting from 0) and find \n\
        pattern.\n\
@@ -37,8 +38,7 @@ const char *help_const = "Options:\n\
        Display the last n file path components instead of\n\
        the default (1). Use 0 not to display the file name at all.\n\
 -v\n\
-       Be more verbose in line-oriented mode.  Output progress updates during\n\
-       database building and searches.\n\
+       Be more verbose in line-oriented mode.\n\
 See also:\n\
        GNU GLOBAL web site: http://www.gnu.org/software/global/\n\
 ";

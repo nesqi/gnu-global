@@ -7,8 +7,8 @@ END-INFO-DIR-ENTRY
 
    This file documents the GNU GLOBAL source code tag system.
 
-   Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2008, 2010
-Tama Communications Corporation
+   Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2008, 2010,
+2011 Tama Communications Corporation
 
    Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.2 or
@@ -23,7 +23,7 @@ File: global.info,  Node: Top,  Next: Introduction,  Up: (dir)
 GNU GLOBAL source code tag system
 *********************************
 
-This manual documents version 6.0 of the GNU GLOBAL source code tag
+This manual documents version 6.1 of the GNU GLOBAL source code tag
 system.
 
 * Menu:
@@ -2061,15 +2061,13 @@ The following options are available:
 
 `--single-update' file
      Update tag files for single file.  It is considered that file was
-     updated, and other files were not updated.  The file must be
-     relative path name from the current directory.  This option
-     implies the -i option.  If the file is new then `--single-update'
-     is ignored, and the processing is automatically switched to normal
+     updated, and other files were not updated.  This option implies
+     the -i option.  If the file is new then `--single-update' is
+     ignored, and the processing is automatically switched to normal
      incremental updating.
 
 `--statistics'
-     Print statistics information.  This option is valid only for
-     normal creation of tag files.
+     Print statistics information.
 
 `-q', `--quiet'
      Quiet mode.
@@ -2103,7 +2101,7 @@ FILES
      Tag file for object references.
 
 `GPATH'
-     Tag file for path of source files.
+     Tag file for path names.
 
 `$HOME/.globalrc', `/etc/gtags.conf', `[sysconfdir]/gtags.conf'
      Configuration files.
@@ -2153,11 +2151,11 @@ option.
      'c:.c.h,yacc:.y,asm:.s.S,java:.java,cpp:.c++.cc.hh.cpp.cxx.hxx.hpp.C.H,php:.php.php3.phtml'.
 
 `gtags_parser'(comma separated list)
-     Specify the mapping of funtion layer plugin parser.  Each part
-     delimited by the comma consists of the language name, a colon, the
-     shared object path, an optional colon followed by a function name.
-     If the function name is not specified, 'parser' is assumed.  As a
-     special exception, gtags collects values from multiple
+     Specify the mapping of language names and plugin parsers.  Each
+     part delimited by the comma consists of the language name, a colon,
+     the shared object path, an optional colon followed by a function
+     name.  If the function name is not specified, 'parser' is assumed.
+     As a special exception, gtags collects values from multiple
      `gtags_parser' variables.
 
 `skip'(comma separated list)
@@ -2497,29 +2495,6 @@ The following configuration variables affect the execution of htags: If
 the `--xhtml' option is specified then all definitions of HTML tag are
 ignored.  Instead, you can customize the appearance using style sheet
 file (`style.css').
-`body_begin'(string)
-     Begin tag for body. The default is '<body text=#191970
-     bgcolor=#f5f5dc vlink=gray>'.
-
-`body_end'(string)
-     End tag for body. The default is '</body>'.
-
-`brace_begin'(string)
-     Begin tag for brace. The default is '<font color=red>'.
-
-`brace_end'(string)
-     End tag for brace. The default is '</font>'.
-
-`colorize_warned_line'(boolean)
-     Colorize warned line using `warned_line_begin' and
-     `warned_line_end'.  The default is false.
-
-`comment_begin'(string)
-     Begin tag for comments. The default is '<i><font color=green>'.
-
-`comment_end'(string)
-     End tag for comments. The default is '</font></i>'.
-
 `datadir'(string)
      Shared data directory. The default is '/usr/local/share' but you
      can change the value using configure script.  Htags look up
@@ -2527,9 +2502,6 @@ file (`style.css').
 
 `gzipped_suffix'(string)
      Suffix for compressed html file. The default is 'ghtml'.
-
-`hr'(string)
-     Horizontal rules. The default is '<hr>'.
 
 `htags_options'(string)
      Default options for htags. This value is inserted into the head of
@@ -2550,48 +2522,11 @@ file (`style.css').
 `normal_suffix'(string)
      Suffix for normal html file. The default is 'html'.
 
-`position_begin'(string)
-     Begin tag for position mark. The default is '<font color=gray>'.
-
-`position_end'(string)
-     End tag for position mark. The default is '</font>'.
-
-`reserved_begin'(string)
-     Begin tag for reserved word. The default is '<b>'.
-
-`reserved_end'(string)
-     End tag for reserved word. The default is '</b>'.
-
 `script_alias'(string)
      Script alias for system cgi script (`--system-cgi').
 
-`sharp_begin'(string)
-     Begin tag for 'define'. The default is '<font color=darkred>'.
-
-`sharp_end'(string)
-     End tag for 'define'. The default is '</font>'.
-
-`table_begin'(string)
-     Begin tag for table. The default is '<table>'.
-
-`table_end'(string)
-     End tag for table. The default is '</table>'.
-
 `tabs'(number)
      Tab stop. The default is 8.
-
-`title_begin'(string)
-     Begin tag for Title. The default is '<h1><font color=#cc0000>'.
-
-`title_end'(string)
-     End tag for Title. The default is '</font></h1>'.
-
-`warned_line_begin'(string)
-     Begin tag for line which htags warned. The default is '<span
-     style="background-color:yellow">'.
-
-`warned_line_end'(string)
-     End tag for line which htags warned. The default is '</span>'.
 
 `xhtml_version'(1.0|1.1)
      XHTML version. 1.0 and 1.1 are acceptable. The default is 1.0.
@@ -2750,11 +2685,6 @@ global(1), gtags(1), htags(1), firefox(1), epiphany(1), mozilla(1).
    GNU GLOBAL source code tag system
 (http://www.gnu.org/software/global/).
 
-NOTES
------
-
-Gozilla means 'Global for mozilla'.
-
 BUGS
 ----
 
@@ -2798,9 +2728,8 @@ user to browse through C source files for specified elements of code.
 used on the source files for the program being browsed. On a subsequent
 invocation, gtags-cscope rebuilds the cross-reference only if a source
 file has changed or the list of source files is different. When the
-cross-reference is rebuilt, the data for the unchanged files are copied
-from the old cross-reference, which makes rebuilding faster than the
-initial build.
+cross-reference is rebuilt, it is updated incrementally, which makes
+rebuilding faster than the initial build.
 
 OPTIONS
 -------
@@ -2848,6 +2777,7 @@ some output and exit immediately:
 
 `-l'
      Line-oriented interface (see "Line-Oriented Interface" below).
+     This option implies the -d option.
 
 `-[0-9]' pattern
      Go to input field num (counting from 0) and find pattern.
@@ -2857,8 +2787,7 @@ some output and exit immediately:
      (1). Use 0 not to display the file name at all.
 
 `-v'
-     Be more verbose in line-oriented mode.  Output progress updates
-     during database building and searches.
+     Be more verbose in line-oriented mode.
 
 Requesting the initial search
 -----------------------------
@@ -2994,7 +2923,7 @@ commands:
 -
      Display previous set of lines.
 
-a
+^a
      Mark or unmark all lines to be changed.
 
 ^d
@@ -3950,59 +3879,59 @@ Option Index
 
 
 Tag Table:
-Node: Top759
-Node: Introduction1449
-Node: Global3775
-Node: Preparation4202
-Node: Basic usage5482
-Node: Applied usage10570
-Node: Applications15497
-Node: GloBash16203
-Node: Features(globash)16489
-Node: Preparation(globash)16831
-Node: Usage(globash)17906
-Node: Less viewer23855
-Node: Features(Less)24239
-Node: Preparation(Less)24464
-Node: Usage(Less)24814
-Node: Nvi-1.81.5 editor27263
-Node: Features(Nvi-1.81.5)27643
-Node: Preparation(Nvi-1.81.5)27901
-Node: Usage(Nvi-1.81.5)28639
-Node: Elvis editor30501
-Node: Features(Elvis)30956
-Node: Preparation(Elvis)31162
-Node: Usage(Elvis)31567
-Node: Vim editor34545
-Node: Features(Vim)34903
-Node: Preparation(Vim)35359
-Node: Usage(Vim)35711
-Node: Emacs editor39628
-Node: Features(Emacs)40022
-Node: Preparation(Emacs)40357
-Node: Usage(Emacs)41532
-Node: Gtags-cscope (fake cscope)44899
-Node: Web browser45508
-Node: Features(browser)45901
-Node: Preparation(browser)46392
-Node: Usage(browser)47572
-Node: Doxygen documentation system48361
-Node: Other topics49078
-Node: Configuration49390
-Node: Plug-in50090
-Node: Incremental updating50439
-Node: Reference51624
-Node: global52203
-Node: gtags61095
-Node: htags67603
-Node: gozilla80131
-Node: gtags-cscope82891
-Node: globash94107
-Node: Copying This Manual95336
-Node: GNU Free Documentation License95582
-Node: Business Model117992
-Node: The BOKIN Model Definition118287
-Node: Frequently Asked Questions122485
-Node: Index125898
+Node: Top765
+Node: Introduction1455
+Node: Global3781
+Node: Preparation4208
+Node: Basic usage5488
+Node: Applied usage10576
+Node: Applications15503
+Node: GloBash16209
+Node: Features(globash)16495
+Node: Preparation(globash)16837
+Node: Usage(globash)17912
+Node: Less viewer23861
+Node: Features(Less)24245
+Node: Preparation(Less)24470
+Node: Usage(Less)24820
+Node: Nvi-1.81.5 editor27269
+Node: Features(Nvi-1.81.5)27649
+Node: Preparation(Nvi-1.81.5)27907
+Node: Usage(Nvi-1.81.5)28645
+Node: Elvis editor30507
+Node: Features(Elvis)30962
+Node: Preparation(Elvis)31168
+Node: Usage(Elvis)31573
+Node: Vim editor34551
+Node: Features(Vim)34909
+Node: Preparation(Vim)35365
+Node: Usage(Vim)35717
+Node: Emacs editor39634
+Node: Features(Emacs)40028
+Node: Preparation(Emacs)40363
+Node: Usage(Emacs)41538
+Node: Gtags-cscope (fake cscope)44905
+Node: Web browser45514
+Node: Features(browser)45907
+Node: Preparation(browser)46398
+Node: Usage(browser)47578
+Node: Doxygen documentation system48367
+Node: Other topics49084
+Node: Configuration49396
+Node: Plug-in50096
+Node: Incremental updating50445
+Node: Reference51630
+Node: global52209
+Node: gtags61101
+Node: htags67469
+Node: gozilla78237
+Node: gtags-cscope80947
+Node: globash92090
+Node: Copying This Manual93319
+Node: GNU Free Documentation License93565
+Node: Business Model115975
+Node: The BOKIN Model Definition116270
+Node: Frequently Asked Questions120468
+Node: Index123881
 
 End Tag Table

@@ -278,28 +278,6 @@ HTML tag are ignored.
 Instead, you can customize the appearance using style sheet file
 (\'style.css\').
 .TP
-body_begin(string)
-Begin tag for body. The default is '<body text=#191970 bgcolor=#f5f5dc vlink=gray>'.
-.TP
-body_end(string)
-End tag for body. The default is '</body>'.
-.TP
-brace_begin(string)
-Begin tag for brace. The default is '<font color=red>'.
-.TP
-brace_end(string)
-End tag for brace. The default is '</font>'.
-.TP
-colorize_warned_line(boolean)
-Colorize warned line using warned_line_begin and warned_line_end.
-The default is false.
-.TP
-comment_begin(string)
-Begin tag for comments. The default is '<i><font color=green>'.
-.TP
-comment_end(string)
-End tag for comments. The default is '</font></i>'.
-.TP
 datadir(string)
 Shared data directory. The default is '/usr/local/share' but
 you can change the value using configure script.
@@ -308,9 +286,6 @@ in this data directory.
 .TP
 gzipped_suffix(string)
 Suffix for compressed html file. The default is 'ghtml'.
-.TP
-hr(string)
-Horizontal rules. The default is '<hr>'.
 .TP
 htags_options(string)
 Default options for \fBhtags\fP. This value is inserted into
@@ -330,47 +305,11 @@ Columns of line number. The default is 4.
 normal_suffix(string)
 Suffix for normal html file. The default is 'html'.
 .TP
-position_begin(string)
-Begin tag for position mark. The default is '<font color=gray>'.
-.TP
-position_end(string)
-End tag for position mark. The default is '</font>'.
-.TP
-reserved_begin(string)
-Begin tag for reserved word. The default is '<b>'.
-.TP
-reserved_end(string)
-End tag for reserved word. The default is '</b>'.
-.TP
 script_alias(string)
 Script alias for system cgi script (\fB--system-cgi\fP).
 .TP
-sharp_begin(string)
-Begin tag for 'define'. The default is '<font color=darkred>'.
-.TP
-sharp_end(string)
-End tag for 'define'. The default is '</font>'.
-.TP
-table_begin(string)
-Begin tag for table. The default is '<table>'.
-.TP
-table_end(string)
-End tag for table. The default is '</table>'.
-.TP
 tabs(number)
 Tab stop. The default is 8.
-.TP
-title_begin(string)
-Begin tag for Title. The default is '<h1><font color=#cc0000>'.
-.TP
-title_end(string)
-End tag for Title. The default is '</font></h1>'.
-.TP
-warned_line_begin(string)
-Begin tag for line which htags warned. The default is '<span style="background-color:yellow">'.
-.TP
-warned_line_end(string)
-End tag for line which htags warned. The default is '</span>'.
 .TP
 xhtml_version(1.0|1.1)
 XHTML version. 1.0 and 1.1 are acceptable. The default is 1.0.
