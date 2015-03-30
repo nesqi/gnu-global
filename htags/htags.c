@@ -1043,10 +1043,10 @@ makecommonpart(const char *title, const char *defines, const char *files)
 			if (caution) {
 				strbuf_puts_nl(sb, caution_begin);
 				strbuf_sprintf(sb, "<font size='+2' color='red'>CAUTION</font>%s\n", br);
-				strbuf_sprintf(sb, "This hypertext consist of %d files.\n", html_count);
-				strbuf_puts_nl(sb, "Please don't download whole hypertext using hypertext copy tools.");
+				strbuf_sprintf(sb, "This hypertext consists of %d files.\n", html_count);
+				strbuf_puts_nl(sb, "Please don't download the whole hypertext using a hypertext copy tool.");
 				strbuf_puts_nl(sb, "Our network cannot afford such traffic.");
-				strbuf_puts_nl(sb, "Instead, you can generate same thing in your computer using");
+				strbuf_puts_nl(sb, "Instead, you can generate the same thing in your computer using");
 				strbuf_puts(sb, gen_href_begin_with_title_target(NULL, www, NULL, NULL, NULL, "_top"));
 				strbuf_puts(sb, "GLOBAL source code tag system");
 				strbuf_puts_nl(sb, gen_href_end());
@@ -1408,6 +1408,7 @@ main(int argc, char **argv)
 				STATIC_STRBUF(sb);
 				if (!test("r", optarg))
 					die("file '%s' not found.", optarg);
+				strbuf_clear(sb);
 				loadfile_asis(optarg, sb);
 				html_header = strbuf_value(sb);
 			}
