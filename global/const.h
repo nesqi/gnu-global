@@ -99,6 +99,11 @@ Options:\n\
        The --result=ctags and --result=ctags-x are\n\
        equivalent to the -t and -x respectively.\n\
        The --result option is given more priority than the -t and -x options.\n\
+--single-update file\n\
+       Update tag files incrementally using gtags(1) with --single-update option.\n\
+       It is considered that file was added or updated,\n\
+       and there is no change in other files.\n\
+       This option implies the -u option.\n\
 -s, --symbol\n\
        Print locations of the specified symbol other than definitions.\n\
 -T, --through\n\

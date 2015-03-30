@@ -23,7 +23,7 @@ File: global.info,  Node: Top,  Next: Introduction,  Up: (dir)
 GNU GLOBAL source code tag system
 *********************************
 
-This manual documents version 6.2.2 of the GNU GLOBAL source code tag
+This manual documents version 6.2.4 of the GNU GLOBAL source code tag
 system.
 
 * Menu:
@@ -1844,6 +1844,12 @@ The following options are available:
      and `-x' respectively.  The `--result' option is given more
      priority than the -t and -x options.
 
+`--single-update' file
+     Update tag files incrementally using gtags(1) with
+     `--single-update' option.  It is considered that file was added or
+     updated, and there is no change in other files.  This option
+     implies the `-u' option.
+
 `-s', `--symbol'
      Print locations of the specified symbol other than definitions.
 
@@ -2065,10 +2071,8 @@ The following options are available:
 
 `--single-update' file
      Update tag files for single file.  It is considered that file was
-     updated, and other files were not updated.  This option implies
-     the -i option.  If the file is new then `--single-update' is
-     ignored, and the processing is automatically switched to normal
-     incremental updating.
+     added or updated, and there is no change in other files.  This
+     option implies the -i option.
 
 `--statistics'
      Print statistics information.
@@ -3929,16 +3933,16 @@ Node: Plug-in50099
 Node: Incremental updating50448
 Node: Reference51633
 Node: global52212
-Node: gtags61105
-Node: htags67573
-Node: gozilla78341
-Node: gtags-cscope81051
-Node: globash92239
-Node: Copying This Manual93468
-Node: GNU Free Documentation License93714
-Node: Business Model116124
-Node: The BOKIN Model Definition116419
-Node: Frequently Asked Questions120617
-Node: Index124030
+Node: gtags61353
+Node: htags67693
+Node: gozilla78461
+Node: gtags-cscope81171
+Node: globash92359
+Node: Copying This Manual93588
+Node: GNU Free Documentation License93834
+Node: Business Model116244
+Node: The BOKIN Model Definition116539
+Node: Frequently Asked Questions120737
+Node: Index124150
 
 End Tag Table

@@ -1,5 +1,5 @@
 .\" This file is generated automatically by convert.pl from global/manual.in.
-.TH GLOBAL 1 "September 2011" "GNU Project"
+.TH GLOBAL 1 "May 2012" "GNU Project"
 .SH NAME
 global \- print locations of the specified object.
 .SH SYNOPSIS
@@ -158,6 +158,12 @@ The default is \fIpath\fP.
 The \fB--result=ctags\fP and \fB--result=ctags-x\fP are
 equivalent to the \fB-t\fP and \fB-x\fP respectively.
 The \fB--result\fP option is given more priority than the -t and -x options.
+.TP
+\fB--single-update\fP \fIfile\fP
+Update tag files incrementally using \fBgtags\fP(1) with \fB--single-update\fP option.
+It is considered that \fIfile\fP was added or updated,
+and there is no change in other files.
+This option implies the \fB-u\fP option.
 .TP
 \fB-s\fP, \fB--symbol\fP
 Print locations of the specified symbol other than definitions.
