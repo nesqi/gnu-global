@@ -27,15 +27,15 @@
 		/** max length of filter	*/
 #define MAXFILLEN	1024
 		/** max length of ident		*/
-#define IDENTLEN	512
+#define IDENTLEN	4096
 		/** max length of buffer	*/
-#define MAXBUFLEN	1024
+#define MAXBUFLEN	4096
 		/** max length of property	*/
 #define MAXPROPLEN	1024
 		/** max length of argument	*/
-#define MAXARGLEN	512
+#define MAXARGLEN	4096
 		/** max length of token		*/
-#define MAXTOKEN	512
+#define MAXTOKEN	4096
 		/** max length of fid		*/
 #define MAXFIDLEN	32
 
