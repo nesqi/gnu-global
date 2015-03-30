@@ -21,7 +21,7 @@ dnl
 dnl You should have received a copy of the GNU General Public License
 dnl along with this program.  If not, see <http://www.gnu.org/licenses/>.
 dnl
-AC_INIT([GNU GLOBAL],[6.2])
+AC_INIT([GNU GLOBAL],[6.2.1])
 AC_CONFIG_SRCDIR(global/global.c)
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_PREREQ(2.59)
@@ -262,6 +262,11 @@ AC_ARG_WITH(exuberant-ctags,
 		AC_MSG_RESULT([using $EXUBERANT_CTAGS])
 	fi
 ])
+AC_ARG_ENABLE(gtagscscope,
+[  --disable-gtagscscope   omit gtags-cscope],,
+enable_gtagscscope=yes)
+AM_CONDITIONAL([USE_GTAGSCSCOPE], [test "$enable_gtagscscope" != no])
+
 AC_DEFINE_UNQUOTED(EXUBERANT_CTAGS, "$EXUBERANT_CTAGS", [Exuberant Ctags program.])
 AC_SUBST(EXUBERANT_CTAGS)
 
