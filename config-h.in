@@ -354,6 +354,9 @@
 /* Use Ncurses? */
 #undef USE_NCURSES
 
+/* Define if you use sqlite3 API. */
+#undef USE_SQLITE3
+
 /* Use SunOS SysV curses? */
 #undef USE_SUNOS_CURSES
 

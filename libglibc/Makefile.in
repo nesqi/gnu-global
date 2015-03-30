@@ -81,7 +81,7 @@ build_triplet = @build@
 host_triplet = @host@
 subdir = libglibc
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
-	$(top_srcdir)/depcomp $(noinst_HEADERS)
+	$(top_srcdir)/depcomp $(am__noinst_HEADERS_DIST)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
 	$(top_srcdir)/m4/check_djgpp.m4 \
@@ -100,9 +100,13 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 libgloglibc_a_AR = $(AR) $(ARFLAGS)
 libgloglibc_a_LIBADD =
-am_libgloglibc_a_OBJECTS = regex.$(OBJEXT) getopt.$(OBJEXT) \
-	getopt1.$(OBJEXT) snprintf.$(OBJEXT) obstack.$(OBJEXT) \
-	hash-string.$(OBJEXT)
+am__libgloglibc_a_SOURCES_DIST = regex.c getopt.c getopt1.c snprintf.c \
+	obstack.c hash-string.c sqlite3.c
+am__objects_1 = regex.$(OBJEXT) getopt.$(OBJEXT) getopt1.$(OBJEXT) \
+	snprintf.$(OBJEXT) obstack.$(OBJEXT) hash-string.$(OBJEXT)
+@USE_SQLITE3_FALSE@am_libgloglibc_a_OBJECTS = $(am__objects_1)
+@USE_SQLITE3_TRUE@am_libgloglibc_a_OBJECTS = $(am__objects_1) \
+@USE_SQLITE3_TRUE@	sqlite3.$(OBJEXT)
 libgloglibc_a_OBJECTS = $(am_libgloglibc_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -143,12 +147,14 @@ am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(libgloglibc_a_SOURCES)
-DIST_SOURCES = $(libgloglibc_a_SOURCES)
+DIST_SOURCES = $(am__libgloglibc_a_SOURCES_DIST)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
+am__noinst_HEADERS_DIST = regex.h getopt.h obstack.h hash-string.h \
+	getopt_int.h sqlite3.h
 HEADERS = $(noinst_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
@@ -173,7 +179,7 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
 AMTAR = @AMTAR@
-AM_CPPFLAGS = @AM_CPPFLAGS@
+AM_CPPFLAGS = @AM_CPPFLAGS@ -DSQLITE_THREADSAFE=0 -DSQLITE_OMIT_LOAD_EXTENSION
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
 ARGZ_H = @ARGZ_H@
@@ -339,10 +345,12 @@ top_srcdir = @top_srcdir@
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
 noinst_LIBRARIES = libgloglibc.a
-noinst_HEADERS = regex.h getopt.h obstack.h hash-string.h getopt_int.h
-libgloglibc_a_SOURCES = regex.c getopt.c getopt1.c snprintf.c obstack.c \
-		hash-string.c
-
+INCS = regex.h getopt.h obstack.h hash-string.h getopt_int.h
+SRCS = regex.c getopt.c getopt1.c snprintf.c obstack.c hash-string.c
+@USE_SQLITE3_FALSE@noinst_HEADERS = $(INCS)
+@USE_SQLITE3_TRUE@noinst_HEADERS = $(INCS) sqlite3.h
+@USE_SQLITE3_FALSE@libgloglibc_a_SOURCES = $(SRCS)
+@USE_SQLITE3_TRUE@libgloglibc_a_SOURCES = $(SRCS) sqlite3.c
 libgloglibc_a_DEPENDENCIES = $(libgloglibc_a_LIBADD)
 all: all-am
 
@@ -399,24 +407,28 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/obstack.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/regex.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/snprintf.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sqlite3.Po@am__quote@
 
 .c.o:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ $<
 
 .c.obj:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
 .c.lo:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.lo$$||'`;\
+@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<

@@ -23,7 +23,7 @@ File: global.info,  Node: Top,  Next: Introduction,  Up: (dir)
 GNU GLOBAL source code tag system
 *********************************
 
-This manual documents version 6.3.2 of the GNU GLOBAL source code tag
+This manual documents version 6.3.3 of the GNU GLOBAL source code tag
 system.
 
 * Menu:
@@ -1081,7 +1081,7 @@ File: global.info,  Node: Features(Vim),  Next: Preparation(Vim),  Up: Vim edito
    * Special characters '%', '#' and input completion are available.
 
    To our regret, the tag stack facility is not available.  If you want
-to use the facility, please try gtags-cscope.  *Note Gtags-cscope::.
+to use the facility, please try gtags-cscope.vim.  *Note Gtags-cscope::.
 
 
 File: global.info,  Node: Preparation(Vim),  Next: Usage(Vim),  Prev: Features(Vim),  Up: Vim editor
@@ -2684,7 +2684,9 @@ ENVIRONMENT
 -----------
 
 BROWSER
-     Browser to use.  By default, it is assumed mozilla.
+     Browser to use.  By default, it is assumed mozilla.  If you want to
+     load the default browser in OSX, you may set this variable to
+     osx-default.
 GTAGSDBPATH
      The directory in which the tag files exist.  This value is ignored
      when GTAGSROOT is not defined.
@@ -3662,32 +3664,32 @@ Node: Preparation(Elvis)31309
 Node: Usage(Elvis)31713
 Node: Vim editor34682
 Node: Features(Vim)35044
-Node: Preparation(Vim)35491
-Node: Usage(Vim)35843
-Node: Emacs editor39697
-Node: Features(Emacs)40095
-Node: Preparation(Emacs)40427
-Node: Usage(Emacs)41665
-Node: Gtags-cscope44960
-Node: Web browser45745
-Node: Features(browser)46124
-Node: Preparation(browser)46612
-Node: Usage(browser)47795
-Node: Doxygen documentation system48620
-Node: Other topics49340
-Node: Configuration49655
-Node: Plug-in50359
-Node: Incremental updating51328
-Node: Reference52512
-Node: global53164
-Node: gtags65013
-Node: htags72421
-Node: htags-server84743
-Node: gozilla86646
-Node: gtags-cscope89483
-Node: globash100941
-Node: Copying This Manual102102
-Node: GNU Free Documentation License102339
-Node: Index124730
+Node: Preparation(Vim)35495
+Node: Usage(Vim)35847
+Node: Emacs editor39701
+Node: Features(Emacs)40099
+Node: Preparation(Emacs)40431
+Node: Usage(Emacs)41669
+Node: Gtags-cscope44964
+Node: Web browser45749
+Node: Features(browser)46128
+Node: Preparation(browser)46616
+Node: Usage(browser)47799
+Node: Doxygen documentation system48624
+Node: Other topics49344
+Node: Configuration49659
+Node: Plug-in50363
+Node: Incremental updating51332
+Node: Reference52516
+Node: global53168
+Node: gtags65017
+Node: htags72425
+Node: htags-server84747
+Node: gozilla86650
+Node: gtags-cscope89588
+Node: globash101046
+Node: Copying This Manual102207
+Node: GNU Free Documentation License102444
+Node: Index124835
 
 End Tag Table

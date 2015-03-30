@@ -21,11 +21,11 @@ dnl
 dnl You should have received a copy of the GNU General Public License
 dnl along with this program.  If not, see <http://www.gnu.org/licenses/>.
 dnl
-AC_INIT([GNU GLOBAL],[6.3.2])
+AC_INIT([GNU GLOBAL],[6.3.3])
 AC_CONFIG_SRCDIR(global/global.c)
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_PREREQ(2.59)
-AM_INIT_AUTOMAKE([1.9.3 gnu])
+AM_INIT_AUTOMAKE([1.9.3 gnu subdir-objects])
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -192,6 +192,21 @@ AC_ARG_WITH(db185-compat,
 AM_CONDITIONAL([USE_DB185_COMPAT], [test "$with_db185_compat" != no])
 
 LDADD='../libparser/libgloparser.a ../libutil/libgloutil.a '$DBLIBRARY' ../libglibc/libgloglibc.a'
+dnl
+dnl Use sqlite3 API.
+dnl
+AC_MSG_CHECKING(for sqlite3 support)
+AC_ARG_WITH(sqlite3,
+[  --with-sqlite3          use sqlite3 API ],
+[
+	#LDFLAGS="$LDFLAGS -lsqlite3"
+	AC_DEFINE(USE_SQLITE3,1,[Define if you use sqlite3 API.])
+	AM_CONDITIONAL(USE_SQLITE3, true)
+	AC_MSG_RESULT(yes)
+],[
+	AM_CONDITIONAL(USE_SQLITE3, false)
+	AC_MSG_RESULT(no)
+])
 
 dnl
 dnl for home-etc support
