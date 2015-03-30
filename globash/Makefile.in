@@ -581,7 +581,7 @@ uninstall-man: uninstall-man1
 
 
 $(bin_SCRIPTS): $(body)
-	sed -e 's!@DATADIR@!'$(datadir)/gtags'!g' $(body) >$(bin_SCRIPTS).tmp && \
+	sed -e 's!@DATADIR@!'"$(datadir)/gtags"'!g' $(body) >$(bin_SCRIPTS).tmp && \
 	chmod +x $(bin_SCRIPTS).tmp && mv $(bin_SCRIPTS).tmp $(bin_SCRIPTS)
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

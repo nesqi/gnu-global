@@ -28,6 +28,7 @@ Andrs Azar		Cygwin trouble report.
 Andy Newman		bug report about treating tab character.
 Andy Zhou		bug report about gtags-parser overlook 'extern' prefixed function.
 Arne Schmitz		bug report about gtags-parser.
+Alain Kalker		patch for global.cgi.tmpl.in to support python's built-in web server.
 Alex Ott		profitable information about LFS(Large file support).
 Alexander Gusak		bug report about c++ parser's segmentation violation.
 Bakken, Luke		bug fix method about stat() in htags(1).
@@ -83,6 +84,7 @@ Katsuyuki Okabe		advice about deciding emacs version.
 Klaus Borchers		advice about deciding emacs version.
 Koen Hufkens		advice about HP-UX 10.x.
 Koie Hidetaka		bug report about global.conf.
+Leo Liu			idea about the --path-style=shorter option.
 Marc Herbert		bug fix of libutil/xargs.c.
 Marcello Nuccio		bug report about globash.rc.
 Marco Corvi		advice about Digital Unix 4.0C.

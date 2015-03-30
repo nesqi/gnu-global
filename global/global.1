@@ -141,6 +141,11 @@ Treat not only source files but also text files other than source code
 like \'README\'.
 This option is valid only with the \fB-g\fP or \fB-P\fP command.
 .TP
+\fB--path-style\fP \fIformat\fP
+Print path names using the specified \fIformat\fP.
+\fIformat\fP may be \fIrelative\fP, \fIabsolute\fP, \fIshorter\fP, \fIabslib\fP or \fIthrough\fP.
+The \fB--path-style\fP option is given more priority than the -a options.
+.TP
 \fB--print0\fP
 Print each record followed by a null character instead of a newline.
 .TP

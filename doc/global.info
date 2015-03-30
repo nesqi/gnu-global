@@ -23,7 +23,7 @@ File: global.info,  Node: Top,  Next: Introduction,  Up: (dir)
 GNU GLOBAL source code tag system
 *********************************
 
-This manual documents version 6.2.7 of the GNU GLOBAL source code tag
+This manual documents version 6.2.8 of the GNU GLOBAL source code tag
 system.
 
 * Menu:
@@ -1643,7 +1643,7 @@ File: global.info,  Node: Plug-in,  Next: Incremental updating,  Prev: Configura
 You can write new parser for gtags(1).
 
    Command layer plug-in parser was abolished.  Please write function
-layer plug-in parser instead.  See `plugin-example/' to know function
+layer plug-in parser instead.  See `plugin-factory/' to know function
 layer plug-in parser.
 
 
@@ -1837,6 +1837,11 @@ The following options are available:
      Treat not only source files but also text files other than source
      code like `README'.  This option is valid only with the `-g' or
      `-P' command.
+
+`--path-style' format
+     Print path names using the specified format.  format may be
+     relative, absolute, shorter, abslib or through.  The
+     `--path-style' option is given more priority than the -a options.
 
 `--print0'
      Print each record followed by a null character instead of a
@@ -2346,9 +2351,6 @@ The following options are available:
      doesn't generate it.  You can specify the position using position
      argument, which allows one of before, right and after.  The
      default position is after.
-
-`--html'
-     Generate HTML hypertext instead of XHTML.
 
 `--html-header' file
      Insert header records derived from file into the HTML header.
@@ -3945,16 +3947,16 @@ Node: Plug-in50396
 Node: Incremental updating50745
 Node: Reference51930
 Node: global52509
-Node: gtags61650
-Node: htags67990
-Node: gozilla78758
-Node: gtags-cscope81468
-Node: globash92656
-Node: Copying This Manual93885
-Node: GNU Free Documentation License94131
-Node: Business Model116541
-Node: The BOKIN Model Definition116836
-Node: Frequently Asked Questions121034
-Node: Index124447
+Node: gtags61867
+Node: htags68207
+Node: gozilla78918
+Node: gtags-cscope81628
+Node: globash92816
+Node: Copying This Manual94045
+Node: GNU Free Documentation License94291
+Node: Business Model116701
+Node: The BOKIN Model Definition116996
+Node: Frequently Asked Questions121194
+Node: Index124607
 
 End Tag Table

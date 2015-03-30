@@ -85,6 +85,10 @@ Options:\n\
        Treat not only source files but also text files other than source code\n\
        like README.\n\
        This option is valid only with the -g or -P command.\n\
+--path-style format\n\
+       Print path names using the specified format.\n\
+       format may be relative, absolute, shorter, abslib or through.\n\
+       The --path-style option is given more priority than the -a options.\n\
 --print0\n\
        Print each record followed by a null character instead of a newline.\n\
 -q, --quiet\n\

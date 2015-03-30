@@ -113,6 +113,12 @@ if ($form{'id'}) {
 	if ($?) {
 		error_and_exit("Couldn't find tag directory in secure mode.");
 	}
+} elsif (-d "cgi-bin") {
+	# This code avoids the bug of the python built-in web server.
+	chdir("cgi-bin");
+	if ($?) {
+		error_and_exit("Couldn't change 'cgi-bin' directory.");
+	}
 }
 $html = (-s "../compress") ? 'ghtml' : 'html';
 if (-f "../GTAGSROOT" && open(GTAGSROOT, "../GTAGSROOT")) {
@@ -181,6 +187,12 @@ if (@line == 0) {
 	# direct jump
 	($fid, $tag, $lno, $filename) = split(/[ \t]+/, shift @line);
 	print "Location: $basedir/S/$fid.$html#L$lno\n\n";
+	# Python's built-in webserver doesn't support redirects issued from CGI scripts.
+	print "<html>\n";
+	print qq(<head><meta http-equiv="Refresh" content="0; url=$basedir/S/$fid.$html#L$lno" /></head>\n);
+	print "<body></body>\n";
+	print "</html>\n";
+	#
 	exit 0;
 }
 print header();

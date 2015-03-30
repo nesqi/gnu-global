@@ -69,8 +69,6 @@ const char *help_const = "Options:\n\
        You can specify the position using position argument,\n\
        which allows one of before, right and after.\n\
        The default position is after.\n\
---html\n\
-       Generate HTML hypertext instead of XHTML.\n\
 --html-header file\n\
        Insert header records derived from file into the HTML header.\n\
 -I, --icon\n\
