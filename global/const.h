@@ -1,8 +1,8 @@
 /* This file is generated automatically by convert.pl from global/manual.in. */
 const char *progname = "global";
 const char *usage_const = "Usage: global [-adGilnqrstTvx][-e] pattern\n\
-       global -c[diIoOPqrsv] prefix\n\
-       global -f[adnqrstvx][-L file-list] files\n\
+       global -c[diIoOPrsT] prefix\n\
+       global -f[adlnqrstvx][-L file-list] files\n\
        global -g[aGilnoOqtvVx][-L file-list][-e] pattern [files]\n\
        global -I[ailnqtvx][-e] pattern\n\
        global -P[aGilnoOqtvVx][-e] pattern\n\
@@ -73,7 +73,7 @@ Options:\n\
        This option is only valid when the -g command is specified.\n\
 --match-part part\n\
        Specify the matched part of path name.\n\
-       This option is valid only with the -c command with the -P option,\n\
+       This option is valid only with the -c command with the -P option.\n\
        The default is all.\n\
 -n, --nofilter\n\
        Suppress sort filter and path conversion filter.\n\

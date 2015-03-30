@@ -1,6 +1,6 @@
 /* This file is generated automatically by convert.pl from gtags-cscope/manual.in. */
 const char *progname = "gtags-cscope";
-const char *usage_const = "Usage: gtags-cscope [-bCdehLlVv][-F symfile ][-0123456789 pattern][-p n]\n";
+const char *usage_const = "Usage: gtags-cscope [-bCdehLlVv][-F file ][-012345678 pattern][-p n]\n";
 const char *help_const = "Options:\n\
 -h\n\
        View the long usage help display.\n\
@@ -20,11 +20,13 @@ const char *help_const = "Options:\n\
        Do not update the cross-reference.\n\
 -e\n\
        Suppress the <Ctrl>-e command prompt between files.\n\
--F symfile\n\
-       Read symbol reference lines from symfile. \n\
+-F file\n\
+       Read symbol reference lines from file. \n\
        (A symbol reference file is created by > and >>,\n\
        and can also be read using the < command,\n\
        described under ``Issuing Subsequent Requests'', below.)\n\
+-i\n\
+       Ignore SIGINT signal in line-oriented mode.\n\
 -L\n\
        Do a single search with line-oriented output when used with the\n\
        -num pattern option.\n\

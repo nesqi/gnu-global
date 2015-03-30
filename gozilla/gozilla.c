@@ -55,8 +55,8 @@ STRHASH *sh;
 static void load_alias(void);
 static const char *alias(const char *);
 int main(int, char **);
-void getdefinitionURL(const char *, STRBUF *);
-void getURL(const char *, STRBUF *);
+void getdefinitionURL(const char *, const char *, STRBUF *);
+void getURL(const char *, const char *, STRBUF *);
 int isprotocol(const char *);
 int convertpath(const char *, const char *, const char *, STRBUF *);
 void makefileurl(const char *, int, STRBUF *);
@@ -132,23 +132,15 @@ load_alias(void)
 			flag |= STRBUF_APPEND;
 			continue;
 		}
-		while (*p && isblank(*p))	/* skip spaces */
+		while (*p && isblank(*p))				/* skip spaces */
 			p++;
 		name = p;
-		while (*p && isalnum(*p))	/* get name */
+		while (*p && !isblank(*p) && *p != '=' && *p != ':')	/* get name */
 			p++;
 		*p++ = 0;
-		while (*p && isblank(*p))	/* skip spaces */
+		while (*p && (isblank(*p) || *p == '=' || *p == ':'))
 			p++;
-		if (*p == '=' || *p == ':') {
-			p++;
-			while (*p && isblank(*p))/* skip spaces */
-				p++;
-		}
-		value = p;
-		while (*p && !isblank(*p))	/* get value */
-			p++;
-		*p = 0;
+		value = p;						/* get value */
 		ent = strhash_assign(sh, name, 1);
 		if (ent->value)
 			(void)free(ent->value);
@@ -261,8 +253,13 @@ main(int argc, char **argv)
 		browser = getenv("BROWSER");
 	if (!browser && alias("BROWSER"))
 		browser = alias("BROWSER");
+	/*
+	 * In DOS & Windows, let the file: association handle it.
+	 */
+#if !(_WIN32 || __DJGPP__)
 	if (!browser)
 		browser = "mozilla";
+#endif
 
 	/*
 	 * Replace alias name.
@@ -284,7 +281,6 @@ main(int argc, char **argv)
 	 */
 	{
 		char *argument = strbuf_value(arg);
-		int status = 0;
 
 		/*
 		 * Protocol (xxx://...)
@@ -292,20 +288,22 @@ main(int argc, char **argv)
 		if (!definition && isprotocol(argument)) {
 			strbuf_puts(URL, argument);
 		} else {
-			status = setupdbpath(0);
-			if (status == 0) {
+			const char *HTMLdir = NULL;
+
+			if (setupdbpath(0) == 0) {
 				cwd = get_cwd();
 				root = get_root();
 				dbpath = get_dbpath();
+				HTMLdir = locate_HTMLdir();
 			} 
 			/*
 			 * Make a URL of hypertext from the argument.
 			 */
-			if (status == 0 && locate_HTMLdir() != NULL) {
+			if (HTMLdir != NULL) {
 				if (definition)
-					getdefinitionURL(definition, URL);
+					getdefinitionURL(definition, HTMLdir, URL);
 				else
-					getURL(argument, URL);
+					getURL(argument, HTMLdir, URL);
 			}
 			/*
 			 * Make a file URL.
@@ -321,7 +319,7 @@ main(int argc, char **argv)
 				strbuf_puts(URL, "file://");
 				strbuf_puts(URL, result);
 			} else {
-				die_with_code(-status, gtags_dbpath_error);
+				die_with_code(1, "file '%s' not found.", argument);
 			}
 		}
 	}
@@ -342,21 +340,19 @@ main(int argc, char **argv)
  * getdefinitionURL: get URL includes specified definition.
  *
  *	i)	arg	definition name
+ *	i)	htmldir HTML directory
  *	o)	URL	URL begin with 'file:'
  */
 void
-getdefinitionURL(const char *arg, STRBUF *URL)
+getdefinitionURL(const char *arg, const char *htmldir, STRBUF *URL)
 {
 	FILE *fp;
 	char *p;
 	SPLIT ptable;
 	int status = -1;
 	STRBUF *sb = strbuf_open(0);
-	const char *htmldir = locate_HTMLdir();
 	const char *path = makepath(htmldir, "MAP", NULL);
 
-	if (htmldir == NULL)
-		die("hypertext not found. See htags(1).");
 	if (!test("f", path))
 		die("'%s' not found. Please invoke htags(1) with the --map-file option.", path);
 	fp = fopen(path, "r");
@@ -385,20 +381,18 @@ getdefinitionURL(const char *arg, STRBUF *URL)
  * getURL: get URL of the specified file.
  *
  *	i)	file	file name
+ *	i)	htmldir HTML directory
  *	o)	URL	URL begin with 'file:'
  */
 void
-getURL(const char *file, STRBUF *URL)
+getURL(const char *file, const char *htmldir, STRBUF *URL)
 {
 	char *p;
 	char buf[MAXPATHLEN];
 	STRBUF *sb = strbuf_open(0);
-	const char *htmldir = locate_HTMLdir();
 
-	if (htmldir == NULL)
-		die("hypertext not found. See htags(1).");
 	if (!test("f", file) && !test("d", file))
-		die("path '%s' not found.", file);
+		die("file '%s' not found.", file);
 	p = normalize(file, get_root_with_slash(), cwd, buf, sizeof(buf));
 	if (p != NULL && convertpath(dbpath, htmldir, p, sb) == 0)
 		makefileurl(strbuf_value(sb), linenumber, URL);
@@ -536,8 +530,16 @@ makefileurl(const char *path, int line, STRBUF *url)
 void
 show_page_by_url(const char *browser, const char *url)
 {
-	if (ShellExecute(NULL, NULL, browser, url, NULL, SW_SHOWNORMAL) <= (HINSTANCE)32)
-		die("Cannot load %s (error = 0x%04x).", browser, GetLastError());
+	const char *lpFile, *lpParameters;
+	if (browser) {
+		lpFile = browser;
+		lpParameters = url;
+	} else {
+		lpFile = url;
+		lpParameters = NULL;
+	}
+	if (ShellExecute(NULL, NULL, lpFile, lpParameters, NULL, SW_SHOWNORMAL) <= (HINSTANCE)32)
+		die("Cannot load %s (error = 0x%04x).", lpFile, GetLastError());
 }
 #elif defined(__DJGPP__)
 /* DJGPP version */
@@ -547,6 +549,9 @@ show_page_by_url(const char *browser, const char *url)
 	char com[MAXFILLEN];
 	char *path;
 
+	if (!browser) {
+		browser = "";
+	}
 	/*
 	 * assume a Windows browser if it's not on the path.
 	 */
@@ -555,7 +560,7 @@ show_page_by_url(const char *browser, const char *url)
 		 * START is an internal command in XP, external in 9X.
 		 */
 		if (!(path = usable("start")))
-			path = "cmd /c start";
+			path = "cmd /c start \"\"";
 		snprintf(com, sizeof(com), "%s %s \"%s\"", path, browser, url);
 	} else {
 		snprintf(com, sizeof(com), "%s \"%s\"", path, url);

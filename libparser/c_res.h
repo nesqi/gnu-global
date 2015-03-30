@@ -43,45 +43,51 @@
 #define C___P	2001
 #define C___ATTRIBUTE__	2002
 #define C___EXTENSION__	2003
-#define C___THREAD	2004
-#define C_ASM	2005
-#define C_CONST	2006
-#define C_INLINE	2007
-#define C_RESTRICT	2008
-#define C_SIGNED	2009
-#define C_VOLATILE	2010
-#define C__BOOL	2011
-#define C__COMPLEX	2012
-#define C__IMAGINARY	2013
-#define C_AUTO	2014
-#define C_BREAK	2015
-#define C_CASE	2016
-#define C_CHAR	2017
-#define C_CONTINUE	2018
-#define C_DEFAULT	2019
-#define C_DO	2020
-#define C_DOUBLE	2021
-#define C_ELSE	2022
-#define C_ENUM	2023
-#define C_EXTERN	2024
-#define C_FLOAT	2025
-#define C_FOR	2026
-#define C_GOTO	2027
-#define C_IF	2028
-#define C_INT	2029
-#define C_LONG	2030
-#define C_REGISTER	2031
-#define C_RETURN	2032
-#define C_SHORT	2033
-#define C_SIZEOF	2034
-#define C_STATIC	2035
-#define C_STRUCT	2036
-#define C_SWITCH	2037
-#define C_TYPEDEF	2038
-#define C_UNION	2039
-#define C_UNSIGNED	2040
-#define C_VOID	2041
-#define C_WHILE	2042
+#define C_ASM	2004
+#define C_CONST	2005
+#define C_INLINE	2006
+#define C_RESTRICT	2007
+#define C_SIGNED	2008
+#define C_VOLATILE	2009
+#define C__ALIGNAS	2010
+#define C__ALIGNOF	2011
+#define C__ATOMIC	2012
+#define C__BOOL	2013
+#define C__COMPLEX	2014
+#define C__GENERIC	2015
+#define C__IMAGINARY	2016
+#define C__NORETURN	2017
+#define C__STATIC_ASSERT	2018
+#define C__THREAD_LOCAL	2019
+#define C_AUTO	2020
+#define C_BREAK	2021
+#define C_CASE	2022
+#define C_CHAR	2023
+#define C_CONTINUE	2024
+#define C_DEFAULT	2025
+#define C_DO	2026
+#define C_DOUBLE	2027
+#define C_ELSE	2028
+#define C_ENUM	2029
+#define C_EXTERN	2030
+#define C_FLOAT	2031
+#define C_FOR	2032
+#define C_GOTO	2033
+#define C_IF	2034
+#define C_INT	2035
+#define C_LONG	2036
+#define C_REGISTER	2037
+#define C_RETURN	2038
+#define C_SHORT	2039
+#define C_SIZEOF	2040
+#define C_STATIC	2041
+#define C_STRUCT	2042
+#define C_SWITCH	2043
+#define C_TYPEDEF	2044
+#define C_UNION	2045
+#define C_UNSIGNED	2046
+#define C_VOID	2047
+#define C_WHILE	2048
 #define SHARP_SHARP	3001
 #define SHARP_ASSERT	3002
 #define SHARP_DEFINE	3003
@@ -144,7 +150,7 @@
 #define YACC_END	4040
 struct keyword { char *name; int token; };
 
-#define TOTAL_KEYWORDS 131
+#define TOTAL_KEYWORDS 142
 #define MIN_WORD_LENGTH 2
 #define MAX_WORD_LENGTH 24
 #define MIN_HASH_VALUE 3
@@ -169,12 +175,12 @@ c_hash (register const char *str, register unsigned int len)
       353, 353, 353, 353, 353,  10, 353,  25, 353, 353,
       353, 353, 353, 353, 353,  10,  55, 353, 353, 353,
       353, 353, 353, 353, 353, 353, 353, 353, 353, 353,
-      353, 353, 353, 353, 353, 353,   5,   0, 353, 353,
-      353, 353, 353,   0, 353, 353, 353, 353, 353, 353,
-      353, 353, 353, 353, 353, 353, 353, 353, 353, 353,
-      353, 353, 353, 353, 353,   0,  30,   0,  80,  30,
-       10,   0,   5,  50,  65,   5, 353,   5, 105, 115,
-        0,  30,  75,   0,  50,  30,   5,  25,   0,   0,
+      353, 353, 353, 353, 353,  15,   5,   0, 353, 353,
+      353,  20, 353,   0, 353, 353, 353, 353,   5, 353,
+      353, 353, 353,   5,   0, 353, 353, 353, 353, 353,
+      353, 353, 353, 353, 353,   0,  30,   0, 105,  30,
+       10,   0,   5,  25,  50,   5, 353,   5, 105, 115,
+        0,  30,  75,   0,  50,  30,   5,  25,   0,  10,
        15,  65, 353,  50, 353,  35, 353, 353, 353, 353,
       353, 353, 353, 353, 353, 353, 353, 353, 353, 353,
       353, 353, 353, 353, 353, 353, 353, 353, 353, 353,
@@ -287,16 +293,17 @@ c_lookup (register const char *str, register unsigned int len)
       {""}, {""}, {""},
       {"#undef", SHARP_UNDEF},
       {"%token_table", YACC_TOKEN_TABLE},
-      {""},
+      {"_Alignas", C__ALIGNAS},
       {"auto", C_AUTO},
       {"union", C_UNION},
       {"%union", YACC_UNION},
       {"%}", YACC_END},
-      {""}, {""},
+      {"_Alignof", C__ALIGNOF},
+      {""},
       {"_Imaginary", C__IMAGINARY},
       {"%start", YACC_START},
       {"%token-table", YACC_TOKEN_TABLE},
-      {""},
+      {"__thread", C__THREAD_LOCAL},
       {"%no_lines", YACC_NO_LINES},
       {""},
       {"struct", C_STRUCT},
@@ -311,12 +318,14 @@ c_lookup (register const char *str, register unsigned int len)
       {""},
       {"return", C_RETURN},
       {"typedef", C_TYPEDEF},
-      {"__thread", C___THREAD},
       {""},
+      {"_Static_assert", C__STATIC_ASSERT},
       {"%term", YACC_TOKEN},
-      {""}, {""},
+      {""},
+      {"_Atomic", C__ATOMIC},
       {"#include", SHARP_INCLUDE},
-      {""}, {""}, {""}, {""},
+      {"goto", C_GOTO},
+      {""}, {""}, {""},
       {"__extension__", C___EXTENSION__},
       {""},
       {"const", C_CONST},
@@ -325,17 +334,19 @@ c_lookup (register const char *str, register unsigned int len)
       {"continue", C_CONTINUE},
       {"%skeleton", YACC_SKELETON},
       {"__restrict", C_RESTRICT},
-      {""},
+      {"switch", C_SWITCH},
       {"#assert", SHARP_ASSERT},
       {"restrict", C_RESTRICT},
       {""},
       {"%prec", YACC_PREC},
-      {"switch", C_SWITCH},
       {""}, {""},
+      {"#warning", SHARP_WARNING},
       {"else", C_ELSE},
       {"%type", YACC_TYPE},
-      {""}, {""}, {""},
-      {"goto", C_GOTO},
+      {"%right", YACC_RIGHT},
+      {""},
+      {"_Generic", C__GENERIC},
+      {""},
       {"float", C_FLOAT},
       {"#error", SHARP_ERROR},
       {""},
@@ -343,34 +354,32 @@ c_lookup (register const char *str, register unsigned int len)
       {"enum", C_ENUM},
       {"#line", SHARP_LINE},
       {"%dprec", YACC_DPREC},
-      {""},
-      {"#warning", SHARP_WARNING},
-      {""},
+      {""}, {""}, {""},
       {"%yacc", YACC_YACC},
-      {"double", C_DOUBLE},
+      {""},
       {"default", C_DEFAULT},
       {""},
       {"#unassert", SHARP_UNASSERT},
       {""},
       {"%no_default_prec", YACC_NO_DEFAULT_PREC},
       {"__restrict__", C_RESTRICT},
-      {""}, {""},
-      {"break", C_BREAK},
-      {"%right", YACC_RIGHT},
       {""},
+      {"char", C_CHAR},
+      {"short", C_SHORT},
+      {""}, {""},
       {"%require", YACC_REQUIRE},
       {"%nondeterministic-parser", YACC_NONDETERMINISTIC_PARSER},
       {"%left", YACC_LEFT},
       {"%no-default_prec", YACC_NO_DEFAULT_PREC},
       {"%expect", YACC_EXPECT},
       {"%verbose", YACC_VERBOSE},
-      {""}, {""},
+      {"_Noreturn", C__NORETURN},
+      {""},
       {"%nterm", YACC_NTERM},
       {""},
       {"volatile", C_VOLATILE},
-      {"char", C_CHAR},
-      {"short", C_SHORT},
-      {""},
+      {""}, {""},
+      {"double", C_DOUBLE},
       {"#import", SHARP_IMPORT},
       {""},
       {"%nonassoc", YACC_NONASSOC},
@@ -379,60 +388,68 @@ c_lookup (register const char *str, register unsigned int len)
       {""},
       {"#include_next", SHARP_INCLUDE_NEXT},
       {"%fixed_output_files", YACC_YACC},
-      {""}, {""}, {""}, {""}, {""}, {""},
+      {"break", C_BREAK},
+      {""}, {""}, {""},
+      {"long", C_LONG},
+      {""},
       {"%no-default-prec", YACC_NO_DEFAULT_PREC},
       {""},
       {"%printer", YACC_PRINTER},
       {"%fixed-output_files", YACC_YACC},
-      {""},
-      {"%debug", YACC_DEBUG},
-      {""}, {""}, {""},
       {"while", C_WHILE},
-      {"__attribute", C___ATTRIBUTE__},
+      {"%debug", YACC_DEBUG},
+      {""}, {""},
+      {"__alignof", C__ALIGNOF},
+      {""},
+      {"__alignof__", C__ALIGNOF},
       {""}, {""}, {""}, {""}, {""}, {""}, {""},
       {"%fixed_output-files", YACC_YACC},
       {""},
       {"%destructor", YACC_DESTRUCTOR},
       {"__volatile__", C_VOLATILE},
-      {""},
-      {"long", C_LONG},
-      {""}, {""}, {""},
+      {""}, {""}, {""}, {""}, {""},
       {"%default_prec", YACC_DEFAULT_PREC},
       {"%fixed-output-files", YACC_YACC},
       {"%expect_rr", YACC_EXPECT_RR},
       {"%merge", YACC_MERGE},
-      {""}, {""}, {""}, {""}, {""}, {""},
+      {""}, {""}, {""}, {""},
+      {"__attribute", C___ATTRIBUTE__},
+      {""},
       {"%default-prec", YACC_DEFAULT_PREC},
       {""},
       {"%expect-rr", YACC_EXPECT_RR},
       {""},
       {"#pragma", SHARP_PRAGMA},
-      {"__attribute__", C___ATTRIBUTE__},
-      {""},
+      {""}, {""},
       {"%locations", YACC_LOCATIONS},
       {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""},
       {"%error_verbose", YACC_ERROR_VERBOSE},
-      {""}, {""}, {""}, {""}, {""}, {""}, {""},
-      {"%binary", YACC_NONASSOC},
-      {""},
-      {"%error-verbose", YACC_ERROR_VERBOSE},
       {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""},
-      {""}, {""}, {""}, {""},
+      {"%error-verbose", YACC_ERROR_VERBOSE},
+      {""}, {""}, {""},
+      {"__attribute__", C___ATTRIBUTE__},
+      {"__complex", C__COMPLEX},
+      {""},
+      {"__complex__", C__COMPLEX},
+      {""}, {""}, {""}, {""}, {""}, {""},
       {"_Complex", C__COMPLEX},
       {""}, {""}, {""},
       {"%parse-param", YACC_PARSE_PARAM},
-      {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""},
+      {""}, {""}, {""}, {""},
+      {"%binary", YACC_NONASSOC},
       {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""},
       {""}, {""}, {""}, {""},
+      {"%glr-parser", YACC_GLR_PARSER},
+      {""}, {""}, {""},
       {"%initial-action", YACC_INITIAL_ACTION},
       {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""},
       {"%lex-param", YACC_LEX_PARAM},
+      {""}, {""},
+      {"_Thread_local", C__THREAD_LOCAL},
       {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""},
-      {""},
-      {"%glr-parser", YACC_GLR_PARSER},
       {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""},
       {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""},
-      {""}, {""}, {""}, {""}, {""}, {""}, {""},
+      {""}, {""}, {""}, {""}, {""}, {""},
       {"%pure_parser", YACC_PURE_PARSER},
       {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""},
       {"%pure-parser", YACC_PURE_PARSER},

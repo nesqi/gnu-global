@@ -43,22 +43,10 @@ BOOL	buildonly = NO;		/* only build the database */
 void
 rebuild(void)
 {
-	if (execute("gtags", "gtags", "-i", NULL) != 0)
-		postfatal("gtags-cscope: gtags -i failed.\n");
-	if (refsfound != NULL) {
-		fclose(refsfound);
-		refsfound = NULL;
-	}
-}
+	char com[16];
 
-/* build the cross-reference */
-void
-build(void)
-{
-	if (execute("gtags", "gtags", NULL) != 0)
-		postfatal("gtags-cscope: gtags failed.\n");
-	if (refsfound != NULL) {
-		fclose(refsfound);
-		refsfound = NULL;
+	snprintf(com, sizeof(com), "%s -i", gtags_command);
+	if (system(com) != 0) {
+		postfatal("gtags-cscope: '%s' failed.\n", com);
 	}
 }

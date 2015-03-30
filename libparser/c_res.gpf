@@ -12,45 +12,51 @@
 #define C___P	2001
 #define C___ATTRIBUTE__	2002
 #define C___EXTENSION__	2003
-#define C___THREAD	2004
-#define C_ASM	2005
-#define C_CONST	2006
-#define C_INLINE	2007
-#define C_RESTRICT	2008
-#define C_SIGNED	2009
-#define C_VOLATILE	2010
-#define C__BOOL	2011
-#define C__COMPLEX	2012
-#define C__IMAGINARY	2013
-#define C_AUTO	2014
-#define C_BREAK	2015
-#define C_CASE	2016
-#define C_CHAR	2017
-#define C_CONTINUE	2018
-#define C_DEFAULT	2019
-#define C_DO	2020
-#define C_DOUBLE	2021
-#define C_ELSE	2022
-#define C_ENUM	2023
-#define C_EXTERN	2024
-#define C_FLOAT	2025
-#define C_FOR	2026
-#define C_GOTO	2027
-#define C_IF	2028
-#define C_INT	2029
-#define C_LONG	2030
-#define C_REGISTER	2031
-#define C_RETURN	2032
-#define C_SHORT	2033
-#define C_SIZEOF	2034
-#define C_STATIC	2035
-#define C_STRUCT	2036
-#define C_SWITCH	2037
-#define C_TYPEDEF	2038
-#define C_UNION	2039
-#define C_UNSIGNED	2040
-#define C_VOID	2041
-#define C_WHILE	2042
+#define C_ASM	2004
+#define C_CONST	2005
+#define C_INLINE	2006
+#define C_RESTRICT	2007
+#define C_SIGNED	2008
+#define C_VOLATILE	2009
+#define C__ALIGNAS	2010
+#define C__ALIGNOF	2011
+#define C__ATOMIC	2012
+#define C__BOOL	2013
+#define C__COMPLEX	2014
+#define C__GENERIC	2015
+#define C__IMAGINARY	2016
+#define C__NORETURN	2017
+#define C__STATIC_ASSERT	2018
+#define C__THREAD_LOCAL	2019
+#define C_AUTO	2020
+#define C_BREAK	2021
+#define C_CASE	2022
+#define C_CHAR	2023
+#define C_CONTINUE	2024
+#define C_DEFAULT	2025
+#define C_DO	2026
+#define C_DOUBLE	2027
+#define C_ELSE	2028
+#define C_ENUM	2029
+#define C_EXTERN	2030
+#define C_FLOAT	2031
+#define C_FOR	2032
+#define C_GOTO	2033
+#define C_IF	2034
+#define C_INT	2035
+#define C_LONG	2036
+#define C_REGISTER	2037
+#define C_RETURN	2038
+#define C_SHORT	2039
+#define C_SIZEOF	2040
+#define C_STATIC	2041
+#define C_STRUCT	2042
+#define C_SWITCH	2043
+#define C_TYPEDEF	2044
+#define C_UNION	2045
+#define C_UNSIGNED	2046
+#define C_VOID	2047
+#define C_WHILE	2048
 #define SHARP_SHARP	3001
 #define SHARP_ASSERT	3002
 #define SHARP_DEFINE	3003
@@ -118,7 +124,6 @@ __P, C___P
 __attribute__, C___ATTRIBUTE__
 __attribute, C___ATTRIBUTE__
 __extension__, C___EXTENSION__
-__thread, C___THREAD
 asm, C_ASM
 __asm, C_ASM
 __asm__, C_ASM
@@ -137,9 +142,21 @@ __signed__, C_SIGNED
 volatile, C_VOLATILE
 __volatile, C_VOLATILE
 __volatile__, C_VOLATILE
+_Alignas, C__ALIGNAS
+_Alignof, C__ALIGNOF
+__alignof, C__ALIGNOF
+__alignof__, C__ALIGNOF
+_Atomic, C__ATOMIC
 _Bool, C__BOOL
 _Complex, C__COMPLEX
+__complex, C__COMPLEX
+__complex__, C__COMPLEX
+_Generic, C__GENERIC
 _Imaginary, C__IMAGINARY
+_Noreturn, C__NORETURN
+_Static_assert, C__STATIC_ASSERT
+_Thread_local, C__THREAD_LOCAL
+__thread, C__THREAD_LOCAL
 auto, C_AUTO
 break, C_BREAK
 case, C_CASE

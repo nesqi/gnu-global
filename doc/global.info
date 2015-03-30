@@ -23,7 +23,7 @@ File: global.info,  Node: Top,  Next: Introduction,  Up: (dir)
 GNU GLOBAL source code tag system
 *********************************
 
-This manual documents version 6.1 of the GNU GLOBAL source code tag
+This manual documents version 6.2 of the GNU GLOBAL source code tag
 system.
 
 * Menu:
@@ -155,7 +155,7 @@ gtags(1).
          $ gtags
 
    Gtags traverses sub-directories, picks up source files and makes
-four tag files at the current directory.  After this, the whole files
+three tag files at the current directory.  After this, the whole files
 under this directory is treated as a project.
 
 
@@ -1695,8 +1695,8 @@ SYNOPSIS
 --------
 
      global [-adGilnqrstTvx][-e] pattern
-     global -c[diIoOPqrsv] prefix
-     global -f[adnqrstvx][-L file-list] files
+     global -c[diIoOPrsT] prefix
+     global -f[adlnqrstvx][-L file-list] files
      global -g[aGilnoOqtvVx][-L file-list][-e] pattern [files]
      global -I[ailnqtvx][-e] pattern
      global -P[aGilnoOqtvVx][-e] pattern
@@ -1811,7 +1811,7 @@ The following options are available:
 
 `--match-part part'
      Specify the matched part of path name.  This option is valid only
-     with the `-c' command with the `-P' option, The default is all.
+     with the `-c' command with the `-P' option.  The default is all.
 
 `-n', `--nofilter'
      Suppress sort filter and path conversion filter.
@@ -2716,7 +2716,7 @@ gtags-cscope - interactively examine a C program
 SYNOPSIS
 --------
 
-     gtags-cscope [-bCdehLlVv][-F symfile ][-0123456789 pattern][-p n]
+     gtags-cscope [-bCdehLlVv][-F file ][-012345678 pattern][-p n]
 
 DESCRIPTION
 -----------
@@ -2766,10 +2766,13 @@ some output and exit immediately:
 `-e'
      Suppress the <Ctrl>-e command prompt between files.
 
-`-F' symfile
-     Read symbol reference lines from symfile.  (A symbol reference
-     file is created by > and >>, and can also be read using the <
-     command, described under "Issuing Subsequent Requests", below.)
+`-F' file
+     Read symbol reference lines from file.  (A symbol reference file
+     is created by > and >>, and can also be read using the < command,
+     described under "Issuing Subsequent Requests", below.)
+
+`-i'
+     Ignore SIGINT signal in line-oriented mode.
 
 `-L'
      Do a single search with line-oriented output when used with the
@@ -3883,55 +3886,55 @@ Node: Top765
 Node: Introduction1455
 Node: Global3781
 Node: Preparation4208
-Node: Basic usage5488
-Node: Applied usage10576
-Node: Applications15503
-Node: GloBash16209
-Node: Features(globash)16495
-Node: Preparation(globash)16837
-Node: Usage(globash)17912
-Node: Less viewer23861
-Node: Features(Less)24245
-Node: Preparation(Less)24470
-Node: Usage(Less)24820
-Node: Nvi-1.81.5 editor27269
-Node: Features(Nvi-1.81.5)27649
-Node: Preparation(Nvi-1.81.5)27907
-Node: Usage(Nvi-1.81.5)28645
-Node: Elvis editor30507
-Node: Features(Elvis)30962
-Node: Preparation(Elvis)31168
-Node: Usage(Elvis)31573
-Node: Vim editor34551
-Node: Features(Vim)34909
-Node: Preparation(Vim)35365
-Node: Usage(Vim)35717
-Node: Emacs editor39634
-Node: Features(Emacs)40028
-Node: Preparation(Emacs)40363
-Node: Usage(Emacs)41538
-Node: Gtags-cscope (fake cscope)44905
-Node: Web browser45514
-Node: Features(browser)45907
-Node: Preparation(browser)46398
-Node: Usage(browser)47578
-Node: Doxygen documentation system48367
-Node: Other topics49084
-Node: Configuration49396
-Node: Plug-in50096
-Node: Incremental updating50445
-Node: Reference51630
-Node: global52209
-Node: gtags61101
-Node: htags67469
-Node: gozilla78237
-Node: gtags-cscope80947
-Node: globash92090
-Node: Copying This Manual93319
-Node: GNU Free Documentation License93565
-Node: Business Model115975
-Node: The BOKIN Model Definition116270
-Node: Frequently Asked Questions120468
-Node: Index123881
+Node: Basic usage5489
+Node: Applied usage10577
+Node: Applications15504
+Node: GloBash16210
+Node: Features(globash)16496
+Node: Preparation(globash)16838
+Node: Usage(globash)17913
+Node: Less viewer23862
+Node: Features(Less)24246
+Node: Preparation(Less)24471
+Node: Usage(Less)24821
+Node: Nvi-1.81.5 editor27270
+Node: Features(Nvi-1.81.5)27650
+Node: Preparation(Nvi-1.81.5)27908
+Node: Usage(Nvi-1.81.5)28646
+Node: Elvis editor30508
+Node: Features(Elvis)30963
+Node: Preparation(Elvis)31169
+Node: Usage(Elvis)31574
+Node: Vim editor34552
+Node: Features(Vim)34910
+Node: Preparation(Vim)35366
+Node: Usage(Vim)35718
+Node: Emacs editor39635
+Node: Features(Emacs)40029
+Node: Preparation(Emacs)40364
+Node: Usage(Emacs)41539
+Node: Gtags-cscope (fake cscope)44906
+Node: Web browser45515
+Node: Features(browser)45908
+Node: Preparation(browser)46399
+Node: Usage(browser)47579
+Node: Doxygen documentation system48368
+Node: Other topics49085
+Node: Configuration49397
+Node: Plug-in50097
+Node: Incremental updating50446
+Node: Reference51631
+Node: global52210
+Node: gtags61103
+Node: htags67471
+Node: gozilla78239
+Node: gtags-cscope80949
+Node: globash92137
+Node: Copying This Manual93366
+Node: GNU Free Documentation License93612
+Node: Business Model116022
+Node: The BOKIN Model Definition116317
+Node: Frequently Asked Questions120515
+Node: Index123928
 
 End Tag Table

@@ -5,9 +5,9 @@ global \- print locations of the specified object.
 .SH SYNOPSIS
 \fBglobal\fP [-adGilnqrstTvx][-e] \fIpattern\fP
 .br
-\fBglobal\fP -c[diIoOPqrsv] \fIprefix\fP
+\fBglobal\fP -c[diIoOPrsT] \fIprefix\fP
 .br
-\fBglobal\fP -f[adnqrstvx][-L file-list] \fIfiles\fP
+\fBglobal\fP -f[adlnqrstvx][-L file-list] \fIfiles\fP
 .br
 \fBglobal\fP -g[aGilnoOqtvVx][-L file-list][-e] \fIpattern\fP [\fIfiles\fP]
 .br
@@ -125,7 +125,7 @@ This option is only valid when the \fB-g\fP command is specified.
 .TP
 \fB--match-part \fIpart\fP\fP
 Specify the matched part of path name.
-This option is valid only with the \fB-c\fP command with the \fB-P\fP option,
+This option is valid only with the \fB-c\fP command with the \fB-P\fP option.
 The default is \fIall\fP.
 .TP
 \fB-n\fP, \fB--nofilter\fP

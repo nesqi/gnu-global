@@ -21,7 +21,7 @@ dnl
 dnl You should have received a copy of the GNU General Public License
 dnl along with this program.  If not, see <http://www.gnu.org/licenses/>.
 dnl
-AC_INIT([GNU GLOBAL],[6.1])
+AC_INIT([GNU GLOBAL],[6.2])
 AC_CONFIG_SRCDIR(global/global.c)
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_PREREQ(2.59)
@@ -174,10 +174,11 @@ AC_ARG_WITH(db185-compat,
 				AC_MSG_ERROR([header $withval/include/db_185.h not found.])
 			fi
 			INCLUDES="$INCLUDES -I$withval/include"
-			LDFLAGS="$LDFLAGS -L$withval/lib"
+			#LDFLAGS="$LDFLAGS -L$withval/lib"
 			;;
 		esac
-		DBLIBRARY='-ldb'
+		DBLIBRARY="$withval/lib/libdb.a"
+		#DBLIBRARY='-ldb'
 		AC_DEFINE(USE_DB185_COMPAT,1,[Define if you use DB1.85 compatible API.])
 	fi
 ],[ with_db185_compat='no' ])

@@ -597,13 +597,13 @@ main(int argc, char **argv)
 	 */
 	if (uflag) {
 		STRBUF	*sb = strbuf_open(0);
-		char *gtags = usable("gtags");
+		char *gtags_path = usable("gtags");
 
-		if (!gtags)
+		if (!gtags_path)
 			die("gtags command not found.");
 		if (chdir(root) < 0)
 			die("cannot change directory to '%s'.", root);
-		strbuf_puts(sb, gtags);
+		strbuf_puts(sb, quote_shell(gtags_path));
 		strbuf_puts(sb, " -i");
 		if (vflag)
 			strbuf_putc(sb, 'v');
@@ -668,6 +668,16 @@ main(int argc, char **argv)
 		fprintf(stderr, "cwd=%s\n", cwd);
 		fprintf(stderr, "localprefix=%s\n", localprefix);
 #endif
+	}
+	/*
+	 * convert the file-list path into an absolute path.
+	 */
+	if (file_list && *file_list != '/') {
+		static char buf[MAXPATHLEN];
+
+		if (realpath(file_list, buf) == NULL)
+			die("cannot get real path name.");
+		file_list = buf;
 	}
 	/*
 	 * decide path conversion type.
@@ -915,7 +925,7 @@ completion_path(const char *dbpath, const char *prefix)
 		target = GPATH_BOTH;
 	if (Oflag)
 		target = GPATH_OTHER;
-	if (iflag)
+	if (iflag || getconfb("icase_path"))
 		flags |= IGNORE_CASE;
 	gp = gfind_open(dbpath, localprefix, target);
 	while ((path = gfind_read(gp)) != NULL) {
@@ -1148,14 +1158,21 @@ grep(const char *pattern, char *const *argv, const char *dbpath)
 			static char buf[MAXPATHLEN];
 
 			if (normalize(path, get_root_with_slash(), cwd, buf, sizeof(buf)) == NULL) {
-				if (!qflag)
-					fprintf(stderr, "'%s' is out of the source project.\n", path);
+				warning("'%s' is out of the source project.", path);
 				continue;
 			}
-			if (!test("f", buf))
-				die("'%s' not found. Please remake tag files by invoking gtags(1).", path);
+			if (test("d", buf)) {
+				warning("'%s' is a directory. Ignored.", path);
+				continue;
+			}
+			if (!test("f", buf)) {
+				warning("'%s' not found. Ignored.", path);
+				continue;
+			}
 			path = buf;
 		}
+		if (lflag && !locatestring(path, localprefix, MATCH_AT_FIRST))
+			continue;
 		if (!(fp = fopen(path, "r")))
 			die("cannot open file '%s'.", path);
 		linenum = 0;

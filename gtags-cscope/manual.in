@@ -1,7 +1,7 @@
 @HEADER GTAGS-CSCOPE,1,March 2011,GNU Project
 @NAME   gtags-cscope - interactively examine a C program
 @SYNOPSIS
-	@name{gtags-cscope} [-bCdehLlVv][-F symfile ][-0123456789 @arg{pattern}][-p n]
+	@name{gtags-cscope} [-bCdehLlVv][-F file ][-012345678 @arg{pattern}][-p n]
 @DESCRIPTION
 	@name{gtags-cscope} is an interactive, screen-oriented tool that allows the user to
 	browse through C source files for specified elements of code.
@@ -39,11 +39,13 @@
 		Do not update the cross-reference.
 	@item{@option{-e}}
 		Suppress the <Ctrl>-e command prompt between files.
-	@item{@option{-F} @arg{symfile}}
-		Read symbol reference lines from @arg{symfile}. 
+	@item{@option{-F} @arg{file}}
+		Read symbol reference lines from @arg{file}. 
 		(A symbol reference file is created by > and >>,
 		and can also be read using the < command,
 		described under ``Issuing Subsequent Requests'', below.)
+	@item{@option{-i}}
+		Ignore SIGINT signal in line-oriented mode.
 	@item{@option{-L}}
 		Do a single search with line-oriented output when used with the
 		-num pattern option.

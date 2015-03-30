@@ -1078,7 +1078,7 @@ makecommonpart(const char *title, const char *defines, const char *files)
 		case 'm':
 			strbuf_sprintf(sb, "%sMAINS%s\n", header_begin, header_end);
 
-			snprintf(buf, sizeof(buf), "%s --result=ctags-xid --encode-path=\" \t\" --nofilter=path %s", global_path, main_func);
+			snprintf(buf, sizeof(buf), "%s --result=ctags-xid --encode-path=\" \t\" --nofilter=path %s", quote_shell(global_path), main_func);
 			ip = popen(buf, "r");
 			if (!ip)
 				die("cannot execute command '%s'.", buf);
@@ -1415,7 +1415,7 @@ save_environment(int argc, char *const *argv)
 	/*
 	 * save config values.
 	 */
-	snprintf(command, sizeof(command), "%s --config", gtags_path);
+	snprintf(command, sizeof(command), "%s --config", quote_shell(gtags_path));
 	if ((ip = popen(command, "r")) == NULL)
 		die("cannot execute '%s'.", command);
 	while (strbuf_fgets(sb, ip, STRBUF_NOCRLF) != NULL) {
@@ -2114,9 +2114,9 @@ main(int argc, char **argv)
 	 * (3) make function entries (D/ and R/)
 	 *     MAKING TAG CACHE
 	 */
-	message("[%s] (3) making duplicate entries ...", now());
+	message("[%s] (3) making tag lists ...", now());
 	cache_open();
-	tim = statistics_time_start("Time of making duplicate entries");
+	tim = statistics_time_start("Time of making tag lists");
 	func_total = makedupindex();
 	statistics_time_end(tim);
 	message("Total %d functions.", func_total);
@@ -2132,11 +2132,11 @@ main(int argc, char **argv)
 		STRBUF *files = strbuf_open(0);
 
 		/*
-		 * (5) make function index (defines.html and defines/)
+		 * (5) make definition index (defines.html and defines/)
 		 *     PRODUCE @defines
 		 */
-		message("[%s] (5) making function index ...", now());
-		tim = statistics_time_start("Time of making function index");
+		message("[%s] (5) making definition index ...", now());
+		tim = statistics_time_start("Time of making definition index");
 		func_total = makedefineindex("defines.html", func_total, defines);
 		statistics_time_end(tim);
 		message("Total %d functions.", func_total);

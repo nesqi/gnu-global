@@ -3,7 +3,7 @@
 .SH NAME
 gtags\-cscope - interactively examine a C program
 .SH SYNOPSIS
-\fBgtags-cscope\fP [-bCdehLlVv][-F symfile ][-0123456789 \fIpattern\fP][-p n]
+\fBgtags-cscope\fP [-bCdehLlVv][-F file ][-012345678 \fIpattern\fP][-p n]
 .br
 .SH DESCRIPTION
 \fBgtags-cscope\fP is an interactive, screen-oriented tool that allows the user to
@@ -49,11 +49,14 @@ Do not update the cross-reference.
 \fB-e\fP
 Suppress the <Ctrl>-e command prompt between files.
 .TP
-\fB-F\fP \fIsymfile\fP
-Read symbol reference lines from \fIsymfile\fP. 
+\fB-F\fP \fIfile\fP
+Read symbol reference lines from \fIfile\fP. 
 (A symbol reference file is created by > and >>,
 and can also be read using the < command,
 described under ``Issuing Subsequent Requests'', below.)
+.TP
+\fB-i\fP
+Ignore SIGINT signal in line-oriented mode.
 .TP
 \fB-L\fP
 Do a single search with line-oriented output when used with the
