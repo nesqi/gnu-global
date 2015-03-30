@@ -1,4 +1,4 @@
-/* ANSI-C code produced by gperf version 3.0.3 */
+/* ANSI-C code produced by gperf version 3.0.4 */
 /* Command-line: gperf --language=ANSI-C --struct-type --slot-name=name --hash-fn-name=php_hash --lookup-fn-name=php_lookup  */
 /* Computed positions: -k'1-2,4-6,9' */
 
@@ -196,7 +196,7 @@ php_hash (register const char *str, register unsigned int len)
 
 #ifdef __GNUC__
 __inline
-#ifdef __GNUC_STDC_INLINE__
+#if defined __GNUC_STDC_INLINE__ || defined __GNUC_GNU_INLINE__
 __attribute__ ((__gnu_inline__))
 #endif
 #endif

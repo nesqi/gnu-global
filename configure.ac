@@ -21,7 +21,7 @@ dnl
 dnl You should have received a copy of the GNU General Public License
 dnl along with this program.  If not, see <http://www.gnu.org/licenses/>.
 dnl
-AC_INIT([GNU GLOBAL],[6.2.4])
+AC_INIT([GNU GLOBAL],[6.2.5])
 AC_CONFIG_SRCDIR(global/global.c)
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_PREREQ(2.59)
@@ -327,6 +327,7 @@ AC_SUBST(DEFAULTLANGMAP_QUOTED)
 
 AC_CONFIG_FILES([Makefile
 	gtags.conf
+	Doxyfile
 	libutil/langmap.h
 	htags/global.cgi.tmpl
 	htags/completion.cgi.tmpl

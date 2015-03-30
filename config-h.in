@@ -215,7 +215,7 @@
 /* Define to 1 if you have the `strrchr' function. */
 #undef HAVE_STRRCHR
 
-/* Define to 1 if `st_blksize' is member of `struct stat'. */
+/* Define to 1 if `st_blksize' is a member of `struct stat'. */
 #undef HAVE_STRUCT_STAT_ST_BLKSIZE
 
 /* Define to 1 if you have the <sys/dir.h> header file, and it defines `DIR'.
@@ -256,6 +256,9 @@
 /* The archive extension */
 #undef LT_LIBEXT
 
+/* The archive prefix */
+#undef LT_LIBPREFIX
+
 /* Define to the extension used for runtime loadable modules, say, ".so". */
 #undef LT_MODULE_EXT
 
@@ -266,6 +269,9 @@
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
 #undef LT_OBJDIR
+
+/* Define to the shared library suffix, say, ".dylib". */
+#undef LT_SHARED_EXT
 
 /* Set to reflect version of ncurses: 0 = version 1.* 1 = version 1.9.9g 2 =
    version 4.0/4.1 */
@@ -291,6 +297,9 @@
 
 /* Define to the one symbol short name of this package. */
 #undef PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
 
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
